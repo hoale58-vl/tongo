@@ -20,7 +20,7 @@ func (c *Client) RunSmcMethodByIDAtBlock(ctx context.Context, accountID ton.Acco
 	if err != nil {
 		return 0, tlb.VmStack{}, err
 	}
-	client, _, err := c.pool.BestClientByAccountID(ctx, accountID, true)
+	client, _, err := c.pool.BestClientByAccountID(ctx, accountID, false)
 	if err != nil {
 		return 0, tlb.VmStack{}, err
 	}
