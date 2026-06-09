@@ -147,6 +147,34 @@ func TestConnPool_updateBest(t *testing.T) {
 			},
 			wantID: 1,
 		},
+		{
+			name:     "priority: first works even if behind",
+			strategy: PriorityStrategy,
+			conns: []conn{
+				&mockConn{seqno: 98, isOK: true, id: 0},
+				&mockConn{seqno: 100, isOK: true, id: 1},
+			},
+			wantID: 0,
+		},
+		{
+			name:     "priority: first is broken, second works",
+			strategy: PriorityStrategy,
+			conns: []conn{
+				&mockConn{seqno: 100, isOK: false, id: 0},
+				&mockConn{seqno: 100, isOK: true, id: 1},
+			},
+			wantID: 1,
+		},
+		{
+			name:     "priority: first and second are broken, third works",
+			strategy: PriorityStrategy,
+			conns: []conn{
+				&mockConn{seqno: 100, isOK: false, id: 0},
+				&mockConn{seqno: 100, isOK: false, id: 1},
+				&mockConn{seqno: 100, isOK: true, id: 2},
+			},
+			wantID: 2,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

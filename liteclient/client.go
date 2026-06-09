@@ -30,15 +30,22 @@ type Client struct {
 	// timeout configures a timeout of a lite client method.
 	// if such a method makes several calls to a lite server,
 	// the total time is bounded by the timeout.
-	timeout      time.Duration
-	connections  []*Connection
-	nextConn     int
-	connMutex    sync.Mutex
-	queries      map[queryID]chan []byte
-	queriesMutex sync.Mutex
+	timeout          time.Duration
+	connections      []*Connection
+	nextConn         int
+	connMutex        sync.Mutex
+	queries          map[queryID]chan []byte
+	queriesMutex     sync.Mutex
+	priorityFailover bool
 }
 
 type Options func(connection *Client)
+
+func OptionPriorityFailover() Options {
+	return func(c *Client) {
+		c.priorityFailover = true
+	}
+}
 
 func OptionTimeout(t time.Duration) Options {
 	return func(c *Client) {
@@ -109,6 +116,40 @@ func (c *Client) Request(ctx context.Context, q []byte) ([]byte, error) {
 	}
 	resp := c.registerCallback(id)
 	defer c.unregisterCallback(id)
+
+	if c.priorityFailover {
+		var lastErr error
+		for _, conn := range c.connections {
+			if conn.Status() != Connected {
+				lastErr = fmt.Errorf("connection %s is not connected", conn.host)
+				continue
+			}
+
+			err = conn.Send(p)
+			if err != nil {
+				lastErr = err
+				continue
+			}
+
+			attemptCtx, attemptCancel := context.WithTimeout(ctx, 5*time.Second)
+			select {
+			case <-attemptCtx.Done():
+				attemptCancel()
+				if ctx.Err() != nil {
+					return nil, newClientError("request timeout: %v", ctx.Err())
+				}
+				lastErr = fmt.Errorf("connection %s request timeout", conn.host)
+				continue
+			case b := <-resp:
+				attemptCancel()
+				return b, nil
+			}
+		}
+		if lastErr != nil {
+			return nil, newClientError("all connections failed, last error: %v", lastErr)
+		}
+		return nil, newClientError("all connections failed")
+	}
 
 	c.connMutex.Lock()
 	conn := c.connections[c.nextConn]

@@ -26,6 +26,7 @@ type Strategy string
 const (
 	BestPingStrategy       = "best-ping"
 	FirstWorkingConnection = "first-working"
+	PriorityStrategy       = "priority"
 )
 
 // ConnPool is a pool of connections to lite servers
@@ -202,7 +203,21 @@ func (p *ConnPool) updateBest() {
 		if bestConn := p.findFirstWorkingConnection(maxSeqno); bestConn != nil {
 			p.bestConn = bestConn
 		}
+	case PriorityStrategy:
+		if bestConn := p.findPriorityConnection(); bestConn != nil {
+			p.bestConn = bestConn
+		}
 	}
+}
+
+func (p *ConnPool) findPriorityConnection() conn {
+	for _, c := range p.conns {
+		if !c.IsOK() {
+			continue
+		}
+		return c
+	}
+	return nil
 }
 
 func (p *ConnPool) findFirstWorkingConnection(maxSeqno uint32) conn {

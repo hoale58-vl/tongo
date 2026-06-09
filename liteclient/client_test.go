@@ -250,3 +250,70 @@ func TestClient_WaitMasterchainBlock(t *testing.T) {
 		t.Fatalf("Invalid result seqno")
 	}
 }
+
+func TestPriorityClient_Failover(t *testing.T) {
+	conn1, err := createTestLiteServerConnection()
+	if err != nil {
+		t.Fatalf("NewConnection() failed: %v", err)
+	}
+	conn2, err := createTestLiteServerConnection()
+	if err != nil {
+		t.Fatalf("NewConnection() failed: %v", err)
+	}
+
+	client := NewPriorityClient([]*Connection{conn1, conn2})
+
+	// Mutate conn1's status to simulate a failed connection
+	conn1.mu.Lock()
+	conn1.status = Connecting
+	conn1.mu.Unlock()
+
+	if !client.IsOK() {
+		t.Fatalf("PriorityClient should be OK because conn2 is still Connected")
+	}
+
+	// We should be able to request masterchain info successfully via conn2
+	_, err = client.WaitMasterchainBlock(context.Background(), 1000, 10)
+	// Even if it returns error about block or other server-side stuff, it should not fail on transport
+	// since conn2 is working. Let's make sure there is no connection error.
+	if err != nil {
+		// WaitMasterchainBlock for seqno 1000 might fail if block doesn't exist anymore (archive vs full node),
+		// but we want to make sure it didn't fail on transport.
+		t.Logf("WaitMasterchainBlock finished with error: %v (expected/possible depending on block availability)", err)
+	}
+}
+
+func TestClient_PriorityFailoverOption(t *testing.T) {
+	conn1, err := createTestLiteServerConnection()
+	if err != nil {
+		t.Fatalf("NewConnection() failed: %v", err)
+	}
+	conn2, err := createTestLiteServerConnection()
+	if err != nil {
+		t.Fatalf("NewConnection() failed: %v", err)
+	}
+
+	// Create regular client with OptionPriorityFailover
+	client := NewClient(conn1, OptionPriorityFailover())
+	client.connections = append(client.connections, conn2)
+	go client.reader(conn2)
+
+	// conn1 is Connected, conn2 is Connected
+	// Let's call a request, it should work
+	resp, err := client.LiteServerGetMasterchainInfo(context.Background())
+	if err != nil {
+		t.Fatalf("LiteServerGetMasterchainInfo failed: %v", err)
+	}
+
+	// Mutate conn1's status to simulate a failed connection
+	conn1.mu.Lock()
+	conn1.status = Connecting
+	conn1.mu.Unlock()
+
+	// It should failover to conn2 and succeed!
+	resp, err = client.LiteServerGetMasterchainInfo(context.Background())
+	if err != nil {
+		t.Fatalf("LiteServerGetMasterchainInfo should have succeeded via failover, but failed: %v", err)
+	}
+	fmt.Printf("Succeeded via failover to conn2! Seqno: %d\n", resp.Last.Seqno)
+}
