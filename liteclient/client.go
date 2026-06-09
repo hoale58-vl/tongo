@@ -36,7 +36,15 @@ type Client struct {
 	connMutex        sync.Mutex
 	queries          map[queryID]chan []byte
 	queriesMutex     sync.Mutex
+	metrics          RequestObserver
 	priorityFailover bool
+}
+
+// RequestObserver is notified once for every lite server method call.
+// `method` name is from TL schema, e.g. liteServer.getOutMsgQueueSizes
+// `err` includes both network error and domain specific error
+type RequestObserver interface {
+	ObserveRequest(host string, method RequestName, duration time.Duration, err error)
 }
 
 type Options func(connection *Client)
@@ -44,6 +52,12 @@ type Options func(connection *Client)
 func OptionPriorityFailover() Options {
 	return func(c *Client) {
 		c.priorityFailover = true
+	}
+}
+
+func OptionObserver(o RequestObserver) Options {
+	return func(c *Client) {
+		c.metrics = o
 	}
 }
 
@@ -99,7 +113,15 @@ func (c *Client) IsOK() bool {
 // Request sends q as query in adnl.message.query and receives answer from adnl.message.answer
 // adnl.message.query query_id:int256 query:bytes = adnl.Message
 // adnl.message.answer query_id:int256 answer:bytes = adnl.Message
-func (c *Client) Request(ctx context.Context, q []byte) ([]byte, error) {
+func (c *Client) Request(ctx context.Context, q []byte) (resp []byte, err error) {
+	start := time.Now()
+	var host string
+	defer func() { c.observeRequest(host, UnknownRequest, start, err) }()
+	resp, host, err = c.request(ctx, q)
+	return resp, err
+}
+
+func (c *Client) request(ctx context.Context, q []byte) (_ []byte, host string, _ error) {
 	ctx, cancel := context.WithTimeout(ctx, c.timeout)
 	defer cancel()
 	var id queryID
@@ -112,7 +134,7 @@ func (c *Client) Request(ctx context.Context, q []byte) ([]byte, error) {
 	data = alignBytes(data)
 	p, err := NewPacket(data)
 	if err != nil {
-		return nil, newClientError("NewPacket() failed: %v", err)
+		return nil, host, newClientError("NewPacket() failed: %v", err)
 	}
 	resp := c.registerCallback(id)
 	defer c.unregisterCallback(id)
@@ -136,36 +158,44 @@ func (c *Client) Request(ctx context.Context, q []byte) ([]byte, error) {
 			case <-attemptCtx.Done():
 				attemptCancel()
 				if ctx.Err() != nil {
-					return nil, newClientError("request timeout: %v", ctx.Err())
+					return nil, host, newClientError("request timeout: %v", ctx.Err())
 				}
 				lastErr = fmt.Errorf("connection %s request timeout", conn.host)
 				continue
 			case b := <-resp:
 				attemptCancel()
-				return b, nil
+				return b, host, nil
 			}
 		}
 		if lastErr != nil {
-			return nil, newClientError("all connections failed, last error: %v", lastErr)
+			return nil, host, newClientError("all connections failed, last error: %v", lastErr)
 		}
-		return nil, newClientError("all connections failed")
+		return nil, host, newClientError("all connections failed")
 	}
 
 	c.connMutex.Lock()
 	conn := c.connections[c.nextConn]
 	c.nextConn = (c.nextConn + 1) % len(c.connections)
 	c.connMutex.Unlock()
+	host = conn.host
 
 	err = conn.Send(p)
 	if err != nil {
-		return nil, err
+		return nil, host, err
 	}
 	select {
 	case <-ctx.Done():
-		return nil, newClientError("request timeout: %v", ctx.Err())
+		return nil, host, newClientError("request timeout: %v", ctx.Err())
 	case b := <-resp:
-		return b, nil
+		return b, host, nil
 	}
+}
+
+func (c *Client) observeRequest(host string, method RequestName, start time.Time, err error) {
+	if c.metrics == nil {
+		return
+	}
+	c.metrics.ObserveRequest(host, method, time.Since(start), err)
 }
 
 func (c *Client) registerCallback(id queryID) chan []byte {
@@ -252,13 +282,13 @@ func (c *Client) processQueryAnswer(p Packet) error {
 }
 
 // liteServerRequest sends q as liteServer.query data:bytes = Object;
-func (c *Client) liteServerRequest(ctx context.Context, q []byte) ([]byte, error) {
+func (c *Client) liteServerRequest(ctx context.Context, q []byte) (_ []byte, host string, _ error) {
 	data := make([]byte, 4)
 	binary.LittleEndian.PutUint32(data, magicLiteServerQuery)
 	data = append(data, tl.EncodeLength(len(q))...)
 	data = append(data, q...)
 	data = alignBytes(data)
-	return c.Request(ctx, data)
+	return c.request(ctx, data)
 }
 
 func alignBytes(data []byte) []byte {
@@ -271,12 +301,15 @@ func alignBytes(data []byte) []byte {
 
 // WaitMasterchainSeqno waits for the given block to become committed.
 // If timeout happens, it returns an error.
-func (c *Client) WaitMasterchainSeqno(ctx context.Context, seqno uint32, timeout uint32) error {
+func (c *Client) WaitMasterchainSeqno(ctx context.Context, seqno uint32, timeout uint32) (err error) {
+	start := time.Now()
+	var host string
+	defer func() { c.observeRequest(host, "liteServer.waitMasterchainSeqno", start, err) }()
 	data := make([]byte, 0, 12)
 	data = binary.LittleEndian.AppendUint32(data, magicLiteServerWaitMasterchainSeqno)
 	data = binary.LittleEndian.AppendUint32(data, seqno)
 	data = binary.LittleEndian.AppendUint32(data, timeout)
-	resp, err := c.liteServerRequest(ctx, data)
+	resp, host, err := c.liteServerRequest(ctx, data)
 	if err != nil {
 		return err
 	}
@@ -306,6 +339,9 @@ func (c *Client) AverageRoundTrip() time.Duration {
 }
 
 func (c *Client) WaitMasterchainBlock(ctx context.Context, seqno uint32, timeout uint32) (res LiteServerBlockHeaderC, err error) {
+	start := time.Now()
+	var host string
+	defer func() { c.observeRequest(host, "liteServer.waitMasterchainBlock", start, err) }()
 	var (
 		mc     int    = -1
 		uintMc uint32 = uint32(mc)
@@ -330,7 +366,7 @@ func (c *Client) WaitMasterchainBlock(ctx context.Context, seqno uint32, timeout
 		return res, err
 	}
 	data = append(data, payload...)
-	resp, err := c.liteServerRequest(ctx, data)
+	resp, host, err := c.liteServerRequest(ctx, data)
 	if err != nil {
 		return res, err
 	}

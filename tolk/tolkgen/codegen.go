@@ -270,11 +270,23 @@ func (tgen TolkGolangGenerator) aliasToGo(decl parser.ABIAlias, out *strings.Bui
 	}
 
 	if !decl.CustomPackUnpack.UnpackFromSlice {
-		expr, _, err := tgen.symbols.emitLoadExpr(decl.Name, decl.TargetTyIdx)
+		expr, hasMethod, err := tgen.symbols.emitLoadExpr(decl.Name, decl.TargetTyIdx)
 		if err != nil {
 			return fmt.Errorf("emit unmarshal expression for %q: %w", decl.Name, err)
 		}
-		fmt.Fprintf(outMarshal, `func (v *%s) UnmarshalTLB(c *boc.Cell, decoder *tlb.Decoder) error {
+
+		if hasMethod {
+			fmt.Fprintf(outMarshal, `func (v *%s) UnmarshalTLB(c *boc.Cell, decoder *tlb.Decoder) error {
+	var vx %s
+	if err := vx.UnmarshalTLB(c, decoder); err != nil {
+		return err
+	}
+	*v = %s(vx)
+	return nil
+}
+`, aliasName, targetType, aliasName)
+		} else {
+			fmt.Fprintf(outMarshal, `func (v *%s) UnmarshalTLB(c *boc.Cell, decoder *tlb.Decoder) error {
 	vx, err := %s
 	if err != nil {
 		return err
@@ -283,10 +295,11 @@ func (tgen TolkGolangGenerator) aliasToGo(decl parser.ABIAlias, out *strings.Bui
 	return nil
 }
 `,
-			aliasName, expr, aliasName)
+				aliasName, expr, aliasName)
+		}
 	}
 	if !decl.CustomPackUnpack.PackToBuilder {
-		expr, err := tgen.symbols.emitStoreExpr("v", decl.TargetTyIdx)
+		expr, err := tgen.symbols.emitStoreExpr(targetType+"(v)", decl.TargetTyIdx)
 		if err != nil {
 			return fmt.Errorf("emit marshal expression for %q: %w", decl.Name, err)
 		}
@@ -639,8 +652,12 @@ func (tgen TolkGolangGenerator) enumToGo(decl parser.ABIEnum, out *strings.Build
 }
 
 func (tgen TolkGolangGenerator) structToGo(decl parser.ABIStruct, out *strings.Builder, outMarshal *strings.Builder) error {
+	if _, ok := TongoStructs[decl.Name]; ok {
+		return nil
+	}
+	var typeArgs string
 	if len(decl.TypeParams) > 0 {
-		return fmt.Errorf("type params not supported for struct %q", decl.Name)
+		typeArgs = fmt.Sprintf("[%s tlb.Codec]", strings.Join(decl.TypeParams, ", "))
 	}
 	typeIdent := safeGoIdent(decl.Name)
 	if decl.Prefix != nil {
@@ -650,7 +667,7 @@ func (tgen TolkGolangGenerator) structToGo(decl parser.ABIStruct, out *strings.B
 		}
 		fmt.Fprintf(out, "const Prefix%s uint64 = %s\n", typeIdent, prefix)
 	}
-	fmt.Fprintf(out, "type %s struct {\n", typeIdent)
+	fmt.Fprintf(out, "type %s%s struct {\n", typeIdent, typeArgs)
 	for _, field := range decl.Fields {
 		fieldType, err := tgen.symbols.emitGoType(field.TyIdx)
 		if err != nil {
