@@ -1,0 +1,9128 @@
+// Code generated - DO NOT EDIT.
+
+package abi
+
+import (
+	"context"
+	"fmt"
+	"github.com/tonkeeper/tongo/boc"
+	"github.com/tonkeeper/tongo/tlb"
+	"github.com/tonkeeper/tongo/ton"
+)
+
+var KnownGetMethodsDecoder = map[string][]func(tlb.VmStack) (string, any, error){
+	"dnsresolve":                                   {DecodeDnsresolve_RecordsResult},
+	"estimate_liquidity_deposit_amount":            {DecodeEstimateLiquidityDepositAmount_CoffeeResult},
+	"estimate_liquidity_withdraw_amount":           {DecodeEstimateLiquidityWithdrawAmount_CoffeeResult},
+	"estimate_swap_amount":                         {DecodeEstimateSwapAmount_CoffeeResult},
+	"estimate_swap_out":                            {DecodeEstimateSwapOut_DedustResult},
+	"getAllTickInfos":                              {DecodeGetAllTickInfos_ToncoResult},
+	"getChildContracts":                            {DecodeGetChildContracts_ToncoPoolResult, DecodeGetChildContracts_ToncoRouterResult},
+	"getIsActive":                                  {DecodeGetIsActive_ToncoResult},
+	"getPoolStateAndConfiguration":                 {DecodeGetPoolStateAndConfiguration_ToncoResult},
+	"getRouterState":                               {DecodeGetRouterState_ToncoResult},
+	"get_account_data":                             {DecodeGetAccountData_ToncoResult},
+	"get_active_range":                             {DecodeGetActiveRange_BidaskResult},
+	"get_adjusted_spot_price":                      {DecodeGetAdjustedSpotPrice_StormResult},
+	"get_admin_address":                            {DecodeGetAdminAddress_CoffeeResult},
+	"get_amm_contract_data":                        {DecodeGetAmmContractData_StormResult},
+	"get_amm_name":                                 {DecodeGetAmmName_StormResult},
+	"get_amm_state":                                {DecodeGetAmmState_StormResult},
+	"get_amm_status":                               {DecodeGetAmmStatus_StormResult},
+	"get_asset":                                    {DecodeGetAsset_DedustResult, DecodeGetAsset_CoffeeResult},
+	"get_assets":                                   {DecodeGetAssets_DedustResult, DecodeGetAssets_MoonResult},
+	"get_auction_data_v4":                          {DecodeGetAuctionDataV4Result},
+	"get_auction_info":                             {DecodeGetAuctionInfoResult},
+	"get_authority_address":                        {DecodeGetAuthorityAddressResult},
+	"get_available_claim_amount":                   {DecodeGetAvailableClaimAmountResult},
+	"get_balances":                                 {DecodeGetBalances_DedustResult, DecodeGetBalancesResult},
+	"get_bill_address":                             {DecodeGetBillAddressResult},
+	"get_bill_amount":                              {DecodeGetBillAmountResult},
+	"get_bin_assets":                               {DecodeGetBinAssets_BidaskResult},
+	"get_bins_number":                              {DecodeGetBinsNumber_BidaskResult},
+	"get_blank_storage_data":                       {DecodeGetBlankStorageData_StormResult},
+	"get_buffer_data":                              {DecodeGetBufferData_StormResult},
+	"get_can_execute_order":                        {DecodeGetCanExecuteOrder_StormResult},
+	"get_can_force_close":                          {DecodeGetCanForceClose_StormResult},
+	"get_can_liquidate":                            {DecodeGetCanLiquidate_StormResult},
+	"get_channel_data":                             {DecodeGetChannelDataResult},
+	"get_claimer_address":                          {DecodeGetClaimerAddress_StormResult},
+	"get_code":                                     {DecodeGetCode_CoffeeResult},
+	"get_collected_fees_info":                      {DecodeGetCollectedFeesInfo_BidaskDammResult},
+	"get_collection_data":                          {DecodeGetCollectionDataResult},
+	"get_compute_funding_data":                     {DecodeGetComputeFundingData_StormResult},
+	"get_contract_data":                            {DecodeGetContractData_AirdropInterlockerV1Result},
+	"get_cron_info":                                {DecodeGetCronInfoResult},
+	"get_current_bin":                              {DecodeGetCurrentBin_BidaskResult},
+	"get_day_trading_data":                         {DecodeGetDayTradingData_StormResult},
+	"get_default_referral_fees":                    {DecodeGetDefaultReferralFees_StormResult},
+	"get_delegation_state":                         {DecodeGetDelegationStateResult},
+	"get_display_multiplier":                       {DecodeGetDisplayMultiplierResult},
+	"get_distribution_info":                        {DecodeGetDistributionInfoResult},
+	"get_domain":                                   {DecodeGetDomainResult},
+	"get_dynamic_fees_info":                        {DecodeGetDynamicFeesInfo_BidaskResult},
+	"get_editor":                                   {DecodeGetEditorResult},
+	"get_estimated_attached_value":                 {DecodeGetEstimatedAttachedValueResult},
+	"get_exchange_settings":                        {DecodeGetExchangeSettings_StormResult},
+	"get_executor_balances":                        {DecodeGetExecutorBalances_StormResult},
+	"get_executor_collection_address":              {DecodeGetExecutorCollectionAddress_StormResult},
+	"get_executor_item_addr":                       {DecodeGetExecutorItemAddr_StormResult},
+	"get_executor_vaults_whitelist":                {DecodeGetExecutorVaultsWhitelist_StormResult},
+	"get_expected_outputs":                         {DecodeGetExpectedOutputs_StonfiResult},
+	"get_expected_swap_result":                     {DecodeGetExpectedSwapResult_BidaskDammResult},
+	"get_extensions":                               {DecodeGetExtensionsResult},
+	"get_factory_data":                             {DecodeGetFactoryData_StormResult},
+	"get_farming_info":                             {DecodeGetFarmingInfo_BidaskResult, DecodeGetFarmingInfo_BidaskDammResult},
+	"get_fees_info":                                {DecodeGetFeesInfo_BidaskDammResult},
+	"get_fill_out":                                 {DecodeGetFillOut_MoonResult},
+	"get_fix_price_data_v4":                        {DecodeGetFixPriceDataV4Result},
+	"get_full_domain":                              {DecodeGetFullDomainResult},
+	"get_funding":                                  {DecodeGetFunding_StormResult},
+	"get_funding_settings":                         {DecodeGetFundingSettings_StormResult},
+	"get_highload_data":                            {DecodeGetHighloadData_StormResult},
+	"get_id":                                       {DecodeGetId_MoonResult},
+	"get_is_inited":                                {DecodeGetIsInited_StormResult},
+	"get_jetton_data":                              {DecodeGetJettonDataResult},
+	"get_keys_data":                                {DecodeGetKeysData_StormResult},
+	"get_last_clean_time":                          {DecodeGetLastCleanTimeResult},
+	"get_last_fill_up_time":                        {DecodeGetLastFillUpTimeResult},
+	"get_last_position_manager_code":               {DecodeGetLastPositionManagerCode_StormResult},
+	"get_lazer_data":                               {DecodeGetLazerData_StormResult},
+	"get_liquidation_price_vpi":                    {DecodeGetLiquidationPriceVpi_StormResult},
+	"get_liquidity_data":                           {DecodeGetLiquidityData_BidaskResult},
+	"get_liquidity_deposit_address":                {DecodeGetLiquidityDepositAddress_DedustResult},
+	"get_liquidity_depository_address":             {DecodeGetLiquidityDepositoryAddress_CoffeeResult},
+	"get_liquidity_depository_address_no_settings": {DecodeGetLiquidityDepositoryAddressNoSettings_CoffeeResult},
+	"get_liquidity_info":                           {DecodeGetLiquidityInfo_BidaskDammResult},
+	"get_locker_bill_data":                         {DecodeGetLockerBillDataResult},
+	"get_locker_data":                              {DecodeGetLockerDataResult},
+	"get_lockup_data":                              {DecodeGetLockupDataResult},
+	"get_lp_account_address":                       {DecodeGetLpAccountAddress_StonfiResult},
+	"get_lp_account_data":                          {DecodeGetLpAccountData_StonfiResult},
+	"get_lp_data":                                  {DecodeGetLpData_MegatonResult},
+	"get_lp_mining_data":                           {DecodeGetLpMiningData_MegatonResult},
+	"get_lp_minter_address":                        {DecodeGetLpMinterAddress_StormResult},
+	"get_lp_multitoken_wallet":                     {DecodeGetLpMultitokenWallet_BidaskResult},
+	"get_lp_swap_data":                             {DecodeGetLpSwapData_MegatonResult},
+	"get_master_address":                           {DecodeGetMasterAddress_CoffeeStakingVaultResult},
+	"get_member":                                   {DecodeGetMember_WhalesNominatorResult},
+	"get_members_raw":                              {DecodeGetMembersRaw_WhalesNominatorResult},
+	"get_min_fees":                                 {DecodeGetMinFees_StormResult},
+	"get_mining_data":                              {DecodeGetMiningData_MegatonResult},
+	"get_multisig_data":                            {DecodeGetMultisigDataResult},
+	"get_next_admin_address":                       {DecodeGetNextAdminAddressResult},
+	"get_next_proof_info":                          {DecodeGetNextProofInfoResult},
+	"get_nft_address_by_index":                     {DecodeGetNftAddressByIndexResult},
+	"get_nft_api_info":                             {DecodeGetNftApiInfoResult},
+	"get_nft_content":                              {DecodeGetNftContentResult},
+	"get_nft_data":                                 {DecodeGetNftDataResult},
+	"get_nominator_data":                           {DecodeGetNominatorDataResult},
+	"get_oracle_data":                              {DecodeGetOracleData_StormResult},
+	"get_order_address":                            {DecodeGetOrderAddressResult},
+	"get_order_amount":                             {DecodeGetOrderAmount_MoonResult},
+	"get_order_data":                               {DecodeGetOrderDataResult},
+	"get_params":                                   {DecodeGetParams_WhalesNominatorResult},
+	"get_pause_time":                               {DecodeGetPauseTime_StormResult},
+	"get_payment_info":                             {DecodeGetPaymentInfo_SubscriptionV2Result},
+	"get_peg_adjust_cost":                          {DecodeGetPegAdjustCost_StormResult},
+	"get_pipe":                                     {DecodeGetPipe_MoonResult},
+	"get_plugin_list":                              {DecodeGetPluginListResult},
+	"get_pool":                                     {DecodeGetPool_MoonResult},
+	"get_pool_addr":                                {DecodeGetPoolAddr_BidaskResult},
+	"get_pool_address":                             {DecodeGetPoolAddress_StonfiResult},
+	"get_pool_address_no_settings":                 {DecodeGetPoolAddressNoSettings_CoffeeResult},
+	"get_pool_creator_address":                     {DecodeGetPoolCreatorAddress_CoffeeResult},
+	"get_pool_creator_address_no_settings":         {DecodeGetPoolCreatorAddressNoSettings_CoffeeResult},
+	"get_pool_data":                                {DecodeGetPoolData_AffluentResult, DecodeGetPoolData_DaolamaResult, DecodeGetPoolData_DedustV2Result, DecodeGetPoolData_StonfiResult, DecodeGetPoolData_StonfiV2Result, DecodeGetPoolData_StonfiV2StableswapResult, DecodeGetPoolData_StonfiV2WeightedStableswapResult, DecodeGetPoolData_CoffeeResult, DecodeGetPoolData_TfResult},
+	"get_pool_full_data":                           {DecodeGetPoolFullDataResult},
+	"get_pool_info":                                {DecodeGetPoolInfo_BidaskResult, DecodeGetPoolInfo_BidaskDammResult},
+	"get_pool_status":                              {DecodeGetPoolStatusResult},
+	"get_pool_type":                                {DecodeGetPoolType_StonfiV2Result},
+	"get_position":                                 {DecodeGetPosition_StormResult},
+	"get_position_address":                         {DecodeGetPositionAddress_StormResult},
+	"get_position_manager_address":                 {DecodeGetPositionManagerAddress_StormResult},
+	"get_position_manager_contract_data":           {DecodeGetPositionManagerContractData_StormResult},
+	"get_position_manager_data":                    {DecodeGetPositionManagerData_StormResult},
+	"get_pow_params":                               {DecodeGetPowParamsResult},
+	"get_premium":                                  {DecodeGetPremium_StormResult},
+	"get_proxy":                                    {DecodeGetProxy_WhalesNominatorResult},
+	"get_public_key":                               {DecodeGetPublicKeyResult},
+	"get_referral_collection_address":              {DecodeGetReferralCollectionAddress_StormResult},
+	"get_referral_data":                            {DecodeGetReferralData_StormResult},
+	"get_referral_item_addr":                       {DecodeGetReferralItemAddr_StormResult},
+	"get_referral_vaults_whitelist":                {DecodeGetReferralVaultsWhitelist_StormResult},
+	"get_remain_margin_with_funding_payment":       {DecodeGetRemainMarginWithFundingPayment_StormResult},
+	"get_reserves":                                 {DecodeGetReserves_DedustResult, DecodeGetReserves_MoonResult},
+	"get_revoked_time":                             {DecodeGetRevokedTimeResult},
+	"get_rfq_address":                              {DecodeGetRfqAddress_AffluentResult},
+	"get_root_pubkey":                              {DecodeGetRootPubkeyResult},
+	"get_router_data":                              {DecodeGetRouterData_StonfiResult, DecodeGetRouterData_StonfiV2Result},
+	"get_router_version":                           {DecodeGetRouterVersion_StonfiV2Result},
+	"get_sale_data":                                {DecodeGetSaleData_BasicResult, DecodeGetSaleData_GetgemsResult, DecodeGetSaleData_GetgemsAuctionResult},
+	"get_seed_pubkey":                              {DecodeGetSeedPubkeyResult},
+	"get_settlement_oracle_data":                   {DecodeGetSettlementOracleData_StormResult},
+	"get_spot_price":                               {DecodeGetSpotPrice_StormResult},
+	"get_sqrt_p":                                   {DecodeGetSqrtP_BidaskResult},
+	"get_staking_status":                           {DecodeGetStakingStatusResult},
+	"get_start_trade_time":                         {DecodeGetStartTradeTime_BidaskDammResult},
+	"get_status":                                   {DecodeGetStatusResult, DecodeGetStatus_MoonResult},
+	"get_storage_contract_address":                 {DecodeGetStorageContractAddressResult},
+	"get_storage_contract_data":                    {DecodeGetStorageContractDataResult},
+	"get_storage_data":                             {DecodeGetStorageData_StormResult},
+	"get_storage_params":                           {DecodeGetStorageParamsResult},
+	"get_stored_data":                              {DecodeGetStoredData_CoffeeStakingMasterResult, DecodeGetStoredData_CoffeeStakingVaultResult, DecodeGetStoredData_CoffeeStakingItemResult},
+	"get_subscription_data":                        {DecodeGetSubscriptionDataResult},
+	"get_subscription_info":                        {DecodeGetSubscriptionInfo_V2Result},
+	"get_subwallet_id":                             {DecodeGetSubwalletIdResult},
+	"get_target_balances":                          {DecodeGetTargetBalances_DedustResult},
+	"get_telemint_auction_config":                  {DecodeGetTelemintAuctionConfigResult},
+	"get_telemint_auction_state":                   {DecodeGetTelemintAuctionStateResult},
+	"get_telemint_token_name":                      {DecodeGetTelemintTokenNameResult},
+	"get_terminal_amm_price":                       {DecodeGetTerminalAmmPrice_StormResult},
+	"get_timeout":                                  {DecodeGetTimeoutResult},
+	"get_torrent_hash":                             {DecodeGetTorrentHashResult},
+	"get_trade_fee":                                {DecodeGetTradeFee_DedustResult},
+	"get_unlocks_info":                             {DecodeGetUnlocksInfoResult},
+	"get_user_bin_assets":                          {DecodeGetUserBinAssets_BidaskResult},
+	"get_user_fees_info":                           {DecodeGetUserFeesInfo_BidaskDammResult},
+	"get_user_public_keys":                         {DecodeGetUserPublicKeys_StormResult},
+	"get_validate_signatures":                      {DecodeGetValidateSignatures_StormResult},
+	"get_validator_controller_data":                {DecodeGetValidatorControllerDataResult},
+	"get_vamm_address":                             {DecodeGetVammAddress_StormResult},
+	"get_vamm_type":                                {DecodeGetVammType_StormResult},
+	"get_vault_address":                            {DecodeGetVaultAddress_DedustResult},
+	"get_vault_balance":                            {DecodeGetVaultBalance_StormResult},
+	"get_vault_contract_data":                      {DecodeGetVaultContractData_StormResult},
+	"get_vault_data":                               {DecodeGetVaultData_AffluentLendingVaultResult, DecodeGetVaultData_AffluentMultiplyVaultResult, DecodeGetVaultData_AffluentMultiplyVaultV2Result, DecodeGetVaultData_StonfiV2Result, DecodeGetVaultData_StormResult},
+	"get_vault_type":                               {DecodeGetVaultType_StormResult},
+	"get_vault_whitelisted_addresses":              {DecodeGetVaultWhitelistedAddresses_StormResult},
+	"get_version":                                  {DecodeGetVersion_StormResult},
+	"get_vesting_data":                             {DecodeGetVestingData_MoonResult, DecodeGetVestingDataResult},
+	"get_wallet_addr":                              {DecodeGetWalletAddrResult},
+	"get_wallet_address":                           {DecodeGetWalletAddressResult},
+	"get_wallet_data":                              {DecodeGetWalletDataResult},
+	"get_wallet_params":                            {DecodeGetWalletParamsResult},
+	"is_active":                                    {DecodeIsActiveResult, DecodeIsActive_CoffeeResult},
+	"is_claimed":                                   {DecodeIsClaimedResult},
+	"is_plugin_installed":                          {DecodeIsPluginInstalledResult},
+	"is_signature_allowed":                         {DecodeIsSignatureAllowedResult},
+	"is_stable":                                    {DecodeIsStable_DedustResult},
+	"is_strategy_vault":                            {DecodeIsStrategyVault_AffluentResult},
+	"jetton_wallet_lock_data":                      {DecodeJettonWalletLockDataResult},
+	"list_nominators":                              {DecodeListNominatorsResult},
+	"list_votes":                                   {DecodeListVotesResult},
+	"processed?":                                   {DecodeProcessed_StormResult},
+	"royalty_params":                               {DecodeRoyaltyParamsResult},
+	"seqno":                                        {DecodeSeqnoResult},
+	"whoami":                                       {DecodeWhoami_BidaskResult},
+}
+
+var KnownSimpleGetMethods = map[int][]func(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error){
+	65971:  {GetReserves},
+	66763:  {GetFullDomain},
+	66792:  {GetUserPublicKeys},
+	68322:  {GetClaimerAddress},
+	69014:  {GetWalletAddr},
+	69018:  {GetVaultWhitelistedAddresses},
+	69379:  {GetBinsNumber},
+	69506:  {GetTelemintTokenName},
+	69628:  {GetChannelData},
+	69727:  {GetBlankStorageData},
+	71463:  {GetTorrentHash},
+	71479:  {GetProxy},
+	72370:  {GetFeesInfo},
+	72419:  {GetStartTradeTime},
+	72748:  {GetSaleData},
+	73490:  {GetLockerData},
+	75065:  {GetExecutorBalances},
+	75286:  {GetAvailableClaimAmount},
+	75573:  {GetOrderAmount},
+	75709:  {GetExecutorVaultsWhitelist},
+	76063:  {GetFactoryData},
+	76464:  {GetPauseTime},
+	77484:  {GetLastPositionManagerCode},
+	77915:  {GetCronInfo},
+	78683:  {GetNextAdminAddress},
+	78748:  {GetPublicKey},
+	79661:  {GetRouterVersion},
+	79794:  {Whoami},
+	80035:  {GetLpData},
+	80697:  {GetAuctionInfo},
+	80822:  {GetLastCleanTime},
+	81234:  {GetCode},
+	81467:  {GetSubwalletId},
+	81490:  {GetNextProofInfo},
+	81689:  {GetPoolData},
+	82247:  {GetIsActive},
+	82320:  {GetVersion},
+	82492:  {GetPoolType},
+	83226:  {GetExecutorCollectionAddress},
+	83263:  {GetNftApiInfo},
+	83894:  {GetLpMinterAddress},
+	84232:  {GetTargetBalances},
+	84365:  {GetPoolAddr},
+	84760:  {GetAuthorityAddress},
+	85143:  {Seqno},
+	85719:  {RoyaltyParams},
+	86329:  {GetAccountData},
+	86353:  {GetAmmState},
+	86593:  {GetStorageContractData},
+	86620:  {GetCurrentBin},
+	86862:  {GetReferralCollectionAddress},
+	87635:  {GetAmmStatus},
+	87675:  {GetSpotPrice},
+	87878:  {GetBalances},
+	88371:  {GetActiveRange},
+	88459:  {IsSignatureAllowed},
+	88817:  {GetOracleData},
+	89295:  {GetMembersRaw},
+	89352:  {GetAsset},
+	90228:  {GetEditor},
+	90700:  {GetMinFees},
+	91273:  {GetRootPubkey},
+	91481:  {GetLastFillUpTime},
+	91984:  {GetLiquidityInfo},
+	92095:  {GetSettlementOracleData},
+	92229:  {GetPoolFullData},
+	92260:  {GetSubscriptionData},
+	92998:  {GetDynamicFeesInfo},
+	93591:  {GetBufferData},
+	93655:  {GetHighloadData},
+	94150:  {GetContractData},
+	94255:  {GetAdminAddress},
+	96219:  {GetMiningData},
+	96263:  {GetExchangeSettings},
+	96585:  {GetAllTickInfos},
+	96705:  {GetBillAmount},
+	96780:  {GetTradeFee},
+	97026:  {GetWalletData},
+	97667:  {GetRevokedTime},
+	98607:  {GetVaultContractData},
+	100881: {GetStatus},
+	101245: {GetUnlocksInfo},
+	101616: {GetPowParams},
+	101877: {GetVaultType},
+	102248: {GetLazerData},
+	102351: {GetNftData},
+	102491: {GetCollectionData},
+	102917: {GetDayTradingData},
+	103148: {GetPosition},
+	103232: {GetValidatorControllerData},
+	103471: {GetRouterState},
+	103723: {IsStable},
+	104122: {GetLpMiningData},
+	104346: {GetStorageParams},
+	105070: {GetTimeout},
+	105875: {GetAmmContractData},
+	106029: {GetJettonData},
+	106144: {GetDelegationState},
+	107305: {GetLockupData},
+	107307: {GetMultisigData},
+	107494: {GetVammType},
+	107618: {GetVestingData},
+	107653: {GetPluginList},
+	108868: {GetTerminalAmmPrice},
+	109946: {GetFarmingInfo},
+	110193: {GetPoolInfo},
+	110403: {GetPaymentInfo},
+	110721: {GetStorageData},
+	110841: {GetKeysData},
+	111161: {ListNominators},
+	111569: {GetDisplayMultiplier},
+	111952: {GetUserFeesInfo},
+	115119: {GetMasterAddress},
+	115150: {GetParams},
+	116242: {GetLpSwapData},
+	117305: {GetId},
+	117680: {GetCollectedFeesInfo},
+	117729: {GetExtensions},
+	118188: {GetAssets},
+	118274: {GetLockerBillData},
+	118400: {GetPoolStateAndConfiguration},
+	118777: {GetIsInited},
+	119378: {GetDomain},
+	119995: {GetPositionManagerContractData},
+	120122: {GetDistributionInfo},
+	120146: {GetPoolStatus},
+	120258: {GetDefaultReferralFees},
+	120297: {IsStrategyVault},
+	122058: {IsActive},
+	122166: {GetLpAccountData},
+	122284: {IsClaimed},
+	122483: {GetFixPriceDataV4},
+	122496: {GetAmmName},
+	122498: {GetTelemintAuctionState},
+	123140: {GetAuctionDataV4},
+	123739: {GetPositionManagerData},
+	123832: {GetOrderData},
+	123928: {GetStakingStatus},
+	124601: {GetChildContracts},
+	124861: {GetReferralVaultsWhitelist},
+	125126: {GetStoredData},
+	126721: {GetFundingSettings},
+	127091: {GetSqrtP},
+	127184: {GetVaultData},
+	127226: {GetPool},
+	128085: {GetRouterData},
+	128568: {GetLiquidityData},
+	128710: {GetPositionManagerAddress},
+	128979: {JettonWalletLockData},
+	129292: {GetSubscriptionInfo},
+	129581: {GetSeedPubkey},
+	129619: {GetTelemintAuctionConfig},
+	129770: {GetReferralData},
+	130271: {GetWalletParams},
+	130309: {ListVotes},
+}
+
+var resultTypes = []interface{}{
+	&Dnsresolve_RecordsResult{},
+	&EstimateLiquidityDepositAmount_CoffeeResult{},
+	&EstimateLiquidityWithdrawAmount_CoffeeResult{},
+	&EstimateSwapAmount_CoffeeResult{},
+	&EstimateSwapOut_DedustResult{},
+	&GetAllTickInfos_ToncoResult{},
+	&GetChildContracts_ToncoPoolResult{},
+	&GetChildContracts_ToncoRouterResult{},
+	&GetIsActive_ToncoResult{},
+	&GetPoolStateAndConfiguration_ToncoResult{},
+	&GetRouterState_ToncoResult{},
+	&GetAccountData_ToncoResult{},
+	&GetActiveRange_BidaskResult{},
+	&GetAdjustedSpotPrice_StormResult{},
+	&GetAdminAddress_CoffeeResult{},
+	&GetAmmContractData_StormResult{},
+	&GetAmmName_StormResult{},
+	&GetAmmState_StormResult{},
+	&GetAmmStatus_StormResult{},
+	&GetAsset_CoffeeResult{},
+	&GetAsset_DedustResult{},
+	&GetAssets_DedustResult{},
+	&GetAssets_MoonResult{},
+	&GetAuctionDataV4Result{},
+	&GetAuctionInfoResult{},
+	&GetAuthorityAddressResult{},
+	&GetAvailableClaimAmountResult{},
+	&GetBalancesResult{},
+	&GetBalances_DedustResult{},
+	&GetBillAddressResult{},
+	&GetBillAmountResult{},
+	&GetBinAssets_BidaskResult{},
+	&GetBinsNumber_BidaskResult{},
+	&GetBlankStorageData_StormResult{},
+	&GetBufferData_StormResult{},
+	&GetCanExecuteOrder_StormResult{},
+	&GetCanForceClose_StormResult{},
+	&GetCanLiquidate_StormResult{},
+	&GetChannelDataResult{},
+	&GetClaimerAddress_StormResult{},
+	&GetCode_CoffeeResult{},
+	&GetCollectedFeesInfo_BidaskDammResult{},
+	&GetCollectionDataResult{},
+	&GetComputeFundingData_StormResult{},
+	&GetContractData_AirdropInterlockerV1Result{},
+	&GetCronInfoResult{},
+	&GetCurrentBin_BidaskResult{},
+	&GetDayTradingData_StormResult{},
+	&GetDefaultReferralFees_StormResult{},
+	&GetDelegationStateResult{},
+	&GetDisplayMultiplierResult{},
+	&GetDistributionInfoResult{},
+	&GetDomainResult{},
+	&GetDynamicFeesInfo_BidaskResult{},
+	&GetEditorResult{},
+	&GetEstimatedAttachedValueResult{},
+	&GetExchangeSettings_StormResult{},
+	&GetExecutorBalances_StormResult{},
+	&GetExecutorCollectionAddress_StormResult{},
+	&GetExecutorItemAddr_StormResult{},
+	&GetExecutorVaultsWhitelist_StormResult{},
+	&GetExpectedOutputs_StonfiResult{},
+	&GetExpectedSwapResult_BidaskDammResult{},
+	&GetExtensionsResult{},
+	&GetFactoryData_StormResult{},
+	&GetFarmingInfo_BidaskDammResult{},
+	&GetFarmingInfo_BidaskResult{},
+	&GetFeesInfo_BidaskDammResult{},
+	&GetFillOut_MoonResult{},
+	&GetFixPriceDataV4Result{},
+	&GetFullDomainResult{},
+	&GetFunding_StormResult{},
+	&GetFundingSettings_StormResult{},
+	&GetHighloadData_StormResult{},
+	&GetId_MoonResult{},
+	&GetIsInited_StormResult{},
+	&GetJettonDataResult{},
+	&GetKeysData_StormResult{},
+	&GetLastCleanTimeResult{},
+	&GetLastFillUpTimeResult{},
+	&GetLastPositionManagerCode_StormResult{},
+	&GetLazerData_StormResult{},
+	&GetLiquidationPriceVpi_StormResult{},
+	&GetLiquidityData_BidaskResult{},
+	&GetLiquidityDepositAddress_DedustResult{},
+	&GetLiquidityDepositoryAddress_CoffeeResult{},
+	&GetLiquidityDepositoryAddressNoSettings_CoffeeResult{},
+	&GetLiquidityInfo_BidaskDammResult{},
+	&GetLockerBillDataResult{},
+	&GetLockerDataResult{},
+	&GetLockupDataResult{},
+	&GetLpAccountAddress_StonfiResult{},
+	&GetLpAccountData_StonfiResult{},
+	&GetLpData_MegatonResult{},
+	&GetLpMiningData_MegatonResult{},
+	&GetLpMinterAddress_StormResult{},
+	&GetLpMultitokenWallet_BidaskResult{},
+	&GetLpSwapData_MegatonResult{},
+	&GetMasterAddress_CoffeeStakingVaultResult{},
+	&GetMember_WhalesNominatorResult{},
+	&GetMembersRaw_WhalesNominatorResult{},
+	&GetMinFees_StormResult{},
+	&GetMiningData_MegatonResult{},
+	&GetMultisigDataResult{},
+	&GetNextAdminAddressResult{},
+	&GetNextProofInfoResult{},
+	&GetNftAddressByIndexResult{},
+	&GetNftApiInfoResult{},
+	&GetNftContentResult{},
+	&GetNftDataResult{},
+	&GetNominatorDataResult{},
+	&GetOracleData_StormResult{},
+	&GetOrderAddressResult{},
+	&GetOrderAmount_MoonResult{},
+	&GetOrderDataResult{},
+	&GetParams_WhalesNominatorResult{},
+	&GetPauseTime_StormResult{},
+	&GetPaymentInfo_SubscriptionV2Result{},
+	&GetPegAdjustCost_StormResult{},
+	&GetPipe_MoonResult{},
+	&GetPluginListResult{},
+	&GetPool_MoonResult{},
+	&GetPoolAddr_BidaskResult{},
+	&GetPoolAddress_StonfiResult{},
+	&GetPoolAddressNoSettings_CoffeeResult{},
+	&GetPoolCreatorAddress_CoffeeResult{},
+	&GetPoolCreatorAddressNoSettings_CoffeeResult{},
+	&GetPoolData_AffluentResult{},
+	&GetPoolData_CoffeeResult{},
+	&GetPoolData_DaolamaResult{},
+	&GetPoolData_DedustV2Result{},
+	&GetPoolData_StonfiResult{},
+	&GetPoolData_StonfiV2Result{},
+	&GetPoolData_StonfiV2StableswapResult{},
+	&GetPoolData_StonfiV2WeightedStableswapResult{},
+	&GetPoolData_TfResult{},
+	&GetPoolFullDataResult{},
+	&GetPoolInfo_BidaskDammResult{},
+	&GetPoolInfo_BidaskResult{},
+	&GetPoolStatusResult{},
+	&GetPoolType_StonfiV2Result{},
+	&GetPosition_StormResult{},
+	&GetPositionAddress_StormResult{},
+	&GetPositionManagerAddress_StormResult{},
+	&GetPositionManagerContractData_StormResult{},
+	&GetPositionManagerData_StormResult{},
+	&GetPowParamsResult{},
+	&GetPremium_StormResult{},
+	&GetProxy_WhalesNominatorResult{},
+	&GetPublicKeyResult{},
+	&GetReferralCollectionAddress_StormResult{},
+	&GetReferralData_StormResult{},
+	&GetReferralItemAddr_StormResult{},
+	&GetReferralVaultsWhitelist_StormResult{},
+	&GetRemainMarginWithFundingPayment_StormResult{},
+	&GetReserves_DedustResult{},
+	&GetReserves_MoonResult{},
+	&GetRevokedTimeResult{},
+	&GetRfqAddress_AffluentResult{},
+	&GetRootPubkeyResult{},
+	&GetRouterData_StonfiResult{},
+	&GetRouterData_StonfiV2Result{},
+	&GetRouterVersion_StonfiV2Result{},
+	&GetSaleData_BasicResult{},
+	&GetSaleData_GetgemsAuctionResult{},
+	&GetSaleData_GetgemsResult{},
+	&GetSeedPubkeyResult{},
+	&GetSettlementOracleData_StormResult{},
+	&GetSpotPrice_StormResult{},
+	&GetSqrtP_BidaskResult{},
+	&GetStakingStatusResult{},
+	&GetStartTradeTime_BidaskDammResult{},
+	&GetStatusResult{},
+	&GetStatus_MoonResult{},
+	&GetStorageContractAddressResult{},
+	&GetStorageContractDataResult{},
+	&GetStorageData_StormResult{},
+	&GetStorageParamsResult{},
+	&GetStoredData_CoffeeStakingItemResult{},
+	&GetStoredData_CoffeeStakingMasterResult{},
+	&GetStoredData_CoffeeStakingVaultResult{},
+	&GetSubscriptionDataResult{},
+	&GetSubscriptionInfo_V2Result{},
+	&GetSubwalletIdResult{},
+	&GetTargetBalances_DedustResult{},
+	&GetTelemintAuctionConfigResult{},
+	&GetTelemintAuctionStateResult{},
+	&GetTelemintTokenNameResult{},
+	&GetTerminalAmmPrice_StormResult{},
+	&GetTimeoutResult{},
+	&GetTorrentHashResult{},
+	&GetTradeFee_DedustResult{},
+	&GetUnlocksInfoResult{},
+	&GetUserBinAssets_BidaskResult{},
+	&GetUserFeesInfo_BidaskDammResult{},
+	&GetUserPublicKeys_StormResult{},
+	&GetValidateSignatures_StormResult{},
+	&GetValidatorControllerDataResult{},
+	&GetVammAddress_StormResult{},
+	&GetVammType_StormResult{},
+	&GetVaultAddress_DedustResult{},
+	&GetVaultBalance_StormResult{},
+	&GetVaultContractData_StormResult{},
+	&GetVaultData_AffluentLendingVaultResult{},
+	&GetVaultData_AffluentMultiplyVaultResult{},
+	&GetVaultData_AffluentMultiplyVaultV2Result{},
+	&GetVaultData_StonfiV2Result{},
+	&GetVaultData_StormResult{},
+	&GetVaultType_StormResult{},
+	&GetVaultWhitelistedAddresses_StormResult{},
+	&GetVersion_StormResult{},
+	&GetVestingDataResult{},
+	&GetVestingData_MoonResult{},
+	&GetWalletAddrResult{},
+	&GetWalletAddressResult{},
+	&GetWalletDataResult{},
+	&GetWalletParamsResult{},
+	&IsActiveResult{},
+	&IsActive_CoffeeResult{},
+	&IsClaimedResult{},
+	&IsPluginInstalledResult{},
+	&IsSignatureAllowedResult{},
+	&IsStable_DedustResult{},
+	&IsStrategyVault_AffluentResult{},
+	&JettonWalletLockDataResult{},
+	&ListNominatorsResult{},
+	&ListVotesResult{},
+	&Processed_StormResult{},
+	&RoyaltyParamsResult{},
+	&SeqnoResult{},
+	&Whoami_BidaskResult{},
+}
+
+type Executor interface {
+	RunSmcMethodByID(ctx context.Context, accountID ton.AccountID, methodID int, params tlb.VmStack) (uint32, tlb.VmStack, error)
+}
+type Dnsresolve_RecordsResult struct {
+	ResolvedBits int64
+	Result       tlb.DNSRecordSet
+}
+
+func Dnsresolve(ctx context.Context, executor Executor, reqAccountID ton.AccountID, domain []byte, category tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCellSlice(domain)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: category}
+	stack.Put(val)
+
+	// MethodID = 123660 for "dnsresolve" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 123660, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeDnsresolve_RecordsResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeDnsresolve_RecordsResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result Dnsresolve_RecordsResult
+	err = stack.Unmarshal(&result)
+	return "Dnsresolve_RecordsResult", result, err
+}
+
+type EstimateLiquidityDepositAmount_CoffeeResult struct {
+	Amount1Used tlb.Int257
+	Amount2Used tlb.Int257
+	LpAmount    tlb.Int257
+	LpToLock    tlb.Int257
+}
+
+func EstimateLiquidityDepositAmount(ctx context.Context, executor Executor, reqAccountID ton.AccountID, amount1 tlb.Int257, amount2 tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: amount1}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: amount2}
+	stack.Put(val)
+
+	// MethodID = 113529 for "estimate_liquidity_deposit_amount" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 113529, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeEstimateLiquidityDepositAmount_CoffeeResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeEstimateLiquidityDepositAmount_CoffeeResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result EstimateLiquidityDepositAmount_CoffeeResult
+	err = stack.Unmarshal(&result)
+	return "EstimateLiquidityDepositAmount_CoffeeResult", result, err
+}
+
+type EstimateLiquidityWithdrawAmount_CoffeeResult struct {
+	Amount1 tlb.Int257
+	Amount2 tlb.Int257
+}
+
+func EstimateLiquidityWithdrawAmount(ctx context.Context, executor Executor, reqAccountID ton.AccountID, lpAmount tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: lpAmount}
+	stack.Put(val)
+
+	// MethodID = 114037 for "estimate_liquidity_withdraw_amount" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 114037, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeEstimateLiquidityWithdrawAmount_CoffeeResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeEstimateLiquidityWithdrawAmount_CoffeeResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result EstimateLiquidityWithdrawAmount_CoffeeResult
+	err = stack.Unmarshal(&result)
+	return "EstimateLiquidityWithdrawAmount_CoffeeResult", result, err
+}
+
+type EstimateSwapAmount_CoffeeResult struct {
+	InputAmount  tlb.Int257
+	OutputAmount tlb.Int257
+}
+
+func EstimateSwapAmount(ctx context.Context, executor Executor, reqAccountID ton.AccountID, asset CoffeeAsset, amount tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCellSlice(asset)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: amount}
+	stack.Put(val)
+
+	// MethodID = 87113 for "estimate_swap_amount" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 87113, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeEstimateSwapAmount_CoffeeResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeEstimateSwapAmount_CoffeeResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result EstimateSwapAmount_CoffeeResult
+	err = stack.Unmarshal(&result)
+	return "EstimateSwapAmount_CoffeeResult", result, err
+}
+
+type EstimateSwapOut_DedustResult struct {
+	AssetOut  DedustAsset
+	AmountOut tlb.Int257
+	TradeFee  tlb.Int257
+}
+
+func EstimateSwapOut(ctx context.Context, executor Executor, reqAccountID ton.AccountID, assetIn DedustAsset, amountIn tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCellSlice(assetIn)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: amountIn}
+	stack.Put(val)
+
+	// MethodID = 70754 for "estimate_swap_out" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 70754, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeEstimateSwapOut_DedustResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeEstimateSwapOut_DedustResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 3 || (stack.Peek(2).SumType != "VmStkSlice") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result EstimateSwapOut_DedustResult
+	err = stack.Unmarshal(&result)
+	return "EstimateSwapOut_DedustResult", result, err
+}
+
+type GetAllTickInfos_ToncoResult struct {
+	TicksDict boc.Cell
+}
+
+func GetAllTickInfos(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 96585 for "getAllTickInfos" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 96585, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetAllTickInfos_ToncoResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetAllTickInfos_ToncoResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetAllTickInfos_ToncoResult
+	err = stack.Unmarshal(&result)
+	return "GetAllTickInfos_ToncoResult", result, err
+}
+
+type GetChildContracts_ToncoPoolResult struct {
+	AccountCode           boc.Cell
+	NftPositionCode       boc.Cell
+	NftCollectionMetadata boc.Cell
+	NftItemMetadata       boc.Cell
+}
+
+type GetChildContracts_ToncoRouterResult struct {
+	PoolCode        boc.Cell
+	AccountCode     boc.Cell
+	NftPositionCode boc.Cell
+}
+
+func GetChildContracts(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 124601 for "getChildContracts" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 124601, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetChildContracts_ToncoPoolResult, DecodeGetChildContracts_ToncoRouterResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetChildContracts_ToncoPoolResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkCell") || (stack.Peek(2).SumType != "VmStkCell") || (stack.Peek(1).SumType != "VmStkCell") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetChildContracts_ToncoPoolResult
+	err = stack.Unmarshal(&result)
+	return "GetChildContracts_ToncoPoolResult", result, err
+}
+
+func DecodeGetChildContracts_ToncoRouterResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 3 || (stack.Peek(2).SumType != "VmStkCell") || (stack.Peek(1).SumType != "VmStkCell") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetChildContracts_ToncoRouterResult
+	err = stack.Unmarshal(&result)
+	return "GetChildContracts_ToncoRouterResult", result, err
+}
+
+type GetIsActive_ToncoResult struct {
+	IsActive bool
+}
+
+func GetIsActive(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 82247 for "getIsActive" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 82247, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetIsActive_ToncoResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetIsActive_ToncoResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetIsActive_ToncoResult
+	err = stack.Unmarshal(&result)
+	return "GetIsActive_ToncoResult", result, err
+}
+
+type GetPoolStateAndConfiguration_ToncoResult struct {
+	RouterAddress              tlb.MsgAddress
+	AdminAddress               tlb.MsgAddress
+	ControllerAddress          tlb.MsgAddress
+	JettonWallet0              tlb.MsgAddress
+	JettonWallet1              tlb.MsgAddress
+	JettonMinter0              tlb.MsgAddress
+	JettonMinter1              tlb.MsgAddress
+	IsActive                   bool
+	TickSpacing                tlb.Int257
+	BaseFee                    tlb.Int257
+	ProtocolFee                tlb.Int257
+	ActiveFee                  tlb.Int257
+	CurrentTick                tlb.Int257
+	CurrentPrice               tlb.Int257
+	CurrentLiquidity           tlb.Int257
+	FeeGrowsGlobal0            tlb.Int257
+	FeeGrowsGlobal1            tlb.Int257
+	CollectedToken0ProtocolFee tlb.Int257
+	CollectedToken1ProtocolFee tlb.Int257
+	MintedNftPositions         tlb.Int257
+	Reserve0                   tlb.Int257
+	Reserve1                   tlb.Int257
+	ActiveNftPositions         tlb.Int257
+	OccupiedTickets            tlb.Int257
+	OperationsSinceDeploy      tlb.Int257
+}
+
+func GetPoolStateAndConfiguration(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 118400 for "getPoolStateAndConfiguration" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 118400, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPoolStateAndConfiguration_ToncoResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPoolStateAndConfiguration_ToncoResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 25 || (stack.Peek(24).SumType != "VmStkSlice") || (stack.Peek(23).SumType != "VmStkSlice") || (stack.Peek(22).SumType != "VmStkSlice") || (stack.Peek(21).SumType != "VmStkSlice") || (stack.Peek(20).SumType != "VmStkSlice") || (stack.Peek(19).SumType != "VmStkSlice") || (stack.Peek(18).SumType != "VmStkSlice") || (stack.Peek(17).SumType != "VmStkTinyInt" && stack.Peek(17).SumType != "VmStkInt") || (stack.Peek(16).SumType != "VmStkTinyInt" && stack.Peek(16).SumType != "VmStkInt") || (stack.Peek(15).SumType != "VmStkTinyInt" && stack.Peek(15).SumType != "VmStkInt") || (stack.Peek(14).SumType != "VmStkTinyInt" && stack.Peek(14).SumType != "VmStkInt") || (stack.Peek(13).SumType != "VmStkTinyInt" && stack.Peek(13).SumType != "VmStkInt") || (stack.Peek(12).SumType != "VmStkTinyInt" && stack.Peek(12).SumType != "VmStkInt") || (stack.Peek(11).SumType != "VmStkTinyInt" && stack.Peek(11).SumType != "VmStkInt") || (stack.Peek(10).SumType != "VmStkTinyInt" && stack.Peek(10).SumType != "VmStkInt") || (stack.Peek(9).SumType != "VmStkTinyInt" && stack.Peek(9).SumType != "VmStkInt") || (stack.Peek(8).SumType != "VmStkTinyInt" && stack.Peek(8).SumType != "VmStkInt") || (stack.Peek(7).SumType != "VmStkTinyInt" && stack.Peek(7).SumType != "VmStkInt") || (stack.Peek(6).SumType != "VmStkTinyInt" && stack.Peek(6).SumType != "VmStkInt") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPoolStateAndConfiguration_ToncoResult
+	err = stack.Unmarshal(&result)
+	return "GetPoolStateAndConfiguration_ToncoResult", result, err
+}
+
+type GetRouterState_ToncoResult struct {
+	RouterAdminAddress tlb.MsgAddress
+	PoolAdminAddress   tlb.MsgAddress
+	PoolFactoryAddress tlb.MsgAddress
+	ActiveFlags        tlb.Int257
+	InternalNumber     tlb.Int257
+}
+
+func GetRouterState(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 103471 for "getRouterState" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 103471, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetRouterState_ToncoResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetRouterState_ToncoResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 5 || (stack.Peek(4).SumType != "VmStkSlice") || (stack.Peek(3).SumType != "VmStkSlice") || (stack.Peek(2).SumType != "VmStkSlice") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetRouterState_ToncoResult
+	err = stack.Unmarshal(&result)
+	return "GetRouterState_ToncoResult", result, err
+}
+
+type GetAccountData_ToncoResult struct {
+	UserAddress tlb.MsgAddress
+	PoolAddress tlb.MsgAddress
+	Amount0     tlb.Int257
+	Amount1     tlb.Int257
+	Enough0     tlb.Int257
+	Enough1     tlb.Int257
+}
+
+func GetAccountData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 86329 for "get_account_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 86329, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetAccountData_ToncoResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetAccountData_ToncoResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 6 || (stack.Peek(5).SumType != "VmStkSlice") || (stack.Peek(4).SumType != "VmStkSlice") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetAccountData_ToncoResult
+	err = stack.Unmarshal(&result)
+	return "GetAccountData_ToncoResult", result, err
+}
+
+type GetActiveRange_BidaskResult struct {
+	RangeAddress tlb.MsgAddress
+}
+
+func GetActiveRange(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 88371 for "get_active_range" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 88371, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetActiveRange_BidaskResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetActiveRange_BidaskResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetActiveRange_BidaskResult
+	err = stack.Unmarshal(&result)
+	return "GetActiveRange_BidaskResult", result, err
+}
+
+type GetAdjustedSpotPrice_StormResult struct {
+	SpotPrice tlb.Grams
+}
+
+func GetAdjustedSpotPrice(ctx context.Context, executor Executor, reqAccountID ton.AccountID, price tlb.Int257, settlementPrice tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: price}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: settlementPrice}
+	stack.Put(val)
+
+	// MethodID = 94598 for "get_adjusted_spot_price" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 94598, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetAdjustedSpotPrice_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetAdjustedSpotPrice_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetAdjustedSpotPrice_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetAdjustedSpotPrice_StormResult", result, err
+}
+
+type GetAdminAddress_CoffeeResult struct {
+	Address tlb.MsgAddress
+}
+
+func GetAdminAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 94255 for "get_admin_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 94255, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetAdminAddress_CoffeeResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetAdminAddress_CoffeeResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetAdminAddress_CoffeeResult
+	err = stack.Unmarshal(&result)
+	return "GetAdminAddress_CoffeeResult", result, err
+}
+
+type GetAmmContractData_StormResult struct {
+	AmmContractData boc.Cell
+}
+
+func GetAmmContractData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 105875 for "get_amm_contract_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 105875, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetAmmContractData_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetAmmContractData_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetAmmContractData_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetAmmContractData_StormResult", result, err
+}
+
+type GetAmmName_StormResult struct {
+	VaultAddr tlb.MsgAddress
+	AssetId   uint16
+}
+
+func GetAmmName(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 122496 for "get_amm_name" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 122496, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetAmmName_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetAmmName_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkSlice") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetAmmName_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetAmmName_StormResult", result, err
+}
+
+type GetAmmState_StormResult struct {
+	QuoteAssetReserve                    uint64
+	BaseAssetReserve                     uint64
+	QuoteAssetWeight                     uint64
+	TotalLongPositionSize                uint64
+	TotalShortPositionSize               uint64
+	OpenInterestLong                     uint64
+	OpenInterestShort                    uint64
+	LatestLongCumulativePremiumFraction  int64
+	LatestShortCumulativePremiumFraction int64
+	NextFundingBlockTimestamp            uint32
+}
+
+func GetAmmState(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 86353 for "get_amm_state" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 86353, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetAmmState_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetAmmState_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 10 || (stack.Peek(9).SumType != "VmStkTinyInt" && stack.Peek(9).SumType != "VmStkInt") || (stack.Peek(8).SumType != "VmStkTinyInt" && stack.Peek(8).SumType != "VmStkInt") || (stack.Peek(7).SumType != "VmStkTinyInt" && stack.Peek(7).SumType != "VmStkInt") || (stack.Peek(6).SumType != "VmStkTinyInt" && stack.Peek(6).SumType != "VmStkInt") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetAmmState_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetAmmState_StormResult", result, err
+}
+
+type GetAmmStatus_StormResult struct {
+	CloseOnly bool
+	Paused    bool
+	Stopped   bool
+	PauseAt   uint32
+	UnpauseAt uint32
+}
+
+func GetAmmStatus(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 87635 for "get_amm_status" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 87635, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetAmmStatus_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetAmmStatus_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 5 || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetAmmStatus_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetAmmStatus_StormResult", result, err
+}
+
+type GetAsset_CoffeeResult struct {
+	Asset CoffeeAsset
+}
+
+type GetAsset_DedustResult struct {
+	Asset DedustAsset
+}
+
+func GetAsset(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 89352 for "get_asset" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 89352, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetAsset_DedustResult, DecodeGetAsset_CoffeeResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetAsset_DedustResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetAsset_DedustResult
+	err = stack.Unmarshal(&result)
+	return "GetAsset_DedustResult", result, err
+}
+
+func DecodeGetAsset_CoffeeResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetAsset_CoffeeResult
+	err = stack.Unmarshal(&result)
+	return "GetAsset_CoffeeResult", result, err
+}
+
+type GetAssets_DedustResult struct {
+	Asset0 DedustAsset
+	Asset1 DedustAsset
+}
+
+type GetAssets_MoonResult struct {
+	Asset1Id tlb.MsgAddress
+	Asset2Id tlb.MsgAddress
+}
+
+func GetAssets(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 118188 for "get_assets" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 118188, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetAssets_DedustResult, DecodeGetAssets_MoonResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetAssets_DedustResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkSlice") || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetAssets_DedustResult
+	err = stack.Unmarshal(&result)
+	return "GetAssets_DedustResult", result, err
+}
+
+func DecodeGetAssets_MoonResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkSlice") || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetAssets_MoonResult
+	err = stack.Unmarshal(&result)
+	return "GetAssets_MoonResult", result, err
+}
+
+type GetAuctionDataV4Result struct {
+	Activated        bool
+	End              bool
+	EndTime          uint32
+	Marketplace      tlb.MsgAddress
+	Nft              tlb.MsgAddress
+	Owner            tlb.MsgAddress
+	LastBid          tlb.Int257
+	LastMember       tlb.MsgAddress
+	MinStep          uint32
+	MarketFeeAddress tlb.MsgAddress
+	MpFeeFactor      uint32
+	MpFeeBase        uint32
+	RoyaltyAddress   tlb.MsgAddress
+	RoyaltyFeeFactor uint32
+	RoyaltyFeeBase   uint32
+	MaxBid           tlb.Int257
+	MinBid           tlb.Int257
+	CreatedAt        uint32
+	LastBidAt        uint32
+	IsCanceled       bool
+	StepTime         uint32
+	LastQueryId      uint64
+	JettonWallet     tlb.MsgAddress
+	JettonMaster     tlb.MsgAddress
+	IsBrokenState    bool
+	PublicKey        tlb.Int257
+}
+
+func GetAuctionDataV4(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 123140 for "get_auction_data_v4" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 123140, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetAuctionDataV4Result} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetAuctionDataV4Result(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 26 || (stack.Peek(25).SumType != "VmStkTinyInt" && stack.Peek(25).SumType != "VmStkInt") || (stack.Peek(24).SumType != "VmStkTinyInt" && stack.Peek(24).SumType != "VmStkInt") || (stack.Peek(23).SumType != "VmStkTinyInt" && stack.Peek(23).SumType != "VmStkInt") || (stack.Peek(22).SumType != "VmStkSlice") || (stack.Peek(21).SumType != "VmStkSlice") || (stack.Peek(20).SumType != "VmStkSlice") || (stack.Peek(19).SumType != "VmStkTinyInt" && stack.Peek(19).SumType != "VmStkInt") || (stack.Peek(18).SumType != "VmStkSlice") || (stack.Peek(17).SumType != "VmStkTinyInt" && stack.Peek(17).SumType != "VmStkInt") || (stack.Peek(16).SumType != "VmStkSlice") || (stack.Peek(15).SumType != "VmStkTinyInt" && stack.Peek(15).SumType != "VmStkInt") || (stack.Peek(14).SumType != "VmStkTinyInt" && stack.Peek(14).SumType != "VmStkInt") || (stack.Peek(13).SumType != "VmStkSlice") || (stack.Peek(12).SumType != "VmStkTinyInt" && stack.Peek(12).SumType != "VmStkInt") || (stack.Peek(11).SumType != "VmStkTinyInt" && stack.Peek(11).SumType != "VmStkInt") || (stack.Peek(10).SumType != "VmStkTinyInt" && stack.Peek(10).SumType != "VmStkInt") || (stack.Peek(9).SumType != "VmStkTinyInt" && stack.Peek(9).SumType != "VmStkInt") || (stack.Peek(8).SumType != "VmStkTinyInt" && stack.Peek(8).SumType != "VmStkInt") || (stack.Peek(7).SumType != "VmStkTinyInt" && stack.Peek(7).SumType != "VmStkInt") || (stack.Peek(6).SumType != "VmStkTinyInt" && stack.Peek(6).SumType != "VmStkInt") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkSlice") || (stack.Peek(2).SumType != "VmStkSlice") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetAuctionDataV4Result
+	err = stack.Unmarshal(&result)
+	return "GetAuctionDataV4Result", result, err
+}
+
+type GetAuctionInfoResult struct {
+	MaxBidAddress  tlb.MsgAddress
+	MaxBidAmount   uint64
+	AuctionEndTime uint64
+}
+
+func GetAuctionInfo(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 80697 for "get_auction_info" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 80697, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetAuctionInfoResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetAuctionInfoResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 3 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkSlice") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-1-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-2-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-2-1).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetAuctionInfoResult
+	err = stack.Unmarshal(&result)
+	return "GetAuctionInfoResult", result, err
+}
+
+type GetAuthorityAddressResult struct {
+	Address tlb.MsgAddress
+}
+
+func GetAuthorityAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 84760 for "get_authority_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 84760, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetAuthorityAddressResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetAuthorityAddressResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 1 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetAuthorityAddressResult
+	err = stack.Unmarshal(&result)
+	return "GetAuthorityAddressResult", result, err
+}
+
+type GetAvailableClaimAmountResult struct {
+	Amount tlb.Int257
+}
+
+func GetAvailableClaimAmount(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 75286 for "get_available_claim_amount" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 75286, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetAvailableClaimAmountResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetAvailableClaimAmountResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetAvailableClaimAmountResult
+	err = stack.Unmarshal(&result)
+	return "GetAvailableClaimAmountResult", result, err
+}
+
+type GetBalancesResult struct {
+	TonBalance           int64
+	TotalRestrictedValue int64
+	TotalLockedValue     int64
+}
+
+type GetBalances_DedustResult struct {
+	Reserve0 tlb.Int257
+	Reserve1 tlb.Int257
+}
+
+func GetBalances(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 87878 for "get_balances" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 87878, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetBalances_DedustResult, DecodeGetBalancesResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetBalances_DedustResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetBalances_DedustResult
+	err = stack.Unmarshal(&result)
+	return "GetBalances_DedustResult", result, err
+}
+
+func DecodeGetBalancesResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 3 || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetBalancesResult
+	err = stack.Unmarshal(&result)
+	return "GetBalancesResult", result, err
+}
+
+type GetBillAddressResult struct {
+	BillAddress tlb.MsgAddress
+}
+
+func GetBillAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID, userAddress tlb.MsgAddress) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCellSlice(userAddress)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+
+	// MethodID = 130076 for "get_bill_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 130076, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetBillAddressResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetBillAddressResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetBillAddressResult
+	err = stack.Unmarshal(&result)
+	return "GetBillAddressResult", result, err
+}
+
+type GetBillAmountResult struct {
+	Amount int64
+}
+
+func GetBillAmount(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 96705 for "get_bill_amount" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 96705, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetBillAmountResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetBillAmountResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetBillAmountResult
+	err = stack.Unmarshal(&result)
+	return "GetBillAmountResult", result, err
+}
+
+type GetBinAssets_BidaskResult struct {
+	AmountX tlb.Int257
+	AmountY tlb.Int257
+}
+
+func GetBinAssets(ctx context.Context, executor Executor, reqAccountID ton.AccountID, binNumber tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: binNumber}
+	stack.Put(val)
+
+	// MethodID = 128187 for "get_bin_assets" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 128187, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetBinAssets_BidaskResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetBinAssets_BidaskResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetBinAssets_BidaskResult
+	err = stack.Unmarshal(&result)
+	return "GetBinAssets_BidaskResult", result, err
+}
+
+type GetBinsNumber_BidaskResult struct {
+	BinsNumber tlb.Int257
+}
+
+func GetBinsNumber(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 69379 for "get_bins_number" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 69379, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetBinsNumber_BidaskResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetBinsNumber_BidaskResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetBinsNumber_BidaskResult
+	err = stack.Unmarshal(&result)
+	return "GetBinsNumber_BidaskResult", result, err
+}
+
+type GetBlankStorageData_StormResult struct {
+	SaType         uint8
+	FactoryAddress tlb.MsgAddress
+	OwnerAddress   tlb.MsgAddress
+	Balances       *boc.Cell
+}
+
+func GetBlankStorageData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 69727 for "get_blank_storage_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 69727, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetBlankStorageData_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetBlankStorageData_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkSlice") || (stack.Peek(1).SumType != "VmStkSlice") || (stack.Peek(0).SumType != "VmStkCell" && stack.Peek(0).SumType != "VmStkNull") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetBlankStorageData_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetBlankStorageData_StormResult", result, err
+}
+
+type GetBufferData_StormResult struct {
+	BufferBalance   uint64
+	BufferRate      tlb.Grams
+	BufferUnderRate tlb.Grams
+	BufferOverRate  tlb.Grams
+}
+
+func GetBufferData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 93591 for "get_buffer_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 93591, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetBufferData_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetBufferData_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetBufferData_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetBufferData_StormResult", result, err
+}
+
+type GetCanExecuteOrder_StormResult struct {
+	CanExecute bool
+	SpotPrice  tlb.Grams
+	ErrorCode  uint16
+}
+
+func GetCanExecuteOrder(ctx context.Context, executor Executor, reqAccountID ton.AccountID, newPrice tlb.Int257, positionRef PositionData, newSettlementPrice tlb.Int257, vpiSpread tlb.Int257, vpiMarketDepthLong tlb.Int257, vpiMarketDepthShort tlb.Int257, vpiCoefficient tlb.Int257, now tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: newPrice}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCell(positionRef)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: newSettlementPrice}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: vpiSpread}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: vpiMarketDepthLong}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: vpiMarketDepthShort}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: vpiCoefficient}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: now}
+	stack.Put(val)
+
+	// MethodID = 95827 for "get_can_execute_order" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 95827, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetCanExecuteOrder_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetCanExecuteOrder_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 3 || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetCanExecuteOrder_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetCanExecuteOrder_StormResult", result, err
+}
+
+type GetCanForceClose_StormResult struct {
+	CanClose  bool
+	ErrorCode uint16
+}
+
+func GetCanForceClose(ctx context.Context, executor Executor, reqAccountID ton.AccountID, newPrice tlb.Int257, positionRef PositionData, newSettlementPrice tlb.Int257, vpiSpread tlb.Int257, vpiMarketDepthLong tlb.Int257, vpiMarketDepthShort tlb.Int257, vpiCoefficient tlb.Int257, now tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: newPrice}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCell(positionRef)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: newSettlementPrice}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: vpiSpread}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: vpiMarketDepthLong}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: vpiMarketDepthShort}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: vpiCoefficient}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: now}
+	stack.Put(val)
+
+	// MethodID = 109560 for "get_can_force_close" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 109560, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetCanForceClose_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetCanForceClose_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetCanForceClose_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetCanForceClose_StormResult", result, err
+}
+
+type GetCanLiquidate_StormResult struct {
+	CanExecute             bool
+	SpotMarginRatio        uint32
+	LiquidationMarginRatio uint32
+	ErrorCode              uint16
+}
+
+func GetCanLiquidate(ctx context.Context, executor Executor, reqAccountID ton.AccountID, newPrice tlb.Int257, positionRef PositionData, newSettlementPrice tlb.Int257, vpiSpread tlb.Int257, vpiMarketDepthLong tlb.Int257, vpiMarketDepthShort tlb.Int257, vpiCoefficient tlb.Int257, now tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: newPrice}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCell(positionRef)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: newSettlementPrice}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: vpiSpread}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: vpiMarketDepthLong}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: vpiMarketDepthShort}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: vpiCoefficient}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: now}
+	stack.Put(val)
+
+	// MethodID = 69725 for "get_can_liquidate" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 69725, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetCanLiquidate_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetCanLiquidate_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetCanLiquidate_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetCanLiquidate_StormResult", result, err
+}
+
+type GetChannelDataResult struct {
+	State    int8
+	Balances struct {
+		A int64
+		B int64
+	}
+
+	Keys struct {
+		A tlb.Bits256
+		B tlb.Bits256
+	}
+
+	ChannelId     tlb.Uint128
+	ClosureConfig struct {
+		QuarantinDuration        uint32
+		MisbehaviorFine          int64
+		ConditionalCloseDuration uint32
+	}
+
+	CommittedSeqno struct {
+		A uint32
+		B uint32
+	}
+
+	Quarantine *boc.Cell
+	Addresses  struct {
+		ExcessFee int64
+		AddrA     tlb.MsgAddress
+		AddrB     tlb.MsgAddress
+	}
+}
+
+func GetChannelData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 69628 for "get_channel_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 69628, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetChannelDataResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetChannelDataResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 8 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkTuple") || (stack.Peek(stack.Len()-2-1).SumType != "VmStkTuple") || (stack.Peek(stack.Len()-3-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-3-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-4-1).SumType != "VmStkTuple") || (stack.Peek(stack.Len()-5-1).SumType != "VmStkTuple") || (stack.Peek(stack.Len()-6-1).SumType != "VmStkSlice" && stack.Peek(stack.Len()-6-1).SumType != "VmStkNull") || (stack.Peek(stack.Len()-7-1).SumType != "VmStkTuple") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetChannelDataResult
+	err = stack.Unmarshal(&result)
+	return "GetChannelDataResult", result, err
+}
+
+type GetClaimerAddress_StormResult struct {
+	ClaimerAddress tlb.MsgAddress
+}
+
+func GetClaimerAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 68322 for "get_claimer_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 68322, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetClaimerAddress_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetClaimerAddress_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetClaimerAddress_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetClaimerAddress_StormResult", result, err
+}
+
+type GetCode_CoffeeResult struct {
+	First  tlb.Any
+	Second tlb.Any
+}
+
+func GetCode(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 81234 for "get_code" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 81234, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetCode_CoffeeResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetCode_CoffeeResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkCell") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetCode_CoffeeResult
+	err = stack.Unmarshal(&result)
+	return "GetCode_CoffeeResult", result, err
+}
+
+type GetCollectedFeesInfo_BidaskDammResult struct {
+	FeesPerLpX tlb.Int257
+	FeesPerLpY tlb.Int257
+}
+
+func GetCollectedFeesInfo(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 117680 for "get_collected_fees_info" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 117680, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetCollectedFeesInfo_BidaskDammResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetCollectedFeesInfo_BidaskDammResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetCollectedFeesInfo_BidaskDammResult
+	err = stack.Unmarshal(&result)
+	return "GetCollectedFeesInfo_BidaskDammResult", result, err
+}
+
+type GetCollectionDataResult struct {
+	NextItemIndex     tlb.Int257
+	CollectionContent tlb.Any
+	OwnerAddress      tlb.MsgAddress
+}
+
+func GetCollectionData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 102491 for "get_collection_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 102491, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetCollectionDataResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetCollectionDataResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 3 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkCell") || (stack.Peek(stack.Len()-2-1).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetCollectionDataResult
+	err = stack.Unmarshal(&result)
+	return "GetCollectionDataResult", result, err
+}
+
+type GetComputeFundingData_StormResult struct {
+	ShortPremiumFraction tlb.Grams
+	LongPremiumFraction  tlb.Grams
+	PremiumToVault       tlb.Grams
+	FundingPeriods       uint32
+}
+
+func GetComputeFundingData(ctx context.Context, executor Executor, reqAccountID ton.AccountID, newPrice tlb.Int257, pauseTime tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: newPrice}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: pauseTime}
+	stack.Put(val)
+
+	// MethodID = 102109 for "get_compute_funding_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 102109, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetComputeFundingData_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetComputeFundingData_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetComputeFundingData_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetComputeFundingData_StormResult", result, err
+}
+
+type GetContractData_AirdropInterlockerV1Result struct {
+	IsClaimed   bool
+	MerkleRoot  tlb.Bits256
+	Receiver    tlb.MsgAddress
+	Distributor tlb.MsgAddress
+}
+
+func GetContractData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 94150 for "get_contract_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 94150, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetContractData_AirdropInterlockerV1Result} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetContractData_AirdropInterlockerV1Result(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkSlice") || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetContractData_AirdropInterlockerV1Result
+	err = stack.Unmarshal(&result)
+	return "GetContractData_AirdropInterlockerV1Result", result, err
+}
+
+type GetCronInfoResult struct {
+	NextCallTime        uint32
+	Reward              tlb.Grams
+	BalanceMinusAmounts int64
+	RepeatEvery         uint32
+}
+
+func GetCronInfo(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 77915 for "get_cron_info" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 77915, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetCronInfoResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetCronInfoResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetCronInfoResult
+	err = stack.Unmarshal(&result)
+	return "GetCronInfoResult", result, err
+}
+
+type GetCurrentBin_BidaskResult struct {
+	CurrentBin tlb.Int257
+}
+
+func GetCurrentBin(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 86620 for "get_current_bin" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 86620, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetCurrentBin_BidaskResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetCurrentBin_BidaskResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetCurrentBin_BidaskResult
+	err = stack.Unmarshal(&result)
+	return "GetCurrentBin_BidaskResult", result, err
+}
+
+type GetDayTradingData_StormResult struct {
+	Active      bool
+	MaxLeverage uint32
+}
+
+func GetDayTradingData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 102917 for "get_day_trading_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 102917, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetDayTradingData_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetDayTradingData_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetDayTradingData_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetDayTradingData_StormResult", result, err
+}
+
+type GetDefaultReferralFees_StormResult struct {
+	Discount uint32
+	Rebate   uint32
+}
+
+func GetDefaultReferralFees(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 120258 for "get_default_referral_fees" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 120258, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetDefaultReferralFees_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetDefaultReferralFees_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetDefaultReferralFees_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetDefaultReferralFees_StormResult", result, err
+}
+
+type GetDelegationStateResult struct {
+	DelegationStarted    bool
+	RecoveryBlockedUntil uint64
+	StateParams          struct {
+		NewStateInit     boc.Cell
+		PaymentPerPeriod tlb.Grams
+	}
+}
+
+func GetDelegationState(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 106144 for "get_delegation_state" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 106144, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetDelegationStateResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetDelegationStateResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 3 || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTuple") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetDelegationStateResult
+	err = stack.Unmarshal(&result)
+	return "GetDelegationStateResult", result, err
+}
+
+type GetDisplayMultiplierResult struct {
+	Numerator   tlb.Int257
+	Denominator tlb.Int257
+}
+
+func GetDisplayMultiplier(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 111569 for "get_display_multiplier" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 111569, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetDisplayMultiplierResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetDisplayMultiplierResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 2 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-1-1).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetDisplayMultiplierResult
+	err = stack.Unmarshal(&result)
+	return "GetDisplayMultiplierResult", result, err
+}
+
+type GetDistributionInfoResult struct {
+	MerkleRoot    tlb.Bits256
+	Receiver      tlb.MsgAddress
+	Distributor   tlb.MsgAddress
+	MinCommission tlb.Int257
+}
+
+func GetDistributionInfo(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 120122 for "get_distribution_info" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 120122, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetDistributionInfoResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetDistributionInfoResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkSlice") || (stack.Peek(1).SumType != "VmStkSlice") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetDistributionInfoResult
+	err = stack.Unmarshal(&result)
+	return "GetDistributionInfoResult", result, err
+}
+
+type GetDomainResult struct {
+	Domain string
+}
+
+func GetDomain(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 119378 for "get_domain" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 119378, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetDomainResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetDomainResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 1 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetDomainResult
+	err = stack.Unmarshal(&result)
+	return "GetDomainResult", result, err
+}
+
+type GetDynamicFeesInfo_BidaskResult struct {
+	BaseFee          tlb.Int257
+	DynamicFeeFactor tlb.Int257
+	TimeFilter       tlb.Int257
+	TimeDecay        tlb.Int257
+}
+
+func GetDynamicFeesInfo(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 92998 for "get_dynamic_fees_info" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 92998, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetDynamicFeesInfo_BidaskResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetDynamicFeesInfo_BidaskResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetDynamicFeesInfo_BidaskResult
+	err = stack.Unmarshal(&result)
+	return "GetDynamicFeesInfo_BidaskResult", result, err
+}
+
+type GetEditorResult struct {
+	Editor tlb.MsgAddress
+}
+
+func GetEditor(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 90228 for "get_editor" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 90228, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetEditorResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetEditorResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 1 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetEditorResult
+	err = stack.Unmarshal(&result)
+	return "GetEditorResult", result, err
+}
+
+type GetEstimatedAttachedValueResult struct {
+	AttachedValue tlb.Grams
+}
+
+func GetEstimatedAttachedValue(ctx context.Context, executor Executor, reqAccountID ton.AccountID, forwardMsg boc.Cell, msgActions tlb.Int257, extendedActions tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCell(forwardMsg)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: msgActions}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: extendedActions}
+	stack.Put(val)
+
+	// MethodID = 94318 for "get_estimated_attached_value" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 94318, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetEstimatedAttachedValueResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetEstimatedAttachedValueResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetEstimatedAttachedValueResult
+	err = stack.Unmarshal(&result)
+	return "GetEstimatedAttachedValueResult", result, err
+}
+
+type GetExchangeSettings_StormResult struct {
+	Fee                           uint32
+	RolloverFee                   uint32
+	FundingPeriod                 uint32
+	InitMarginRatio               uint32
+	MaintenanceMarginRatio        uint32
+	LiquidationFeeRatio           uint32
+	PartialLiquidationRatio       uint32
+	SpreadLimit                   uint32
+	MaxPriceImpact                uint32
+	MaxPriceSpread                uint32
+	MaxOpenNotional               tlb.Grams
+	FeeToStakersPercent           uint32
+	FundingMode                   uint8
+	MinPartialLiquidationNotional tlb.Grams
+	MinInitMarginRatio            uint32
+	ExecutorFee                   tlb.Grams
+	ClosePositionTimeDelta        uint32
+	MaxUnrealizedPnl              uint64
+	DirectIncreaseEnabled         bool
+	DirectCloseEnabled            bool
+	ExecutorsWhitelist            boc.Cell
+	LowFundingFnA                 uint64
+	LowFundingFnB                 uint64
+	HighFundingFnA                int64
+	HighFundingFnB                uint64
+	InflectionPoint               uint64
+	V3CloseDelay                  uint32
+}
+
+func GetExchangeSettings(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 96263 for "get_exchange_settings" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 96263, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetExchangeSettings_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetExchangeSettings_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 27 || (stack.Peek(26).SumType != "VmStkTinyInt" && stack.Peek(26).SumType != "VmStkInt") || (stack.Peek(25).SumType != "VmStkTinyInt" && stack.Peek(25).SumType != "VmStkInt") || (stack.Peek(24).SumType != "VmStkTinyInt" && stack.Peek(24).SumType != "VmStkInt") || (stack.Peek(23).SumType != "VmStkTinyInt" && stack.Peek(23).SumType != "VmStkInt") || (stack.Peek(22).SumType != "VmStkTinyInt" && stack.Peek(22).SumType != "VmStkInt") || (stack.Peek(21).SumType != "VmStkTinyInt" && stack.Peek(21).SumType != "VmStkInt") || (stack.Peek(20).SumType != "VmStkTinyInt" && stack.Peek(20).SumType != "VmStkInt") || (stack.Peek(19).SumType != "VmStkTinyInt" && stack.Peek(19).SumType != "VmStkInt") || (stack.Peek(18).SumType != "VmStkTinyInt" && stack.Peek(18).SumType != "VmStkInt") || (stack.Peek(17).SumType != "VmStkTinyInt" && stack.Peek(17).SumType != "VmStkInt") || (stack.Peek(16).SumType != "VmStkTinyInt" && stack.Peek(16).SumType != "VmStkInt") || (stack.Peek(15).SumType != "VmStkTinyInt" && stack.Peek(15).SumType != "VmStkInt") || (stack.Peek(14).SumType != "VmStkTinyInt" && stack.Peek(14).SumType != "VmStkInt") || (stack.Peek(13).SumType != "VmStkTinyInt" && stack.Peek(13).SumType != "VmStkInt") || (stack.Peek(12).SumType != "VmStkTinyInt" && stack.Peek(12).SumType != "VmStkInt") || (stack.Peek(11).SumType != "VmStkTinyInt" && stack.Peek(11).SumType != "VmStkInt") || (stack.Peek(10).SumType != "VmStkTinyInt" && stack.Peek(10).SumType != "VmStkInt") || (stack.Peek(9).SumType != "VmStkTinyInt" && stack.Peek(9).SumType != "VmStkInt") || (stack.Peek(8).SumType != "VmStkTinyInt" && stack.Peek(8).SumType != "VmStkInt") || (stack.Peek(7).SumType != "VmStkTinyInt" && stack.Peek(7).SumType != "VmStkInt") || (stack.Peek(6).SumType != "VmStkCell") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetExchangeSettings_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetExchangeSettings_StormResult", result, err
+}
+
+type GetExecutorBalances_StormResult struct {
+	BalancesDict boc.Cell
+}
+
+func GetExecutorBalances(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 75065 for "get_executor_balances" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 75065, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetExecutorBalances_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetExecutorBalances_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetExecutorBalances_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetExecutorBalances_StormResult", result, err
+}
+
+type GetExecutorCollectionAddress_StormResult struct {
+	ExecutorCollectionAddress tlb.MsgAddress
+}
+
+func GetExecutorCollectionAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 83226 for "get_executor_collection_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 83226, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetExecutorCollectionAddress_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetExecutorCollectionAddress_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetExecutorCollectionAddress_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetExecutorCollectionAddress_StormResult", result, err
+}
+
+type GetExecutorItemAddr_StormResult struct {
+	ExecutorAddress tlb.MsgAddress
+}
+
+func GetExecutorItemAddr(ctx context.Context, executor Executor, reqAccountID ton.AccountID, executorIndex tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: executorIndex}
+	stack.Put(val)
+
+	// MethodID = 107663 for "get_executor_item_addr" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 107663, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetExecutorItemAddr_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetExecutorItemAddr_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetExecutorItemAddr_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetExecutorItemAddr_StormResult", result, err
+}
+
+type GetExecutorVaultsWhitelist_StormResult struct {
+	VaultsWlDict boc.Cell
+}
+
+func GetExecutorVaultsWhitelist(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 75709 for "get_executor_vaults_whitelist" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 75709, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetExecutorVaultsWhitelist_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetExecutorVaultsWhitelist_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetExecutorVaultsWhitelist_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetExecutorVaultsWhitelist_StormResult", result, err
+}
+
+type GetExpectedOutputs_StonfiResult struct {
+	Out            tlb.Int257
+	ProtocolFeeOut tlb.Int257
+	RefFeeOut      tlb.Int257
+}
+
+func GetExpectedOutputs(ctx context.Context, executor Executor, reqAccountID ton.AccountID, amount tlb.Int257, tokenWallet tlb.MsgAddress) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: amount}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCellSlice(tokenWallet)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+
+	// MethodID = 115709 for "get_expected_outputs" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 115709, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetExpectedOutputs_StonfiResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetExpectedOutputs_StonfiResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 3 || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetExpectedOutputs_StonfiResult
+	err = stack.Unmarshal(&result)
+	return "GetExpectedOutputs_StonfiResult", result, err
+}
+
+type GetExpectedSwapResult_BidaskDammResult struct {
+	Out              tlb.Int257
+	Excess           tlb.Int257
+	LpFee            tlb.Int257
+	ProtocolFee      tlb.Int257
+	RefFee           tlb.Int257
+	LiquidityXAmount tlb.Int257
+	LiquidityYAmount tlb.Int257
+}
+
+func GetExpectedSwapResult(ctx context.Context, executor Executor, reqAccountID ton.AccountID, amount tlb.Int257, exactOut tlb.Int257, tokenWallet tlb.MsgAddress, refFee tlb.Int257, timestamp tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: amount}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: exactOut}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCellSlice(tokenWallet)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: refFee}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: timestamp}
+	stack.Put(val)
+
+	// MethodID = 104116 for "get_expected_swap_result" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 104116, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetExpectedSwapResult_BidaskDammResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetExpectedSwapResult_BidaskDammResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 7 || (stack.Peek(6).SumType != "VmStkTinyInt" && stack.Peek(6).SumType != "VmStkInt") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetExpectedSwapResult_BidaskDammResult
+	err = stack.Unmarshal(&result)
+	return "GetExpectedSwapResult_BidaskDammResult", result, err
+}
+
+type GetExtensionsResult struct {
+	Extensions *WalletV5ExtensionsList
+}
+
+func GetExtensions(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 117729 for "get_extensions" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 117729, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetExtensionsResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetExtensionsResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkCell" && stack.Peek(0).SumType != "VmStkNull") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetExtensionsResult
+	err = stack.Unmarshal(&result)
+	return "GetExtensionsResult", result, err
+}
+
+type GetFactoryData_StormResult struct {
+	AdminAddress      tlb.MsgAddress
+	HighloadTimeout   uint32
+	HotPublicKey      tlb.Int257
+	ColdPublicKey     tlb.Int257
+	Content           boc.Cell
+	SaOrdinaryVersion uint8
+	SaOrdinaryCode    boc.Cell
+}
+
+func GetFactoryData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 76063 for "get_factory_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 76063, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetFactoryData_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetFactoryData_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 7 || (stack.Peek(6).SumType != "VmStkSlice") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkCell") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetFactoryData_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetFactoryData_StormResult", result, err
+}
+
+type GetFarmingInfo_BidaskDammResult struct {
+	FarmingXPerSecond tlb.Int257
+	FarmingYPerSecond tlb.Int257
+	PreviousCall      tlb.Int257
+	EndOfFarming      tlb.Int257
+}
+
+type GetFarmingInfo_BidaskResult struct {
+	DistributedXAmount tlb.Int257
+	DistributedYAmount tlb.Int257
+	FarmingXPerSecond  tlb.Int257
+	FarmingYPerSecond  tlb.Int257
+	PreviousCall       tlb.Int257
+	EndOfFarming       tlb.Int257
+}
+
+func GetFarmingInfo(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 109946 for "get_farming_info" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 109946, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetFarmingInfo_BidaskResult, DecodeGetFarmingInfo_BidaskDammResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetFarmingInfo_BidaskResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 6 || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetFarmingInfo_BidaskResult
+	err = stack.Unmarshal(&result)
+	return "GetFarmingInfo_BidaskResult", result, err
+}
+
+func DecodeGetFarmingInfo_BidaskDammResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetFarmingInfo_BidaskDammResult
+	err = stack.Unmarshal(&result)
+	return "GetFarmingInfo_BidaskDammResult", result, err
+}
+
+type GetFeesInfo_BidaskDammResult struct {
+	DynamicFee                 tlb.Int257
+	DynamicFeeFactor           tlb.Int257
+	PreviousSwapTime           tlb.Int257
+	TimeFilter                 tlb.Int257
+	TimeDecay                  tlb.Int257
+	ProtocolFeeReductionFactor tlb.Int257
+}
+
+func GetFeesInfo(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 72370 for "get_fees_info" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 72370, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetFeesInfo_BidaskDammResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetFeesInfo_BidaskDammResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 6 || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetFeesInfo_BidaskDammResult
+	err = stack.Unmarshal(&result)
+	return "GetFeesInfo_BidaskDammResult", result, err
+}
+
+type GetFillOut_MoonResult struct {
+	AmountOut tlb.Int257
+}
+
+func GetFillOut(ctx context.Context, executor Executor, reqAccountID ton.AccountID, amountIn tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: amountIn}
+	stack.Put(val)
+
+	// MethodID = 112212 for "get_fill_out" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 112212, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetFillOut_MoonResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetFillOut_MoonResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetFillOut_MoonResult
+	err = stack.Unmarshal(&result)
+	return "GetFillOut_MoonResult", result, err
+}
+
+type GetFixPriceDataV4Result struct {
+	IsComplete         bool
+	CreatedAt          uint32
+	MarketplaceAddress tlb.MsgAddress
+	NftAddress         tlb.MsgAddress
+	NftOwnerAddress    *tlb.MsgAddress
+	FullPrice          tlb.Int257
+	FeeAddress         tlb.MsgAddress
+	FeePercent         uint32
+	RoyaltyAddress     tlb.MsgAddress
+	RoyaltyPercent     uint32
+	SoldAt             uint32
+	SoldQueryId        uint64
+	JettonPriceDict    *boc.Cell
+}
+
+func GetFixPriceDataV4(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 122483 for "get_fix_price_data_v4" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 122483, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetFixPriceDataV4Result} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetFixPriceDataV4Result(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 13 || (stack.Peek(12).SumType != "VmStkTinyInt" && stack.Peek(12).SumType != "VmStkInt") || (stack.Peek(11).SumType != "VmStkTinyInt" && stack.Peek(11).SumType != "VmStkInt") || (stack.Peek(10).SumType != "VmStkSlice") || (stack.Peek(9).SumType != "VmStkSlice") || (stack.Peek(8).SumType != "VmStkSlice" && stack.Peek(8).SumType != "VmStkNull") || (stack.Peek(7).SumType != "VmStkTinyInt" && stack.Peek(7).SumType != "VmStkInt") || (stack.Peek(6).SumType != "VmStkSlice") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkSlice") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkCell" && stack.Peek(0).SumType != "VmStkNull") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetFixPriceDataV4Result
+	err = stack.Unmarshal(&result)
+	return "GetFixPriceDataV4Result", result, err
+}
+
+type GetFullDomainResult struct {
+	Domain string
+}
+
+func GetFullDomain(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 66763 for "get_full_domain" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 66763, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetFullDomainResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetFullDomainResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 1 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetFullDomainResult
+	err = stack.Unmarshal(&result)
+	return "GetFullDomainResult", result, err
+}
+
+type GetFunding_StormResult struct {
+	LongFunding        tlb.Grams
+	ShortFunding       tlb.Grams
+	PremiumToVault     uint32
+	SyncExchangeAmount tlb.Grams
+	SpotPrice          tlb.Grams
+}
+
+func GetFunding(ctx context.Context, executor Executor, reqAccountID ton.AccountID, newPrice tlb.Int257, newSettlementPrice tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: newPrice}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: newSettlementPrice}
+	stack.Put(val)
+
+	// MethodID = 68492 for "get_funding" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 68492, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetFunding_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetFunding_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 5 || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetFunding_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetFunding_StormResult", result, err
+}
+
+type GetFundingSettings_StormResult struct {
+	LowFundingFnA   uint64
+	LowFundingFnB   uint64
+	HighFundingFnA  int64
+	HighFundingFnB  uint64
+	InflectionPoint uint64
+}
+
+func GetFundingSettings(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 126721 for "get_funding_settings" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 126721, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetFundingSettings_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetFundingSettings_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 5 || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetFundingSettings_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetFundingSettings_StormResult", result, err
+}
+
+type GetHighloadData_StormResult struct {
+	OldQueries    tlb.HashmapE[tlb.Uint13, boc.Cell]
+	Queries       tlb.HashmapE[tlb.Uint13, boc.Cell]
+	LastCleanTime uint32
+	Timeout       uint32
+}
+
+func GetHighloadData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 93655 for "get_highload_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 93655, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetHighloadData_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetHighloadData_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkCell") || (stack.Peek(2).SumType != "VmStkCell") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetHighloadData_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetHighloadData_StormResult", result, err
+}
+
+type GetId_MoonResult struct {
+	Id uint64
+}
+
+func GetId(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 117305 for "get_id" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 117305, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetId_MoonResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetId_MoonResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetId_MoonResult
+	err = stack.Unmarshal(&result)
+	return "GetId_MoonResult", result, err
+}
+
+type GetIsInited_StormResult struct {
+	Inited bool
+}
+
+func GetIsInited(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 118777 for "get_is_inited" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 118777, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetIsInited_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetIsInited_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetIsInited_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetIsInited_StormResult", result, err
+}
+
+type GetJettonDataResult struct {
+	TotalSupply      tlb.Int257
+	Mintable         bool
+	AdminAddress     tlb.MsgAddress
+	JettonContent    tlb.Any
+	JettonWalletCode tlb.Any
+}
+
+func GetJettonData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 106029 for "get_jetton_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 106029, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetJettonDataResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetJettonDataResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 5 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-1-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-2-1).SumType != "VmStkSlice") || (stack.Peek(stack.Len()-3-1).SumType != "VmStkCell") || (stack.Peek(stack.Len()-4-1).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetJettonDataResult
+	err = stack.Unmarshal(&result)
+	return "GetJettonDataResult", result, err
+}
+
+type GetKeysData_StormResult struct {
+	HotPublicKey   tlb.Int257
+	ColdPublicKey  tlb.Int257
+	UserPublicKeys boc.Cell
+	KeysCount      uint8
+}
+
+func GetKeysData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 110841 for "get_keys_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 110841, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetKeysData_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetKeysData_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkCell") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetKeysData_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetKeysData_StormResult", result, err
+}
+
+type GetLastCleanTimeResult struct {
+	Timestamp uint64
+}
+
+func GetLastCleanTime(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 80822 for "get_last_clean_time" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 80822, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetLastCleanTimeResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetLastCleanTimeResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetLastCleanTimeResult
+	err = stack.Unmarshal(&result)
+	return "GetLastCleanTimeResult", result, err
+}
+
+type GetLastFillUpTimeResult struct {
+	LastFillUpTime int64
+}
+
+func GetLastFillUpTime(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 91481 for "get_last_fill_up_time" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 91481, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetLastFillUpTimeResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetLastFillUpTimeResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetLastFillUpTimeResult
+	err = stack.Unmarshal(&result)
+	return "GetLastFillUpTimeResult", result, err
+}
+
+type GetLastPositionManagerCode_StormResult struct {
+	LastPositionManagerCode boc.Cell
+}
+
+func GetLastPositionManagerCode(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 77484 for "get_last_position_manager_code" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 77484, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetLastPositionManagerCode_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetLastPositionManagerCode_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetLastPositionManagerCode_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetLastPositionManagerCode_StormResult", result, err
+}
+
+type GetLazerData_StormResult struct {
+	OracleFlag            uint8
+	IndexAssetPythId      uint32
+	SettlementAssetPythId uint32
+}
+
+func GetLazerData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 102248 for "get_lazer_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 102248, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetLazerData_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetLazerData_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 3 || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetLazerData_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetLazerData_StormResult", result, err
+}
+
+type GetLiquidationPriceVpi_StormResult struct {
+	LiquidationPrice tlb.Grams
+}
+
+func GetLiquidationPriceVpi(ctx context.Context, executor Executor, reqAccountID ton.AccountID, openNotional tlb.Int257, marginRatio tlb.Int257, positionMargin tlb.Int257, positionSize tlb.Int257, isAdd tlb.Int257, remainMargin tlb.Int257, settlementOraclePrice tlb.Int257, isSettleBySpotPrice tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: openNotional}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: marginRatio}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: positionMargin}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: positionSize}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: isAdd}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: remainMargin}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: settlementOraclePrice}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: isSettleBySpotPrice}
+	stack.Put(val)
+
+	// MethodID = 79360 for "get_liquidation_price_vpi" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 79360, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetLiquidationPriceVpi_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetLiquidationPriceVpi_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetLiquidationPriceVpi_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetLiquidationPriceVpi_StormResult", result, err
+}
+
+type GetLiquidityData_BidaskResult struct {
+	UserAddress tlb.MsgAddress
+	PoolAddress tlb.MsgAddress
+	AmountX     tlb.Int257
+	AmountY     tlb.Int257
+}
+
+func GetLiquidityData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 128568 for "get_liquidity_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 128568, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetLiquidityData_BidaskResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetLiquidityData_BidaskResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkSlice") || (stack.Peek(2).SumType != "VmStkSlice") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetLiquidityData_BidaskResult
+	err = stack.Unmarshal(&result)
+	return "GetLiquidityData_BidaskResult", result, err
+}
+
+type GetLiquidityDepositAddress_DedustResult struct {
+	LiquidityDepositAddr tlb.MsgAddress
+}
+
+func GetLiquidityDepositAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID, ownerAddr tlb.MsgAddress, poolType tlb.Int257, asset0 DedustAsset, asset1 DedustAsset) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCellSlice(ownerAddr)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: poolType}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCellSlice(asset0)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCellSlice(asset1)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+
+	// MethodID = 84481 for "get_liquidity_deposit_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 84481, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetLiquidityDepositAddress_DedustResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetLiquidityDepositAddress_DedustResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetLiquidityDepositAddress_DedustResult
+	err = stack.Unmarshal(&result)
+	return "GetLiquidityDepositAddress_DedustResult", result, err
+}
+
+type GetLiquidityDepositoryAddress_CoffeeResult struct {
+	Address tlb.MsgAddress
+	Hash    tlb.Int257
+}
+
+func GetLiquidityDepositoryAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID, owner tlb.MsgAddress, asset1 CoffeeAsset, asset2 CoffeeAsset, amm tlb.Int257, ammSettings tlb.Any) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCellSlice(owner)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCellSlice(asset1)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCellSlice(asset2)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: amm}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCell(ammSettings)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+
+	// MethodID = 94971 for "get_liquidity_depository_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 94971, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetLiquidityDepositoryAddress_CoffeeResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetLiquidityDepositoryAddress_CoffeeResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkSlice") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetLiquidityDepositoryAddress_CoffeeResult
+	err = stack.Unmarshal(&result)
+	return "GetLiquidityDepositoryAddress_CoffeeResult", result, err
+}
+
+type GetLiquidityDepositoryAddressNoSettings_CoffeeResult struct {
+	Address tlb.MsgAddress
+	Hash    tlb.Int257
+}
+
+func GetLiquidityDepositoryAddressNoSettings(ctx context.Context, executor Executor, reqAccountID ton.AccountID, owner tlb.MsgAddress, asset1 CoffeeAsset, asset2 CoffeeAsset, amm tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCellSlice(owner)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCellSlice(asset1)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCellSlice(asset2)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: amm}
+	stack.Put(val)
+
+	// MethodID = 78874 for "get_liquidity_depository_address_no_settings" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 78874, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetLiquidityDepositoryAddressNoSettings_CoffeeResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetLiquidityDepositoryAddressNoSettings_CoffeeResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkSlice") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetLiquidityDepositoryAddressNoSettings_CoffeeResult
+	err = stack.Unmarshal(&result)
+	return "GetLiquidityDepositoryAddressNoSettings_CoffeeResult", result, err
+}
+
+type GetLiquidityInfo_BidaskDammResult struct {
+	LiquidityXAmount tlb.Int257
+	LiquidityYAmount tlb.Int257
+	VirtualXAmount   tlb.Int257
+	VirtualYAmount   tlb.Int257
+	TotalSupplyLp    tlb.Int257
+	LockedLp         tlb.Int257
+}
+
+func GetLiquidityInfo(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 91984 for "get_liquidity_info" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 91984, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetLiquidityInfo_BidaskDammResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetLiquidityInfo_BidaskDammResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 6 || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetLiquidityInfo_BidaskDammResult
+	err = stack.Unmarshal(&result)
+	return "GetLiquidityInfo_BidaskDammResult", result, err
+}
+
+type GetLockerBillDataResult struct {
+	LockerAddress     tlb.MsgAddress
+	TotalCoinsDeposit uint64
+	UserAddress       tlb.MsgAddress
+	LastWithdrawTime  uint32
+}
+
+func GetLockerBillData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 118274 for "get_locker_bill_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 118274, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetLockerBillDataResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetLockerBillDataResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkSlice") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkSlice") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetLockerBillDataResult
+	err = stack.Unmarshal(&result)
+	return "GetLockerBillDataResult", result, err
+}
+
+type GetLockerDataResult struct {
+	TotalCoinsLocked     uint64
+	TotalReward          uint64
+	DepositsEndTime      uint32
+	VestingStartTime     uint32
+	VestingTotalDuration uint32
+	UnlockPeriod         uint32
+}
+
+func GetLockerData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 73490 for "get_locker_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 73490, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetLockerDataResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetLockerDataResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 6 || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetLockerDataResult
+	err = stack.Unmarshal(&result)
+	return "GetLockerDataResult", result, err
+}
+
+type GetLockupDataResult struct {
+	StartTime     int64
+	TotalDuration int64
+	UnlockPeriod  int64
+	CliffDiration int64
+	TotalAmount   int64
+	AllowElector  int64
+}
+
+func GetLockupData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 107305 for "get_lockup_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 107305, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetLockupDataResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetLockupDataResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 6 || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetLockupDataResult
+	err = stack.Unmarshal(&result)
+	return "GetLockupDataResult", result, err
+}
+
+type GetLpAccountAddress_StonfiResult struct {
+	LpAccountAddress tlb.MsgAddress
+}
+
+func GetLpAccountAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID, ownerAddress tlb.MsgAddress) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCellSlice(ownerAddress)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+
+	// MethodID = 87316 for "get_lp_account_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 87316, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetLpAccountAddress_StonfiResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetLpAccountAddress_StonfiResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetLpAccountAddress_StonfiResult
+	err = stack.Unmarshal(&result)
+	return "GetLpAccountAddress_StonfiResult", result, err
+}
+
+type GetLpAccountData_StonfiResult struct {
+	UserAddress tlb.MsgAddress
+	PoolAddress tlb.MsgAddress
+	Amount0     tlb.Int257
+	Amount1     tlb.Int257
+}
+
+func GetLpAccountData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 122166 for "get_lp_account_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 122166, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetLpAccountData_StonfiResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetLpAccountData_StonfiResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkSlice") || (stack.Peek(2).SumType != "VmStkSlice") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetLpAccountData_StonfiResult
+	err = stack.Unmarshal(&result)
+	return "GetLpAccountData_StonfiResult", result, err
+}
+
+type GetLpData_MegatonResult struct {
+	PoolCount      uint64
+	JettonPairToLp tlb.Any
+	LpToJettonPair tlb.Any
+}
+
+func GetLpData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 80035 for "get_lp_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 80035, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetLpData_MegatonResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetLpData_MegatonResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 3 || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkCell") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetLpData_MegatonResult
+	err = stack.Unmarshal(&result)
+	return "GetLpData_MegatonResult", result, err
+}
+
+type GetLpMiningData_MegatonResult struct {
+	MiningAmount   uint64
+	DatetimeAmount uint64
+	MinableTime    uint64
+	HalfLife       uint64
+	LastIndex      uint64
+	LastMined      uint64
+	MiningRateCell tlb.Any
+}
+
+func GetLpMiningData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 104122 for "get_lp_mining_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 104122, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetLpMiningData_MegatonResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetLpMiningData_MegatonResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 7 || (stack.Peek(6).SumType != "VmStkTinyInt" && stack.Peek(6).SumType != "VmStkInt") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetLpMiningData_MegatonResult
+	err = stack.Unmarshal(&result)
+	return "GetLpMiningData_MegatonResult", result, err
+}
+
+type GetLpMinterAddress_StormResult struct {
+	LpMinterAddress tlb.MsgAddress
+}
+
+func GetLpMinterAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 83894 for "get_lp_minter_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 83894, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetLpMinterAddress_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetLpMinterAddress_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetLpMinterAddress_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetLpMinterAddress_StormResult", result, err
+}
+
+type GetLpMultitokenWallet_BidaskResult struct {
+	MultitokenAddress tlb.MsgAddress
+}
+
+func GetLpMultitokenWallet(ctx context.Context, executor Executor, reqAccountID ton.AccountID, userAddress tlb.MsgAddress) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCellSlice(userAddress)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+
+	// MethodID = 96620 for "get_lp_multitoken_wallet" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 96620, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetLpMultitokenWallet_BidaskResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetLpMultitokenWallet_BidaskResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetLpMultitokenWallet_BidaskResult
+	err = stack.Unmarshal(&result)
+	return "GetLpMultitokenWallet_BidaskResult", result, err
+}
+
+type GetLpSwapData_MegatonResult struct {
+	SwapFee               uint64
+	MinAmount             uint64
+	RouterAddress         tlb.MsgAddress
+	JettonAAddress        tlb.MsgAddress
+	JettonAWalletAddress  tlb.MsgAddress
+	JettonABalance        tlb.Int257
+	JettonAPendingBalance tlb.Int257
+	JettonBAddress        tlb.MsgAddress
+	JettonBWalletAddress  tlb.MsgAddress
+	JettonBBalance        tlb.Int257
+	JettonBPendingBalance tlb.Int257
+}
+
+func GetLpSwapData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 116242 for "get_lp_swap_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 116242, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetLpSwapData_MegatonResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetLpSwapData_MegatonResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 11 || (stack.Peek(10).SumType != "VmStkTinyInt" && stack.Peek(10).SumType != "VmStkInt") || (stack.Peek(9).SumType != "VmStkTinyInt" && stack.Peek(9).SumType != "VmStkInt") || (stack.Peek(8).SumType != "VmStkSlice") || (stack.Peek(7).SumType != "VmStkSlice") || (stack.Peek(6).SumType != "VmStkSlice") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkSlice") || (stack.Peek(2).SumType != "VmStkSlice") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetLpSwapData_MegatonResult
+	err = stack.Unmarshal(&result)
+	return "GetLpSwapData_MegatonResult", result, err
+}
+
+type GetMasterAddress_CoffeeStakingVaultResult struct {
+	Address tlb.MsgAddress
+}
+
+func GetMasterAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 115119 for "get_master_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 115119, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetMasterAddress_CoffeeStakingVaultResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetMasterAddress_CoffeeStakingVaultResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetMasterAddress_CoffeeStakingVaultResult
+	err = stack.Unmarshal(&result)
+	return "GetMasterAddress_CoffeeStakingVaultResult", result, err
+}
+
+type GetMember_WhalesNominatorResult struct {
+	MemberBalance         int64
+	MemberPendingDeposit  int64
+	MemberPendingWithdraw int64
+	MemberWithdraw        int64
+}
+
+func GetMember(ctx context.Context, executor Executor, reqAccountID ton.AccountID, member tlb.MsgAddress) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCellSlice(member)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+
+	// MethodID = 70558 for "get_member" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 70558, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetMember_WhalesNominatorResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetMember_WhalesNominatorResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 4 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-1-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-2-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-2-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-3-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-3-1).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetMember_WhalesNominatorResult
+	err = stack.Unmarshal(&result)
+	return "GetMember_WhalesNominatorResult", result, err
+}
+
+type GetMembersRaw_WhalesNominatorResult struct {
+	Members WhalesNominatorsMembersList
+}
+
+func GetMembersRaw(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 89295 for "get_members_raw" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 89295, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetMembersRaw_WhalesNominatorResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetMembersRaw_WhalesNominatorResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetMembersRaw_WhalesNominatorResult
+	err = stack.Unmarshal(&result)
+	return "GetMembersRaw_WhalesNominatorResult", result, err
+}
+
+type GetMinFees_StormResult struct {
+	DepositMinFeeNative           tlb.Grams
+	DepositMinFeeJetton           tlb.Grams
+	DepositWithDeployMinFeeNative tlb.Grams
+	DepositWithDeployMinFeeJetton tlb.Grams
+	WithdrawMinFee                tlb.Grams
+	OrdinarySaStorageFee          tlb.Grams
+}
+
+func GetMinFees(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 90700 for "get_min_fees" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 90700, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetMinFees_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetMinFees_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 6 || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetMinFees_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetMinFees_StormResult", result, err
+}
+
+type GetMiningData_MegatonResult struct {
+	TotalMiningAmount  uint64
+	TotalMiningRate    uint64
+	MiningAmountPerSec uint64
+	HalfLife           uint64
+	TotalReward        uint64
+	Unknown            uint64
+}
+
+func GetMiningData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 96219 for "get_mining_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 96219, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetMiningData_MegatonResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetMiningData_MegatonResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 6 || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetMiningData_MegatonResult
+	err = stack.Unmarshal(&result)
+	return "GetMiningData_MegatonResult", result, err
+}
+
+type GetMultisigDataResult struct {
+	Seqno     tlb.Int257
+	Threshold uint8
+	Signers   MultisigSignersList
+	Proposers *MultisigProposersList
+}
+
+func GetMultisigData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 107307 for "get_multisig_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 107307, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetMultisigDataResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetMultisigDataResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 4 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-1-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-2-1).SumType != "VmStkCell") || (stack.Peek(stack.Len()-3-1).SumType != "VmStkCell" && stack.Peek(stack.Len()-3-1).SumType != "VmStkNull") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetMultisigDataResult
+	err = stack.Unmarshal(&result)
+	return "GetMultisigDataResult", result, err
+}
+
+type GetNextAdminAddressResult struct {
+	NextAdminAddress tlb.MsgAddress
+}
+
+func GetNextAdminAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 78683 for "get_next_admin_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 78683, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetNextAdminAddressResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetNextAdminAddressResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetNextAdminAddressResult
+	err = stack.Unmarshal(&result)
+	return "GetNextAdminAddressResult", result, err
+}
+
+type GetNextProofInfoResult struct {
+	NextProof     uint64
+	LastProofTime uint32
+	MaxSpan       uint32
+}
+
+func GetNextProofInfo(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 81490 for "get_next_proof_info" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 81490, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetNextProofInfoResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetNextProofInfoResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 3 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-1-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-2-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-2-1).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetNextProofInfoResult
+	err = stack.Unmarshal(&result)
+	return "GetNextProofInfoResult", result, err
+}
+
+type GetNftAddressByIndexResult struct {
+	Address tlb.MsgAddress
+}
+
+func GetNftAddressByIndex(ctx context.Context, executor Executor, reqAccountID ton.AccountID, index tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: index}
+	stack.Put(val)
+
+	// MethodID = 92067 for "get_nft_address_by_index" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 92067, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetNftAddressByIndexResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetNftAddressByIndexResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 1 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetNftAddressByIndexResult
+	err = stack.Unmarshal(&result)
+	return "GetNftAddressByIndexResult", result, err
+}
+
+type GetNftApiInfoResult struct {
+	Version uint32
+	Uri     tlb.Text
+}
+
+func GetNftApiInfo(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 83263 for "get_nft_api_info" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 83263, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetNftApiInfoResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetNftApiInfoResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 2 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetNftApiInfoResult
+	err = stack.Unmarshal(&result)
+	return "GetNftApiInfoResult", result, err
+}
+
+type GetNftContentResult struct {
+	Content tlb.FullContent
+}
+
+func GetNftContent(ctx context.Context, executor Executor, reqAccountID ton.AccountID, index tlb.Int257, individualContent tlb.Any) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: index}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCell(individualContent)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+
+	// MethodID = 68445 for "get_nft_content" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 68445, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetNftContentResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetNftContentResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 1 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetNftContentResult
+	err = stack.Unmarshal(&result)
+	return "GetNftContentResult", result, err
+}
+
+type GetNftDataResult struct {
+	Init              bool
+	Index             tlb.Int257
+	CollectionAddress tlb.MsgAddress
+	OwnerAddress      tlb.MsgAddress
+	IndividualContent tlb.Any
+}
+
+func GetNftData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 102351 for "get_nft_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 102351, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetNftDataResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetNftDataResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 5 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-1-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-2-1).SumType != "VmStkSlice") || (stack.Peek(stack.Len()-3-1).SumType != "VmStkSlice") || (stack.Peek(stack.Len()-4-1).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetNftDataResult
+	err = stack.Unmarshal(&result)
+	return "GetNftDataResult", result, err
+}
+
+type GetNominatorDataResult struct {
+	Amount               uint64
+	PendingDepositAmount uint64
+	WithdrawFound        bool
+}
+
+func GetNominatorData(ctx context.Context, executor Executor, reqAccountID ton.AccountID, address tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: address}
+	stack.Put(val)
+
+	// MethodID = 112473 for "get_nominator_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 112473, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetNominatorDataResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetNominatorDataResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 3 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-1-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-2-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-2-1).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetNominatorDataResult
+	err = stack.Unmarshal(&result)
+	return "GetNominatorDataResult", result, err
+}
+
+type GetOracleData_StormResult struct {
+	OracleLastPrice       tlb.Grams
+	OracleLastSpread      tlb.Grams
+	OracleLastTimestamp   uint32
+	OracleMaxDeviation    tlb.Grams
+	OracleValidityPeriod  uint32
+	OraclePublicKeysCount uint8
+	OraclePublicKeysRef   boc.Cell
+}
+
+func GetOracleData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 88817 for "get_oracle_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 88817, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetOracleData_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetOracleData_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 7 || (stack.Peek(6).SumType != "VmStkTinyInt" && stack.Peek(6).SumType != "VmStkInt") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetOracleData_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetOracleData_StormResult", result, err
+}
+
+type GetOrderAddressResult struct {
+	OrderAddress tlb.MsgAddress
+}
+
+func GetOrderAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID, orderSeqno tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: orderSeqno}
+	stack.Put(val)
+
+	// MethodID = 111399 for "get_order_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 111399, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetOrderAddressResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetOrderAddressResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 1 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetOrderAddressResult
+	err = stack.Unmarshal(&result)
+	return "GetOrderAddressResult", result, err
+}
+
+type GetOrderAmount_MoonResult struct {
+	Amount tlb.Int257
+}
+
+func GetOrderAmount(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 75573 for "get_order_amount" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 75573, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetOrderAmount_MoonResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetOrderAmount_MoonResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetOrderAmount_MoonResult
+	err = stack.Unmarshal(&result)
+	return "GetOrderAmount_MoonResult", result, err
+}
+
+type GetOrderDataResult struct {
+	MultisigAddress  tlb.MsgAddress
+	OrderSeqno       tlb.Int256
+	Threshold        uint8
+	SentForExecution bool
+	Signers          tlb.Hashmap[tlb.Uint8, tlb.MsgAddress]
+	ApprovalsMask    tlb.Int256
+	ApprovalsNum     uint8
+	ExpirationDate   uint64
+	Order            MultisigOrder
+}
+
+func GetOrderData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 123832 for "get_order_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 123832, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetOrderDataResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetOrderDataResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 9 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkSlice") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-1-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-2-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-2-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-3-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-3-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-4-1).SumType != "VmStkCell") || (stack.Peek(stack.Len()-5-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-5-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-6-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-6-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-7-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-7-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-8-1).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetOrderDataResult
+	err = stack.Unmarshal(&result)
+	return "GetOrderDataResult", result, err
+}
+
+type GetParams_WhalesNominatorResult struct {
+	Enabled        bool
+	UpdatesEnables bool
+	MinStake       int64
+	DepositFee     int64
+	WithdrawFee    int64
+	PoolFee        int64
+	ReceiptPrice   int64
+}
+
+func GetParams(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 115150 for "get_params" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 115150, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetParams_WhalesNominatorResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetParams_WhalesNominatorResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 7 || (stack.Peek(6).SumType != "VmStkTinyInt" && stack.Peek(6).SumType != "VmStkInt") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetParams_WhalesNominatorResult
+	err = stack.Unmarshal(&result)
+	return "GetParams_WhalesNominatorResult", result, err
+}
+
+type GetPauseTime_StormResult struct {
+	PauseTime uint32
+}
+
+func GetPauseTime(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 76464 for "get_pause_time" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 76464, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPauseTime_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPauseTime_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPauseTime_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetPauseTime_StormResult", result, err
+}
+
+type GetPaymentInfo_SubscriptionV2Result struct {
+	ContractState    uint8
+	PaymentPerPeriod tlb.Grams
+	Period           uint32
+	ChargeDate       uint32
+	GracePeriod      uint32
+	LastRequestTime  uint32
+	CallerFee        tlb.Grams
+}
+
+func GetPaymentInfo(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 110403 for "get_payment_info" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 110403, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPaymentInfo_SubscriptionV2Result} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPaymentInfo_SubscriptionV2Result(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 7 || (stack.Peek(6).SumType != "VmStkTinyInt" && stack.Peek(6).SumType != "VmStkInt") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPaymentInfo_SubscriptionV2Result
+	err = stack.Unmarshal(&result)
+	return "GetPaymentInfo_SubscriptionV2Result", result, err
+}
+
+type GetPegAdjustCost_StormResult struct {
+	MarginToVault tlb.Grams
+}
+
+func GetPegAdjustCost(ctx context.Context, executor Executor, reqAccountID ton.AccountID, price tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: price}
+	stack.Put(val)
+
+	// MethodID = 102723 for "get_peg_adjust_cost" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 102723, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPegAdjustCost_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPegAdjustCost_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPegAdjustCost_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetPegAdjustCost_StormResult", result, err
+}
+
+type GetPipe_MoonResult struct {
+	PipeAddress tlb.MsgAddress
+}
+
+func GetPipe(ctx context.Context, executor Executor, reqAccountID ton.AccountID, assetId tlb.MsgAddress) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCellSlice(assetId)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+
+	// MethodID = 114750 for "get_pipe" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 114750, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPipe_MoonResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPipe_MoonResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPipe_MoonResult
+	err = stack.Unmarshal(&result)
+	return "GetPipe_MoonResult", result, err
+}
+
+type GetPluginListResult struct {
+	Plugins []struct {
+		Workchain int32
+		Address   tlb.Bits256
+	}
+}
+
+func GetPluginList(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 107653 for "get_plugin_list" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 107653, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPluginListResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPluginListResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 1 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTuple" && stack.Peek(stack.Len()-0-1).SumType != "VmStkNull") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPluginListResult
+	err = stack.Unmarshal(&result)
+	return "GetPluginListResult", result, err
+}
+
+type GetPool_MoonResult struct {
+	PoolAddress tlb.MsgAddress
+}
+
+func GetPool(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 127226 for "get_pool" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 127226, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPool_MoonResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPool_MoonResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPool_MoonResult
+	err = stack.Unmarshal(&result)
+	return "GetPool_MoonResult", result, err
+}
+
+type GetPoolAddr_BidaskResult struct {
+	PoolAddress tlb.MsgAddress
+}
+
+func GetPoolAddr(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 84365 for "get_pool_addr" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 84365, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPoolAddr_BidaskResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPoolAddr_BidaskResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPoolAddr_BidaskResult
+	err = stack.Unmarshal(&result)
+	return "GetPoolAddr_BidaskResult", result, err
+}
+
+type GetPoolAddress_StonfiResult struct {
+	PoolAddress tlb.MsgAddress
+}
+
+func GetPoolAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID, token0 tlb.MsgAddress, token1 tlb.MsgAddress) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCellSlice(token0)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCellSlice(token1)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+
+	// MethodID = 101789 for "get_pool_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 101789, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPoolAddress_StonfiResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPoolAddress_StonfiResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPoolAddress_StonfiResult
+	err = stack.Unmarshal(&result)
+	return "GetPoolAddress_StonfiResult", result, err
+}
+
+type GetPoolAddressNoSettings_CoffeeResult struct {
+	Address tlb.MsgAddress
+	Hash    tlb.Int257
+}
+
+func GetPoolAddressNoSettings(ctx context.Context, executor Executor, reqAccountID ton.AccountID, asset1 CoffeeAsset, asset2 CoffeeAsset, amm tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCellSlice(asset1)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCellSlice(asset2)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: amm}
+	stack.Put(val)
+
+	// MethodID = 71347 for "get_pool_address_no_settings" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 71347, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPoolAddressNoSettings_CoffeeResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPoolAddressNoSettings_CoffeeResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkSlice") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPoolAddressNoSettings_CoffeeResult
+	err = stack.Unmarshal(&result)
+	return "GetPoolAddressNoSettings_CoffeeResult", result, err
+}
+
+type GetPoolCreatorAddress_CoffeeResult struct {
+	Address tlb.MsgAddress
+	Hash    tlb.Int257
+}
+
+func GetPoolCreatorAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID, owner tlb.MsgAddress, asset1 CoffeeAsset, asset2 CoffeeAsset, amm tlb.Int257, ammSettings tlb.Any) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCellSlice(owner)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCellSlice(asset1)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCellSlice(asset2)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: amm}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCell(ammSettings)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+
+	// MethodID = 74737 for "get_pool_creator_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 74737, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPoolCreatorAddress_CoffeeResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPoolCreatorAddress_CoffeeResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkSlice") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPoolCreatorAddress_CoffeeResult
+	err = stack.Unmarshal(&result)
+	return "GetPoolCreatorAddress_CoffeeResult", result, err
+}
+
+type GetPoolCreatorAddressNoSettings_CoffeeResult struct {
+	Address tlb.MsgAddress
+	Hash    tlb.Int257
+}
+
+func GetPoolCreatorAddressNoSettings(ctx context.Context, executor Executor, reqAccountID ton.AccountID, owner tlb.MsgAddress, asset1 CoffeeAsset, asset2 CoffeeAsset, amm tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCellSlice(owner)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCellSlice(asset1)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCellSlice(asset2)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: amm}
+	stack.Put(val)
+
+	// MethodID = 122690 for "get_pool_creator_address_no_settings" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 122690, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPoolCreatorAddressNoSettings_CoffeeResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPoolCreatorAddressNoSettings_CoffeeResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkSlice") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPoolCreatorAddressNoSettings_CoffeeResult
+	err = stack.Unmarshal(&result)
+	return "GetPoolCreatorAddressNoSettings_CoffeeResult", result, err
+}
+
+type GetPoolData_AffluentResult struct {
+	IsInitialized          bool
+	Id                     tlb.Int257
+	OwnerAddress           *tlb.MsgAddress
+	FeeConfigurerAddress   *tlb.MsgAddress
+	ProtocolFeeRate        tlb.Int257
+	OracleAddress          *tlb.MsgAddress
+	OracleConfig           *boc.Cell
+	MaxLoanLeverageRatio   tlb.Int257
+	MaxLoanVarRatio        tlb.Int257
+	LiquidateLeverageRatio tlb.Int257
+	LiquidateVarRatio      tlb.Int257
+	MinLiquidateCloseRatio tlb.Int257
+	MaxLiquidateCloseRatio tlb.Int257
+	Assets                 []struct {
+		LastUpdatedTime      int32
+		StoredInterestRate   tlb.Int257
+		CollectedProtocolFee tlb.Int257
+		Cash                 tlb.Int257
+		TotalSupply          tlb.Int257
+		TotalBorrow          tlb.Int257
+		SupplyShare          tlb.Int257
+		BorrowShare          tlb.Int257
+		Wallet               tlb.MsgAddress
+		IrmAddress           tlb.MsgAddress
+		IrmData              boc.Cell
+		RiskFactor           tlb.Int257
+		LiquidationIncentive tlb.Int257
+		IsCollateral         bool
+		IsBorrowable         bool
+		AssetAddress         tlb.MsgAddress
+	}
+
+	GasCell     *boc.Cell
+	AccountCode boc.Cell
+}
+
+type GetPoolData_CoffeeResult struct {
+	PoolVersion tlb.Int257
+	Asset1      CoffeeAsset
+	Asset2      CoffeeAsset
+	Amm         tlb.Int257
+	AmmSettings *tlb.Any
+	Active      bool
+	Reserve1    tlb.Int257
+	Reserve2    tlb.Int257
+	TotalSupply tlb.Int257
+	ProtocolFee tlb.Int257
+	LpFee       tlb.Int257
+}
+
+type GetPoolData_DaolamaResult struct {
+	Halted         bool
+	Balance        uint64
+	Borrowed       uint64
+	LpTokenBalance uint64
+	FeeCollected   uint64
+}
+
+type GetPoolData_DedustV2Result struct {
+	Status             int8
+	DepositActive      bool
+	SwapActive         bool
+	AssetX             tlb.MsgAddress
+	AssetY             tlb.MsgAddress
+	WalletsByAssets    *boc.Cell
+	AssetsByWallets    *boc.Cell
+	WalletsResolutions *boc.Cell
+	BaseFeeBps         int32
+	ReserveX           tlb.Int257
+	ReserveY           tlb.Int257
+	Liquidity          tlb.Int257
+	ProtocolFeeX       tlb.Int257
+	ProtocolFeeY       tlb.Int257
+	CreatedFeeX        tlb.Int257
+	CreatedFeeY        tlb.Int257
+	XLpFeePerToken     tlb.Int257
+	YLpFeePerToken     tlb.Int257
+	Rewards            *boc.Cell
+}
+
+type GetPoolData_StonfiResult struct {
+	Reserve0                   tlb.Int257
+	Reserve1                   tlb.Int257
+	Token0Address              tlb.MsgAddress
+	Token1Address              tlb.MsgAddress
+	LpFee                      uint8
+	ProtocolFee                uint8
+	RefFee                     uint8
+	ProtocolFeeAddress         tlb.MsgAddress
+	CollectedToken0ProtocolFee tlb.Int257
+	CollectedToken1ProtocolFee tlb.Int257
+}
+
+type GetPoolData_StonfiV2Result struct {
+	IsLocked                   bool
+	RouterAddress              tlb.MsgAddress
+	TotalSupply                tlb.Int257
+	Reserve0                   tlb.Int257
+	Reserve1                   tlb.Int257
+	Token0WalletAddress        tlb.MsgAddress
+	Token1WalletAddress        tlb.MsgAddress
+	LpFee                      uint16
+	ProtocolFee                uint16
+	ProtocolFeeAddress         tlb.MsgAddress
+	CollectedToken0ProtocolFee tlb.Int257
+	CollectedToken1ProtocolFee tlb.Int257
+}
+
+type GetPoolData_StonfiV2StableswapResult struct {
+	IsLocked                   bool
+	RouterAddress              tlb.MsgAddress
+	TotalSupply                tlb.Int257
+	Reserve0                   tlb.Int257
+	Reserve1                   tlb.Int257
+	Token0WalletAddress        tlb.MsgAddress
+	Token1WalletAddress        tlb.MsgAddress
+	LpFee                      uint16
+	ProtocolFee                uint16
+	ProtocolFeeAddress         tlb.MsgAddress
+	CollectedToken0ProtocolFee tlb.Int257
+	CollectedToken1ProtocolFee tlb.Int257
+	Additional                 tlb.Uint128
+}
+
+type GetPoolData_StonfiV2WeightedStableswapResult struct {
+	IsLocked                   bool
+	RouterAddress              tlb.MsgAddress
+	TotalSupply                tlb.Int257
+	Reserve0                   tlb.Int257
+	Reserve1                   tlb.Int257
+	Token0WalletAddress        tlb.MsgAddress
+	Token1WalletAddress        tlb.MsgAddress
+	LpFee                      uint16
+	ProtocolFee                uint16
+	ProtocolFeeAddress         tlb.MsgAddress
+	CollectedToken0ProtocolFee tlb.Int257
+	CollectedToken1ProtocolFee tlb.Int257
+	Amp                        tlb.Uint128
+	Rate                       tlb.Uint128
+	W0                         tlb.Uint128
+	RateSetter                 tlb.MsgAddress
+}
+
+type GetPoolData_TfResult struct {
+	State                    int8
+	NominatorsCount          uint32
+	StakeAmountSent          int64
+	ValidatorAmount          int64
+	ValidatorAddress         tlb.Bits256
+	ValidatorRewardShare     uint32
+	MaxNominatorsCount       uint32
+	MinValidatorStake        int64
+	MinNominatorStake        int64
+	Nominators               *tlb.Any
+	WithdrawRequests         *AccountLists
+	StakeAt                  uint32
+	SavedValidatorSetHash    tlb.Bits256
+	ValidatorSetChangesCount uint32
+	ValidatorSetChangeTime   uint32
+	StakeHeldFor             uint32
+	ConfigProposalVotings    []struct {
+	}
+}
+
+func GetPoolData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 81689 for "get_pool_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 81689, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPoolData_AffluentResult, DecodeGetPoolData_DaolamaResult, DecodeGetPoolData_DedustV2Result, DecodeGetPoolData_StonfiResult, DecodeGetPoolData_StonfiV2Result, DecodeGetPoolData_StonfiV2StableswapResult, DecodeGetPoolData_StonfiV2WeightedStableswapResult, DecodeGetPoolData_CoffeeResult, DecodeGetPoolData_TfResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPoolData_AffluentResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 16 || (stack.Peek(15).SumType != "VmStkTinyInt" && stack.Peek(15).SumType != "VmStkInt") || (stack.Peek(14).SumType != "VmStkTinyInt" && stack.Peek(14).SumType != "VmStkInt") || (stack.Peek(13).SumType != "VmStkSlice" && stack.Peek(13).SumType != "VmStkNull") || (stack.Peek(12).SumType != "VmStkSlice" && stack.Peek(12).SumType != "VmStkNull") || (stack.Peek(11).SumType != "VmStkTinyInt" && stack.Peek(11).SumType != "VmStkInt") || (stack.Peek(10).SumType != "VmStkSlice" && stack.Peek(10).SumType != "VmStkNull") || (stack.Peek(9).SumType != "VmStkCell" && stack.Peek(9).SumType != "VmStkNull") || (stack.Peek(8).SumType != "VmStkTinyInt" && stack.Peek(8).SumType != "VmStkInt") || (stack.Peek(7).SumType != "VmStkTinyInt" && stack.Peek(7).SumType != "VmStkInt") || (stack.Peek(6).SumType != "VmStkTinyInt" && stack.Peek(6).SumType != "VmStkInt") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTuple" && stack.Peek(2).SumType != "VmStkNull") || (stack.Peek(1).SumType != "VmStkCell" && stack.Peek(1).SumType != "VmStkNull") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPoolData_AffluentResult
+	err = stack.Unmarshal(&result)
+	return "GetPoolData_AffluentResult", result, err
+}
+
+func DecodeGetPoolData_DaolamaResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 5 || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPoolData_DaolamaResult
+	err = stack.Unmarshal(&result)
+	return "GetPoolData_DaolamaResult", result, err
+}
+
+func DecodeGetPoolData_DedustV2Result(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 19 || (stack.Peek(18).SumType != "VmStkTinyInt" && stack.Peek(18).SumType != "VmStkInt") || (stack.Peek(17).SumType != "VmStkTinyInt" && stack.Peek(17).SumType != "VmStkInt") || (stack.Peek(16).SumType != "VmStkTinyInt" && stack.Peek(16).SumType != "VmStkInt") || (stack.Peek(15).SumType != "VmStkSlice") || (stack.Peek(14).SumType != "VmStkSlice") || (stack.Peek(13).SumType != "VmStkCell" && stack.Peek(13).SumType != "VmStkNull") || (stack.Peek(12).SumType != "VmStkCell" && stack.Peek(12).SumType != "VmStkNull") || (stack.Peek(11).SumType != "VmStkCell" && stack.Peek(11).SumType != "VmStkNull") || (stack.Peek(10).SumType != "VmStkTinyInt" && stack.Peek(10).SumType != "VmStkInt") || (stack.Peek(9).SumType != "VmStkTinyInt" && stack.Peek(9).SumType != "VmStkInt") || (stack.Peek(8).SumType != "VmStkTinyInt" && stack.Peek(8).SumType != "VmStkInt") || (stack.Peek(7).SumType != "VmStkTinyInt" && stack.Peek(7).SumType != "VmStkInt") || (stack.Peek(6).SumType != "VmStkTinyInt" && stack.Peek(6).SumType != "VmStkInt") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkCell" && stack.Peek(0).SumType != "VmStkNull") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPoolData_DedustV2Result
+	err = stack.Unmarshal(&result)
+	return "GetPoolData_DedustV2Result", result, err
+}
+
+func DecodeGetPoolData_StonfiResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 10 || (stack.Peek(9).SumType != "VmStkTinyInt" && stack.Peek(9).SumType != "VmStkInt") || (stack.Peek(8).SumType != "VmStkTinyInt" && stack.Peek(8).SumType != "VmStkInt") || (stack.Peek(7).SumType != "VmStkSlice") || (stack.Peek(6).SumType != "VmStkSlice") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkSlice") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPoolData_StonfiResult
+	err = stack.Unmarshal(&result)
+	return "GetPoolData_StonfiResult", result, err
+}
+
+func DecodeGetPoolData_StonfiV2Result(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 12 || (stack.Peek(11).SumType != "VmStkTinyInt" && stack.Peek(11).SumType != "VmStkInt") || (stack.Peek(10).SumType != "VmStkSlice") || (stack.Peek(9).SumType != "VmStkTinyInt" && stack.Peek(9).SumType != "VmStkInt") || (stack.Peek(8).SumType != "VmStkTinyInt" && stack.Peek(8).SumType != "VmStkInt") || (stack.Peek(7).SumType != "VmStkTinyInt" && stack.Peek(7).SumType != "VmStkInt") || (stack.Peek(6).SumType != "VmStkSlice") || (stack.Peek(5).SumType != "VmStkSlice") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkSlice") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPoolData_StonfiV2Result
+	err = stack.Unmarshal(&result)
+	return "GetPoolData_StonfiV2Result", result, err
+}
+
+func DecodeGetPoolData_StonfiV2StableswapResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 13 || (stack.Peek(12).SumType != "VmStkTinyInt" && stack.Peek(12).SumType != "VmStkInt") || (stack.Peek(11).SumType != "VmStkSlice") || (stack.Peek(10).SumType != "VmStkTinyInt" && stack.Peek(10).SumType != "VmStkInt") || (stack.Peek(9).SumType != "VmStkTinyInt" && stack.Peek(9).SumType != "VmStkInt") || (stack.Peek(8).SumType != "VmStkTinyInt" && stack.Peek(8).SumType != "VmStkInt") || (stack.Peek(7).SumType != "VmStkSlice") || (stack.Peek(6).SumType != "VmStkSlice") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkSlice") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPoolData_StonfiV2StableswapResult
+	err = stack.Unmarshal(&result)
+	return "GetPoolData_StonfiV2StableswapResult", result, err
+}
+
+func DecodeGetPoolData_StonfiV2WeightedStableswapResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 16 || (stack.Peek(15).SumType != "VmStkTinyInt" && stack.Peek(15).SumType != "VmStkInt") || (stack.Peek(14).SumType != "VmStkSlice") || (stack.Peek(13).SumType != "VmStkTinyInt" && stack.Peek(13).SumType != "VmStkInt") || (stack.Peek(12).SumType != "VmStkTinyInt" && stack.Peek(12).SumType != "VmStkInt") || (stack.Peek(11).SumType != "VmStkTinyInt" && stack.Peek(11).SumType != "VmStkInt") || (stack.Peek(10).SumType != "VmStkSlice") || (stack.Peek(9).SumType != "VmStkSlice") || (stack.Peek(8).SumType != "VmStkTinyInt" && stack.Peek(8).SumType != "VmStkInt") || (stack.Peek(7).SumType != "VmStkTinyInt" && stack.Peek(7).SumType != "VmStkInt") || (stack.Peek(6).SumType != "VmStkSlice") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPoolData_StonfiV2WeightedStableswapResult
+	err = stack.Unmarshal(&result)
+	return "GetPoolData_StonfiV2WeightedStableswapResult", result, err
+}
+
+func DecodeGetPoolData_CoffeeResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 11 || (stack.Peek(10).SumType != "VmStkTinyInt" && stack.Peek(10).SumType != "VmStkInt") || (stack.Peek(9).SumType != "VmStkSlice") || (stack.Peek(8).SumType != "VmStkSlice") || (stack.Peek(7).SumType != "VmStkTinyInt" && stack.Peek(7).SumType != "VmStkInt") || (stack.Peek(6).SumType != "VmStkCell" && stack.Peek(6).SumType != "VmStkNull") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPoolData_CoffeeResult
+	err = stack.Unmarshal(&result)
+	return "GetPoolData_CoffeeResult", result, err
+}
+
+func DecodeGetPoolData_TfResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 17 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-1-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-2-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-2-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-3-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-3-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-4-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-4-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-5-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-5-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-6-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-6-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-7-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-7-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-8-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-8-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-9-1).SumType != "VmStkCell" && stack.Peek(stack.Len()-9-1).SumType != "VmStkNull") || (stack.Peek(stack.Len()-10-1).SumType != "VmStkCell" && stack.Peek(stack.Len()-10-1).SumType != "VmStkNull") || (stack.Peek(stack.Len()-11-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-11-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-12-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-12-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-13-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-13-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-14-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-14-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-15-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-15-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-16-1).SumType != "VmStkTuple" && stack.Peek(stack.Len()-16-1).SumType != "VmStkNull") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPoolData_TfResult
+	err = stack.Unmarshal(&result)
+	return "GetPoolData_TfResult", result, err
+}
+
+type GetPoolFullDataResult struct {
+	State                        int32
+	Halted                       bool
+	TotalBalance                 int64
+	InterestRate                 int32
+	OptimisticDepositWithdrawals int64
+	DepositsOpen                 bool
+	SavedValidatorSetHash        tlb.Bits256
+	PrevRoundBorrowers           struct {
+		BorrowersDict   *boc.Cell
+		RoundId         int32
+		ActiveBorrowers int32
+		Borrowed        int64
+		Expected        int64
+		Retured         int64
+		Profit          int64
+	}
+
+	CurrentRoundBorrowers struct {
+		BorrowersDict   *boc.Cell
+		RoundId         int32
+		ActiveBorrowers int32
+		Borrowed        int64
+		Expected        int64
+		Retured         int64
+		Profit          int64
+	}
+
+	MinLoanPerValidator    int64
+	MaxLoanPerValidator    int64
+	GovernanceFee          int32
+	JettonMinter           tlb.MsgAddress
+	Supply                 int64
+	DepositPayout          *tlb.MsgAddress
+	RequestedForDeposit    int64
+	WithdrawalPayout       *tlb.MsgAddress
+	RequestedForWithdrawal int64
+	Sudoer                 *tlb.MsgAddress
+	SudoerSetAt            int32
+	Governor               *tlb.MsgAddress
+	GovernorUpdateAfter    int64
+	InterestManager        *tlb.MsgAddress
+	Halter                 *tlb.MsgAddress
+	Approver               *tlb.MsgAddress
+	ControllerCode         boc.Cell
+	PoolJettonWalletCode   boc.Cell
+	PayoutMinterCode       boc.Cell
+	ProjectedBalance       int64
+	ProjectedSupply        int64
+}
+
+func GetPoolFullData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 92229 for "get_pool_full_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 92229, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPoolFullDataResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPoolFullDataResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 30 || (stack.Peek(29).SumType != "VmStkTinyInt" && stack.Peek(29).SumType != "VmStkInt") || (stack.Peek(28).SumType != "VmStkTinyInt" && stack.Peek(28).SumType != "VmStkInt") || (stack.Peek(27).SumType != "VmStkTinyInt" && stack.Peek(27).SumType != "VmStkInt") || (stack.Peek(26).SumType != "VmStkTinyInt" && stack.Peek(26).SumType != "VmStkInt") || (stack.Peek(25).SumType != "VmStkTinyInt" && stack.Peek(25).SumType != "VmStkInt") || (stack.Peek(24).SumType != "VmStkTinyInt" && stack.Peek(24).SumType != "VmStkInt") || (stack.Peek(23).SumType != "VmStkTinyInt" && stack.Peek(23).SumType != "VmStkInt") || (stack.Peek(22).SumType != "VmStkTuple") || (stack.Peek(21).SumType != "VmStkTuple") || (stack.Peek(20).SumType != "VmStkTinyInt" && stack.Peek(20).SumType != "VmStkInt") || (stack.Peek(19).SumType != "VmStkTinyInt" && stack.Peek(19).SumType != "VmStkInt") || (stack.Peek(18).SumType != "VmStkTinyInt" && stack.Peek(18).SumType != "VmStkInt") || (stack.Peek(17).SumType != "VmStkSlice") || (stack.Peek(16).SumType != "VmStkTinyInt" && stack.Peek(16).SumType != "VmStkInt") || (stack.Peek(15).SumType != "VmStkSlice" && stack.Peek(15).SumType != "VmStkNull") || (stack.Peek(14).SumType != "VmStkTinyInt" && stack.Peek(14).SumType != "VmStkInt") || (stack.Peek(13).SumType != "VmStkSlice" && stack.Peek(13).SumType != "VmStkNull") || (stack.Peek(12).SumType != "VmStkTinyInt" && stack.Peek(12).SumType != "VmStkInt") || (stack.Peek(11).SumType != "VmStkSlice" && stack.Peek(11).SumType != "VmStkNull") || (stack.Peek(10).SumType != "VmStkTinyInt" && stack.Peek(10).SumType != "VmStkInt") || (stack.Peek(9).SumType != "VmStkSlice" && stack.Peek(9).SumType != "VmStkNull") || (stack.Peek(8).SumType != "VmStkTinyInt" && stack.Peek(8).SumType != "VmStkInt") || (stack.Peek(7).SumType != "VmStkSlice" && stack.Peek(7).SumType != "VmStkNull") || (stack.Peek(6).SumType != "VmStkSlice" && stack.Peek(6).SumType != "VmStkNull") || (stack.Peek(5).SumType != "VmStkSlice" && stack.Peek(5).SumType != "VmStkNull") || (stack.Peek(4).SumType != "VmStkCell") || (stack.Peek(3).SumType != "VmStkCell") || (stack.Peek(2).SumType != "VmStkCell") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPoolFullDataResult
+	err = stack.Unmarshal(&result)
+	return "GetPoolFullDataResult", result, err
+}
+
+type GetPoolInfo_BidaskDammResult struct {
+	JettonWalletX tlb.MsgAddress
+	JettonWalletY tlb.MsgAddress
+	BaseFee       tlb.Int257
+}
+
+type GetPoolInfo_BidaskResult struct {
+	JettonWalletX tlb.MsgAddress
+	JettonWalletY tlb.MsgAddress
+	BinStep       tlb.Int257
+	LpFee         tlb.Int257
+}
+
+func GetPoolInfo(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 110193 for "get_pool_info" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 110193, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPoolInfo_BidaskResult, DecodeGetPoolInfo_BidaskDammResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPoolInfo_BidaskResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkSlice") || (stack.Peek(2).SumType != "VmStkSlice") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPoolInfo_BidaskResult
+	err = stack.Unmarshal(&result)
+	return "GetPoolInfo_BidaskResult", result, err
+}
+
+func DecodeGetPoolInfo_BidaskDammResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 3 || (stack.Peek(2).SumType != "VmStkSlice") || (stack.Peek(1).SumType != "VmStkSlice") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPoolInfo_BidaskDammResult
+	err = stack.Unmarshal(&result)
+	return "GetPoolInfo_BidaskDammResult", result, err
+}
+
+type GetPoolStatusResult struct {
+	Balance                int64
+	BalanceSent            int64
+	BalancePendingDeposits int64
+	BalancePendingWithdraw int64
+	BalanceWithdraw        int64
+}
+
+func GetPoolStatus(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 120146 for "get_pool_status" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 120146, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPoolStatusResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPoolStatusResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 5 || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPoolStatusResult
+	err = stack.Unmarshal(&result)
+	return "GetPoolStatusResult", result, err
+}
+
+type GetPoolType_StonfiV2Result struct {
+	PoolType string
+}
+
+func GetPoolType(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 82492 for "get_pool_type" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 82492, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPoolType_StonfiV2Result} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPoolType_StonfiV2Result(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPoolType_StonfiV2Result
+	err = stack.Unmarshal(&result)
+	return "GetPoolType_StonfiV2Result", result, err
+}
+
+type GetPosition_StormResult struct {
+	Locked   bool
+	Position *PositionData
+}
+
+func GetPosition(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 103148 for "get_position" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 103148, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPosition_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPosition_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkCell" && stack.Peek(0).SumType != "VmStkNull") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPosition_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetPosition_StormResult", result, err
+}
+
+type GetPositionAddress_StormResult struct {
+	PositionAddress tlb.MsgAddress
+}
+
+func GetPositionAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID, traderAddress tlb.MsgAddress, vammAddress tlb.MsgAddress) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCellSlice(traderAddress)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCellSlice(vammAddress)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+
+	// MethodID = 72157 for "get_position_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 72157, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPositionAddress_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPositionAddress_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPositionAddress_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetPositionAddress_StormResult", result, err
+}
+
+type GetPositionManagerAddress_StormResult struct {
+	TraderPositionAddress tlb.MsgAddress
+}
+
+func GetPositionManagerAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 128710 for "get_position_manager_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 128710, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPositionManagerAddress_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPositionManagerAddress_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPositionManagerAddress_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetPositionManagerAddress_StormResult", result, err
+}
+
+type GetPositionManagerContractData_StormResult struct {
+	TraderAddress tlb.MsgAddress
+	VaultAddress  tlb.MsgAddress
+	VammAddress   tlb.MsgAddress
+	LongRecord    boc.Cell
+	ShortRecord   boc.Cell
+	OrdersDict    boc.Cell
+	ReferralData  boc.Cell
+	OrdersBitset  boc.Cell
+}
+
+func GetPositionManagerContractData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 119995 for "get_position_manager_contract_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 119995, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPositionManagerContractData_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPositionManagerContractData_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 8 || (stack.Peek(7).SumType != "VmStkSlice") || (stack.Peek(6).SumType != "VmStkSlice") || (stack.Peek(5).SumType != "VmStkSlice") || (stack.Peek(4).SumType != "VmStkCell") || (stack.Peek(3).SumType != "VmStkCell") || (stack.Peek(2).SumType != "VmStkCell") || (stack.Peek(1).SumType != "VmStkCell") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPositionManagerContractData_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetPositionManagerContractData_StormResult", result, err
+}
+
+type GetPositionManagerData_StormResult struct {
+	Data boc.Cell
+}
+
+func GetPositionManagerData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 123739 for "get_position_manager_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 123739, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPositionManagerData_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPositionManagerData_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPositionManagerData_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetPositionManagerData_StormResult", result, err
+}
+
+type GetPowParamsResult struct {
+	Seed          tlb.Uint128
+	PowComplexity tlb.Int256
+	Amount        uint64
+	Interval      uint32
+}
+
+func GetPowParams(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 101616 for "get_pow_params" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 101616, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPowParamsResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPowParamsResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 4 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-1-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-2-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-2-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-3-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-3-1).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPowParamsResult
+	err = stack.Unmarshal(&result)
+	return "GetPowParamsResult", result, err
+}
+
+type GetPremium_StormResult struct {
+	Premium tlb.Grams
+}
+
+func GetPremium(ctx context.Context, executor Executor, reqAccountID ton.AccountID, newPrice tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: newPrice}
+	stack.Put(val)
+
+	// MethodID = 79064 for "get_premium" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 79064, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPremium_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPremium_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPremium_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetPremium_StormResult", result, err
+}
+
+type GetProxy_WhalesNominatorResult struct {
+	Proxy tlb.MsgAddress
+}
+
+func GetProxy(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 71479 for "get_proxy" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 71479, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetProxy_WhalesNominatorResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetProxy_WhalesNominatorResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetProxy_WhalesNominatorResult
+	err = stack.Unmarshal(&result)
+	return "GetProxy_WhalesNominatorResult", result, err
+}
+
+type GetPublicKeyResult struct {
+	PublicKey tlb.Int257
+}
+
+func GetPublicKey(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 78748 for "get_public_key" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 78748, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetPublicKeyResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetPublicKeyResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetPublicKeyResult
+	err = stack.Unmarshal(&result)
+	return "GetPublicKeyResult", result, err
+}
+
+type GetReferralCollectionAddress_StormResult struct {
+	ReferralCollectionAddress tlb.MsgAddress
+}
+
+func GetReferralCollectionAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 86862 for "get_referral_collection_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 86862, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetReferralCollectionAddress_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetReferralCollectionAddress_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetReferralCollectionAddress_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetReferralCollectionAddress_StormResult", result, err
+}
+
+type GetReferralData_StormResult struct {
+	ReferralType int32
+	Discount     uint32
+	Rebate       uint32
+	BalancesDict boc.Cell
+}
+
+func GetReferralData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 129770 for "get_referral_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 129770, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetReferralData_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetReferralData_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetReferralData_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetReferralData_StormResult", result, err
+}
+
+type GetReferralItemAddr_StormResult struct {
+	ReferralAddress tlb.MsgAddress
+}
+
+func GetReferralItemAddr(ctx context.Context, executor Executor, reqAccountID ton.AccountID, referralIndex tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: referralIndex}
+	stack.Put(val)
+
+	// MethodID = 113476 for "get_referral_item_addr" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 113476, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetReferralItemAddr_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetReferralItemAddr_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetReferralItemAddr_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetReferralItemAddr_StormResult", result, err
+}
+
+type GetReferralVaultsWhitelist_StormResult struct {
+	VaultsWlDict boc.Cell
+}
+
+func GetReferralVaultsWhitelist(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 124861 for "get_referral_vaults_whitelist" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 124861, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetReferralVaultsWhitelist_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetReferralVaultsWhitelist_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetReferralVaultsWhitelist_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetReferralVaultsWhitelist_StormResult", result, err
+}
+
+type GetRemainMarginWithFundingPayment_StormResult struct {
+	RemainMargin     tlb.Grams
+	FundindPayment   tlb.Grams
+	MarginRatio      tlb.Grams
+	UnrealizedPnl    tlb.Grams
+	BadDebt          tlb.Grams
+	PositionNotional tlb.Grams
+	RolloverFee      tlb.Grams
+	NewPrice         tlb.Grams
+	SpotPrice        tlb.Grams
+}
+
+func GetRemainMarginWithFundingPayment(ctx context.Context, executor Executor, reqAccountID ton.AccountID, newPrice tlb.Int257, positionRef PositionData, newSettlementPrice tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: newPrice}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCell(positionRef)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: newSettlementPrice}
+	stack.Put(val)
+
+	// MethodID = 125665 for "get_remain_margin_with_funding_payment" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 125665, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetRemainMarginWithFundingPayment_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetRemainMarginWithFundingPayment_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 9 || (stack.Peek(8).SumType != "VmStkTinyInt" && stack.Peek(8).SumType != "VmStkInt") || (stack.Peek(7).SumType != "VmStkTinyInt" && stack.Peek(7).SumType != "VmStkInt") || (stack.Peek(6).SumType != "VmStkTinyInt" && stack.Peek(6).SumType != "VmStkInt") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetRemainMarginWithFundingPayment_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetRemainMarginWithFundingPayment_StormResult", result, err
+}
+
+type GetReserves_DedustResult struct {
+	Reserve0 tlb.Int257
+	Reserve1 tlb.Int257
+}
+
+type GetReserves_MoonResult struct {
+	AssetId1 tlb.MsgAddress
+	Reserve1 tlb.Int257
+	AssetId2 tlb.MsgAddress
+	Reserve2 tlb.Int257
+}
+
+func GetReserves(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 65971 for "get_reserves" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 65971, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetReserves_DedustResult, DecodeGetReserves_MoonResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetReserves_DedustResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetReserves_DedustResult
+	err = stack.Unmarshal(&result)
+	return "GetReserves_DedustResult", result, err
+}
+
+func DecodeGetReserves_MoonResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkSlice") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkSlice") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetReserves_MoonResult
+	err = stack.Unmarshal(&result)
+	return "GetReserves_MoonResult", result, err
+}
+
+type GetRevokedTimeResult struct {
+	Time uint64
+}
+
+func GetRevokedTime(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 97667 for "get_revoked_time" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 97667, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetRevokedTimeResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetRevokedTimeResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 1 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetRevokedTimeResult
+	err = stack.Unmarshal(&result)
+	return "GetRevokedTimeResult", result, err
+}
+
+type GetRfqAddress_AffluentResult struct {
+	AuctionAddress tlb.MsgAddress
+}
+
+func GetRfqAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID, index tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: index}
+	stack.Put(val)
+
+	// MethodID = 73179 for "get_rfq_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 73179, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetRfqAddress_AffluentResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetRfqAddress_AffluentResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetRfqAddress_AffluentResult
+	err = stack.Unmarshal(&result)
+	return "GetRfqAddress_AffluentResult", result, err
+}
+
+type GetRootPubkeyResult struct {
+	RootPubkey tlb.Bits256
+}
+
+func GetRootPubkey(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 91273 for "get_root_pubkey" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 91273, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetRootPubkeyResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetRootPubkeyResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetRootPubkeyResult
+	err = stack.Unmarshal(&result)
+	return "GetRootPubkeyResult", result, err
+}
+
+type GetRouterData_StonfiResult struct {
+	IsLocked           bool
+	AdminAddress       tlb.MsgAddress
+	TempUpgrade        tlb.Any
+	PoolCode           tlb.Any
+	JettonLpWalletCode tlb.Any
+	LpAccountCode      tlb.Any
+}
+
+type GetRouterData_StonfiV2Result struct {
+	Id                 uint32
+	DexType            string
+	IsLocked           bool
+	AdminAddress       tlb.MsgAddress
+	TempUpgrade        tlb.Any
+	PoolCode           tlb.Any
+	JettonLpWalletCode tlb.Any
+	LpAccountCode      tlb.Any
+	VaultCode          tlb.Any
+}
+
+func GetRouterData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 128085 for "get_router_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 128085, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetRouterData_StonfiResult, DecodeGetRouterData_StonfiV2Result} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetRouterData_StonfiResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 6 || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkSlice") || (stack.Peek(3).SumType != "VmStkCell") || (stack.Peek(2).SumType != "VmStkCell") || (stack.Peek(1).SumType != "VmStkCell") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetRouterData_StonfiResult
+	err = stack.Unmarshal(&result)
+	return "GetRouterData_StonfiResult", result, err
+}
+
+func DecodeGetRouterData_StonfiV2Result(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 9 || (stack.Peek(8).SumType != "VmStkTinyInt" && stack.Peek(8).SumType != "VmStkInt") || (stack.Peek(7).SumType != "VmStkSlice") || (stack.Peek(6).SumType != "VmStkTinyInt" && stack.Peek(6).SumType != "VmStkInt") || (stack.Peek(5).SumType != "VmStkSlice") || (stack.Peek(4).SumType != "VmStkCell") || (stack.Peek(3).SumType != "VmStkCell") || (stack.Peek(2).SumType != "VmStkCell") || (stack.Peek(1).SumType != "VmStkCell") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetRouterData_StonfiV2Result
+	err = stack.Unmarshal(&result)
+	return "GetRouterData_StonfiV2Result", result, err
+}
+
+type GetRouterVersion_StonfiV2Result struct {
+	Major       uint32
+	Minor       uint32
+	Development string
+}
+
+func GetRouterVersion(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 79661 for "get_router_version" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 79661, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetRouterVersion_StonfiV2Result} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetRouterVersion_StonfiV2Result(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 3 || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetRouterVersion_StonfiV2Result
+	err = stack.Unmarshal(&result)
+	return "GetRouterVersion_StonfiV2Result", result, err
+}
+
+type GetSaleData_BasicResult struct {
+	Marketplace    tlb.MsgAddress
+	Nft            tlb.MsgAddress
+	Owner          tlb.MsgAddress
+	FullPrice      tlb.Int257
+	MarketFee      uint64
+	RoyaltyAddress tlb.MsgAddress
+	RoyaltyAmount  uint64
+}
+
+type GetSaleData_GetgemsAuctionResult struct {
+	Magic            uint64
+	End              bool
+	EndTime          uint32
+	Marketplace      tlb.MsgAddress
+	Nft              tlb.MsgAddress
+	Owner            tlb.MsgAddress
+	LastBid          uint64
+	LastMember       tlb.MsgAddress
+	MinStep          uint64
+	MarketFeeAddress tlb.MsgAddress
+	MpFeeFactor      uint32
+	MpFeeBase        uint32
+	RoyaltyAddress   tlb.MsgAddress
+	RoyaltyFeeFactor uint32
+	RoyaltyFeeBase   uint32
+	MaxBid           uint64
+	MinBid           uint64
+	CreatedAt        uint32
+	LastBidAt        uint32
+	IsCanceled       bool
+}
+
+type GetSaleData_GetgemsResult struct {
+	Magic            uint64
+	IsComplete       bool
+	CreatedAt        uint64
+	Marketplace      tlb.MsgAddress
+	Nft              tlb.MsgAddress
+	Owner            tlb.MsgAddress
+	FullPrice        tlb.Int257
+	MarketFeeAddress tlb.MsgAddress
+	MarketFee        uint64
+	RoyaltyAddress   tlb.MsgAddress
+	RoyaltyAmount    uint64
+}
+
+func GetSaleData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 72748 for "get_sale_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 72748, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetSaleData_BasicResult, DecodeGetSaleData_GetgemsResult, DecodeGetSaleData_GetgemsAuctionResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetSaleData_BasicResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 7 || (stack.Peek(6).SumType != "VmStkSlice") || (stack.Peek(5).SumType != "VmStkSlice") || (stack.Peek(4).SumType != "VmStkSlice") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkSlice") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetSaleData_BasicResult
+	err = stack.Unmarshal(&result)
+	return "GetSaleData_BasicResult", result, err
+}
+
+func DecodeGetSaleData_GetgemsResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 11 || (stack.Peek(10).SumType != "VmStkTinyInt" && stack.Peek(10).SumType != "VmStkInt") || (stack.Peek(9).SumType != "VmStkTinyInt" && stack.Peek(9).SumType != "VmStkInt") || (stack.Peek(8).SumType != "VmStkTinyInt" && stack.Peek(8).SumType != "VmStkInt") || (stack.Peek(7).SumType != "VmStkSlice") || (stack.Peek(6).SumType != "VmStkSlice") || (stack.Peek(5).SumType != "VmStkSlice") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkSlice") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkSlice") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetSaleData_GetgemsResult
+	err = stack.Unmarshal(&result)
+	return "GetSaleData_GetgemsResult", result, err
+}
+
+func DecodeGetSaleData_GetgemsAuctionResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 20 || (stack.Peek(19).SumType != "VmStkTinyInt" && stack.Peek(19).SumType != "VmStkInt") || (stack.Peek(18).SumType != "VmStkTinyInt" && stack.Peek(18).SumType != "VmStkInt") || (stack.Peek(17).SumType != "VmStkTinyInt" && stack.Peek(17).SumType != "VmStkInt") || (stack.Peek(16).SumType != "VmStkSlice") || (stack.Peek(15).SumType != "VmStkSlice") || (stack.Peek(14).SumType != "VmStkSlice") || (stack.Peek(13).SumType != "VmStkTinyInt" && stack.Peek(13).SumType != "VmStkInt") || (stack.Peek(12).SumType != "VmStkSlice") || (stack.Peek(11).SumType != "VmStkTinyInt" && stack.Peek(11).SumType != "VmStkInt") || (stack.Peek(10).SumType != "VmStkSlice") || (stack.Peek(9).SumType != "VmStkTinyInt" && stack.Peek(9).SumType != "VmStkInt") || (stack.Peek(8).SumType != "VmStkTinyInt" && stack.Peek(8).SumType != "VmStkInt") || (stack.Peek(7).SumType != "VmStkSlice") || (stack.Peek(6).SumType != "VmStkTinyInt" && stack.Peek(6).SumType != "VmStkInt") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetSaleData_GetgemsAuctionResult
+	err = stack.Unmarshal(&result)
+	return "GetSaleData_GetgemsAuctionResult", result, err
+}
+
+type GetSeedPubkeyResult struct {
+	SeedPubkey tlb.Bits256
+}
+
+func GetSeedPubkey(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 129581 for "get_seed_pubkey" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 129581, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetSeedPubkeyResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetSeedPubkeyResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetSeedPubkeyResult
+	err = stack.Unmarshal(&result)
+	return "GetSeedPubkeyResult", result, err
+}
+
+type GetSettlementOracleData_StormResult struct {
+	SettlementLastPrice      tlb.Grams
+	SettlementLastSpread     tlb.Grams
+	SettlementLastTimestamp  uint32
+	SettlementMaxDeviation   tlb.Grams
+	SettlementValidityPeriod uint32
+	SettlementAssetId        uint16
+}
+
+func GetSettlementOracleData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 92095 for "get_settlement_oracle_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 92095, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetSettlementOracleData_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetSettlementOracleData_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 6 || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetSettlementOracleData_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetSettlementOracleData_StormResult", result, err
+}
+
+type GetSpotPrice_StormResult struct {
+	SpotPrice tlb.Grams
+}
+
+func GetSpotPrice(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 87675 for "get_spot_price" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 87675, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetSpotPrice_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetSpotPrice_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetSpotPrice_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetSpotPrice_StormResult", result, err
+}
+
+type GetSqrtP_BidaskResult struct {
+	SqrtPrice tlb.Int257
+}
+
+func GetSqrtP(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 127091 for "get_sqrt_p" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 127091, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetSqrtP_BidaskResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetSqrtP_BidaskResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetSqrtP_BidaskResult
+	err = stack.Unmarshal(&result)
+	return "GetSqrtP_BidaskResult", result, err
+}
+
+type GetStakingStatusResult struct {
+	StakeAt             uint32
+	StakeUntil          uint32
+	StakeSent           uint64
+	QuerySent           bool
+	CouldUnlock         bool
+	Locked              bool
+	ProxyStakeLockFinal bool
+}
+
+func GetStakingStatus(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 123928 for "get_staking_status" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 123928, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetStakingStatusResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetStakingStatusResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 7 || (stack.Peek(6).SumType != "VmStkTinyInt" && stack.Peek(6).SumType != "VmStkInt") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetStakingStatusResult
+	err = stack.Unmarshal(&result)
+	return "GetStakingStatusResult", result, err
+}
+
+type GetStartTradeTime_BidaskDammResult struct {
+	TimePoolStart tlb.Int257
+}
+
+func GetStartTradeTime(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 72419 for "get_start_trade_time" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 72419, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetStartTradeTime_BidaskDammResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetStartTradeTime_BidaskDammResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetStartTradeTime_BidaskDammResult
+	err = stack.Unmarshal(&result)
+	return "GetStartTradeTime_BidaskDammResult", result, err
+}
+
+type GetStatusResult struct {
+	Status uint8
+}
+
+type GetStatus_MoonResult struct {
+	Status uint8
+}
+
+func GetStatus(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 100881 for "get_status" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 100881, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetStatusResult, DecodeGetStatus_MoonResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetStatusResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetStatusResult
+	err = stack.Unmarshal(&result)
+	return "GetStatusResult", result, err
+}
+
+func DecodeGetStatus_MoonResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetStatus_MoonResult
+	err = stack.Unmarshal(&result)
+	return "GetStatus_MoonResult", result, err
+}
+
+type GetStorageContractAddressResult struct {
+	StorageContractAddress tlb.MsgAddress
+}
+
+func GetStorageContractAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID, merkleHash tlb.Int257, fileSize uint64, client tlb.MsgAddress, torrentHash tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: merkleHash}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkTinyInt", VmStkTinyInt: int64(fileSize)}
+	stack.Put(val)
+	val, err = tlb.TlbStructToVmCellSlice(client)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: torrentHash}
+	stack.Put(val)
+
+	// MethodID = 119729 for "get_storage_contract_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 119729, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetStorageContractAddressResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetStorageContractAddressResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 1 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetStorageContractAddressResult
+	err = stack.Unmarshal(&result)
+	return "GetStorageContractAddressResult", result, err
+}
+
+type GetStorageContractDataResult struct {
+	Active        bool
+	Balance       uint64
+	Provider      tlb.MsgAddress
+	MerkleHash    tlb.Int257
+	FileSize      uint64
+	NextProof     uint64
+	RatePerMbDay  uint64
+	MaxSpan       uint32
+	LastProofTime uint32
+	Client        tlb.MsgAddress
+	TorrentHash   tlb.Int257
+}
+
+func GetStorageContractData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 86593 for "get_storage_contract_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 86593, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetStorageContractDataResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetStorageContractDataResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 11 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-1-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-2-1).SumType != "VmStkSlice") || (stack.Peek(stack.Len()-3-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-3-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-4-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-4-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-5-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-5-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-6-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-6-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-7-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-7-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-8-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-8-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-9-1).SumType != "VmStkSlice") || (stack.Peek(stack.Len()-10-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-10-1).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetStorageContractDataResult
+	err = stack.Unmarshal(&result)
+	return "GetStorageContractDataResult", result, err
+}
+
+type GetStorageData_StormResult struct {
+	SaType         uint8
+	FactoryAddress tlb.MsgAddress
+	OwnerAddress   tlb.MsgAddress
+	Balances       *boc.Cell
+	Version        uint8
+	Keys           Keys
+	Positions      *boc.Cell
+	HighloadData   HighloadData
+}
+
+func GetStorageData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 110721 for "get_storage_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 110721, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetStorageData_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetStorageData_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 8 || (stack.Peek(7).SumType != "VmStkTinyInt" && stack.Peek(7).SumType != "VmStkInt") || (stack.Peek(6).SumType != "VmStkSlice") || (stack.Peek(5).SumType != "VmStkSlice") || (stack.Peek(4).SumType != "VmStkCell" && stack.Peek(4).SumType != "VmStkNull") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkCell") || (stack.Peek(1).SumType != "VmStkCell" && stack.Peek(1).SumType != "VmStkNull") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetStorageData_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetStorageData_StormResult", result, err
+}
+
+type GetStorageParamsResult struct {
+	AcceptNewContracts bool
+	RatePerMbDay       uint64
+	MaxSpan            uint32
+	MinimalFileSize    uint64
+	MaximalFileSize    uint64
+}
+
+func GetStorageParams(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 104346 for "get_storage_params" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 104346, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetStorageParamsResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetStorageParamsResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 5 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-1-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-2-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-2-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-3-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-3-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-4-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-4-1).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetStorageParamsResult
+	err = stack.Unmarshal(&result)
+	return "GetStorageParamsResult", result, err
+}
+
+type GetStoredData_CoffeeStakingItemResult struct {
+	Initialized bool
+	NftId       uint64
+	Master      tlb.MsgAddress
+	Owner       tlb.MsgAddress
+	Asset       tlb.Any
+	Info        tlb.Any
+	Periods     tlb.Any
+}
+
+type GetStoredData_CoffeeStakingMasterResult struct {
+	Initialized bool
+	Owner       tlb.MsgAddress
+	Distributor tlb.MsgAddress
+	Vault       tlb.MsgAddress
+	State       tlb.Any
+	Rewards     tlb.Any
+	Jettons     tlb.Any
+	Periods     tlb.Any
+}
+
+type GetStoredData_CoffeeStakingVaultResult struct {
+	Initialized bool
+	Owner       tlb.MsgAddress
+	Jettons     tlb.Any
+	Periods     tlb.Any
+	MasterCode  tlb.Any
+	ItemCode    tlb.Any
+}
+
+func GetStoredData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 125126 for "get_stored_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 125126, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetStoredData_CoffeeStakingMasterResult, DecodeGetStoredData_CoffeeStakingVaultResult, DecodeGetStoredData_CoffeeStakingItemResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetStoredData_CoffeeStakingMasterResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 8 || (stack.Peek(7).SumType != "VmStkTinyInt" && stack.Peek(7).SumType != "VmStkInt") || (stack.Peek(6).SumType != "VmStkSlice") || (stack.Peek(5).SumType != "VmStkSlice") || (stack.Peek(4).SumType != "VmStkSlice") || (stack.Peek(3).SumType != "VmStkCell") || (stack.Peek(2).SumType != "VmStkCell") || (stack.Peek(1).SumType != "VmStkCell") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetStoredData_CoffeeStakingMasterResult
+	err = stack.Unmarshal(&result)
+	return "GetStoredData_CoffeeStakingMasterResult", result, err
+}
+
+func DecodeGetStoredData_CoffeeStakingVaultResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 6 || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkSlice") || (stack.Peek(3).SumType != "VmStkCell") || (stack.Peek(2).SumType != "VmStkCell") || (stack.Peek(1).SumType != "VmStkCell") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetStoredData_CoffeeStakingVaultResult
+	err = stack.Unmarshal(&result)
+	return "GetStoredData_CoffeeStakingVaultResult", result, err
+}
+
+func DecodeGetStoredData_CoffeeStakingItemResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 7 || (stack.Peek(6).SumType != "VmStkTinyInt" && stack.Peek(6).SumType != "VmStkInt") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkSlice") || (stack.Peek(3).SumType != "VmStkSlice") || (stack.Peek(2).SumType != "VmStkCell") || (stack.Peek(1).SumType != "VmStkCell") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetStoredData_CoffeeStakingItemResult
+	err = stack.Unmarshal(&result)
+	return "GetStoredData_CoffeeStakingItemResult", result, err
+}
+
+type GetSubscriptionDataResult struct {
+	Wallet struct {
+		Workchain uint32
+		Address   tlb.Bits256
+	}
+
+	Beneficiary struct {
+		Workchain uint32
+		Address   tlb.Bits256
+	}
+
+	Amount          uint64
+	Period          uint64
+	StartTime       uint64
+	Timeout         uint64
+	LastPaymentTime uint64
+	LastRequestTime uint64
+	FailedAttempts  uint32
+	SubscriptionId  uint64
+}
+
+func GetSubscriptionData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 92260 for "get_subscription_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 92260, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetSubscriptionDataResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetSubscriptionDataResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 10 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTuple") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkTuple") || (stack.Peek(stack.Len()-2-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-2-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-3-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-3-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-4-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-4-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-5-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-5-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-6-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-6-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-7-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-7-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-8-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-8-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-9-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-9-1).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetSubscriptionDataResult
+	err = stack.Unmarshal(&result)
+	return "GetSubscriptionDataResult", result, err
+}
+
+type GetSubscriptionInfo_V2Result struct {
+	Wallet          tlb.MsgAddress
+	WalletVersion   uint8
+	Admin           tlb.MsgAddress
+	SubscriptionId  uint64
+	WithdrawAddress tlb.MsgAddress
+	WithdrawMsgBody tlb.Any
+	Metadata        tlb.Bytes
+}
+
+func GetSubscriptionInfo(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 129292 for "get_subscription_info" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 129292, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetSubscriptionInfo_V2Result} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetSubscriptionInfo_V2Result(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 7 || (stack.Peek(6).SumType != "VmStkSlice") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkSlice") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkSlice") || (stack.Peek(1).SumType != "VmStkCell") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetSubscriptionInfo_V2Result
+	err = stack.Unmarshal(&result)
+	return "GetSubscriptionInfo_V2Result", result, err
+}
+
+type GetSubwalletIdResult struct {
+	SubwalletId uint32
+}
+
+func GetSubwalletId(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 81467 for "get_subwallet_id" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 81467, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetSubwalletIdResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetSubwalletIdResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetSubwalletIdResult
+	err = stack.Unmarshal(&result)
+	return "GetSubwalletIdResult", result, err
+}
+
+type GetTargetBalances_DedustResult struct {
+	Reserve0 tlb.Int257
+	Reserve1 tlb.Int257
+}
+
+func GetTargetBalances(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 84232 for "get_target_balances" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 84232, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetTargetBalances_DedustResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetTargetBalances_DedustResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetTargetBalances_DedustResult
+	err = stack.Unmarshal(&result)
+	return "GetTargetBalances_DedustResult", result, err
+}
+
+type GetTelemintAuctionConfigResult struct {
+	Beneficiar    tlb.MsgAddress
+	InitialMinBid int64
+	MaxBid        int64
+	MinBidStep    int64
+	MinExtendTime int64
+	Duration      int64
+}
+
+func GetTelemintAuctionConfig(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 129619 for "get_telemint_auction_config" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 129619, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetTelemintAuctionConfigResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetTelemintAuctionConfigResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 6 || (stack.Peek(5).SumType != "VmStkSlice") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetTelemintAuctionConfigResult
+	err = stack.Unmarshal(&result)
+	return "GetTelemintAuctionConfigResult", result, err
+}
+
+type GetTelemintAuctionStateResult struct {
+	Bidder  tlb.MsgAddress
+	Bid     int64
+	BidTs   int64
+	MinBid  int64
+	EndTime int64
+}
+
+func GetTelemintAuctionState(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 122498 for "get_telemint_auction_state" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 122498, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetTelemintAuctionStateResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetTelemintAuctionStateResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 5 || (stack.Peek(4).SumType != "VmStkSlice") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetTelemintAuctionStateResult
+	err = stack.Unmarshal(&result)
+	return "GetTelemintAuctionStateResult", result, err
+}
+
+type GetTelemintTokenNameResult struct {
+	Username tlb.Text
+}
+
+func GetTelemintTokenName(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 69506 for "get_telemint_token_name" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 69506, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetTelemintTokenNameResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetTelemintTokenNameResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetTelemintTokenNameResult
+	err = stack.Unmarshal(&result)
+	return "GetTelemintTokenNameResult", result, err
+}
+
+type GetTerminalAmmPrice_StormResult struct {
+	TerminalPrice tlb.Grams
+}
+
+func GetTerminalAmmPrice(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 108868 for "get_terminal_amm_price" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 108868, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetTerminalAmmPrice_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetTerminalAmmPrice_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetTerminalAmmPrice_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetTerminalAmmPrice_StormResult", result, err
+}
+
+type GetTimeoutResult struct {
+	Timeout uint32
+}
+
+func GetTimeout(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 105070 for "get_timeout" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 105070, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetTimeoutResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetTimeoutResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetTimeoutResult
+	err = stack.Unmarshal(&result)
+	return "GetTimeoutResult", result, err
+}
+
+type GetTorrentHashResult struct {
+	TorrentHash tlb.Int257
+}
+
+func GetTorrentHash(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 71463 for "get_torrent_hash" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 71463, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetTorrentHashResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetTorrentHashResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 1 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetTorrentHashResult
+	err = stack.Unmarshal(&result)
+	return "GetTorrentHashResult", result, err
+}
+
+type GetTradeFee_DedustResult struct {
+	TradeFeeNumerator   tlb.Int257
+	TradeFeeDenominator tlb.Int257
+}
+
+func GetTradeFee(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 96780 for "get_trade_fee" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 96780, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetTradeFee_DedustResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetTradeFee_DedustResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetTradeFee_DedustResult
+	err = stack.Unmarshal(&result)
+	return "GetTradeFee_DedustResult", result, err
+}
+
+type GetUnlocksInfoResult struct {
+	Claimed       bool
+	TotalAmount   tlb.Int257
+	ClaimedAmount tlb.Int257
+	Unlocks       boc.Cell
+}
+
+func GetUnlocksInfo(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 101245 for "get_unlocks_info" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 101245, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetUnlocksInfoResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetUnlocksInfoResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetUnlocksInfoResult
+	err = stack.Unmarshal(&result)
+	return "GetUnlocksInfoResult", result, err
+}
+
+type GetUserBinAssets_BidaskResult struct {
+	AmountX tlb.Int257
+	AmountY tlb.Int257
+}
+
+func GetUserBinAssets(ctx context.Context, executor Executor, reqAccountID ton.AccountID, binNumber tlb.Int257, userLp tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: binNumber}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: userLp}
+	stack.Put(val)
+
+	// MethodID = 86718 for "get_user_bin_assets" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 86718, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetUserBinAssets_BidaskResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetUserBinAssets_BidaskResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 2 || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetUserBinAssets_BidaskResult
+	err = stack.Unmarshal(&result)
+	return "GetUserBinAssets_BidaskResult", result, err
+}
+
+type GetUserFeesInfo_BidaskDammResult struct {
+	FeesPerLpXLast tlb.Int257
+	FeesPerLpYLast tlb.Int257
+	ClaimedX       tlb.Int257
+	ClaimedY       tlb.Int257
+}
+
+func GetUserFeesInfo(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 111952 for "get_user_fees_info" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 111952, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetUserFeesInfo_BidaskDammResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetUserFeesInfo_BidaskDammResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetUserFeesInfo_BidaskDammResult
+	err = stack.Unmarshal(&result)
+	return "GetUserFeesInfo_BidaskDammResult", result, err
+}
+
+type GetUserPublicKeys_StormResult struct {
+	UserPublicKeys boc.Cell
+}
+
+func GetUserPublicKeys(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 66792 for "get_user_public_keys" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 66792, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetUserPublicKeys_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetUserPublicKeys_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetUserPublicKeys_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetUserPublicKeys_StormResult", result, err
+}
+
+type GetValidateSignatures_StormResult struct {
+	NewPrice               tlb.Grams
+	NewSettlementPrice     tlb.Grams
+	NewCreatedPrice        *tlb.Grams
+	SettlementCreatedPrice *tlb.Grams
+	PauseTime              uint32
+}
+
+func GetValidateSignatures(ctx context.Context, executor Executor, reqAccountID ton.AccountID, oraclePayload OraclePayload) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCell(oraclePayload)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+
+	// MethodID = 121541 for "get_validate_signatures" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 121541, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetValidateSignatures_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetValidateSignatures_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 5 || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || ((stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") && stack.Peek(2).SumType != "VmStkNull") || ((stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") && stack.Peek(1).SumType != "VmStkNull") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetValidateSignatures_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetValidateSignatures_StormResult", result, err
+}
+
+type GetValidatorControllerDataResult struct {
+	State                    int32
+	Halted                   bool
+	Approved                 bool
+	StakeAmountSent          int64
+	StakeAt                  uint32
+	SavedValidatorSetHash    tlb.Bits256
+	ValidatorSetChangesCount int32
+	ValidatorSetChangeTime   uint32
+	StakeHeldFor             uint32
+	BorrowedAmount           int64
+	BorrowingTime            uint32
+	Validator                tlb.MsgAddress
+	Pool                     tlb.MsgAddress
+	Sudoer                   tlb.MsgAddress
+}
+
+func GetValidatorControllerData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 103232 for "get_validator_controller_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 103232, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetValidatorControllerDataResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetValidatorControllerDataResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 14 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-1-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-2-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-2-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-3-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-3-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-4-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-4-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-5-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-5-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-6-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-6-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-7-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-7-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-8-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-8-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-9-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-9-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-10-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-10-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-11-1).SumType != "VmStkSlice") || (stack.Peek(stack.Len()-12-1).SumType != "VmStkSlice") || (stack.Peek(stack.Len()-13-1).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetValidatorControllerDataResult
+	err = stack.Unmarshal(&result)
+	return "GetValidatorControllerDataResult", result, err
+}
+
+type GetVammAddress_StormResult struct {
+	VammAddress tlb.MsgAddress
+}
+
+func GetVammAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID, assetIndex tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: assetIndex}
+	stack.Put(val)
+
+	// MethodID = 122992 for "get_vamm_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 122992, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetVammAddress_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetVammAddress_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetVammAddress_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetVammAddress_StormResult", result, err
+}
+
+type GetVammType_StormResult struct {
+	VammType uint32
+}
+
+func GetVammType(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 107494 for "get_vamm_type" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 107494, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetVammType_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetVammType_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetVammType_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetVammType_StormResult", result, err
+}
+
+type GetVaultAddress_DedustResult struct {
+	VaultAddr tlb.MsgAddress
+}
+
+func GetVaultAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID, asset DedustAsset) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCellSlice(asset)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+
+	// MethodID = 76695 for "get_vault_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 76695, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetVaultAddress_DedustResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetVaultAddress_DedustResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetVaultAddress_DedustResult
+	err = stack.Unmarshal(&result)
+	return "GetVaultAddress_DedustResult", result, err
+}
+
+type GetVaultBalance_StormResult struct {
+	Balance tlb.Grams
+}
+
+func GetVaultBalance(ctx context.Context, executor Executor, reqAccountID ton.AccountID, vaultAddress tlb.MsgAddress) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCellSlice(vaultAddress)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+
+	// MethodID = 111415 for "get_vault_balance" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 111415, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetVaultBalance_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetVaultBalance_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetVaultBalance_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetVaultBalance_StormResult", result, err
+}
+
+type GetVaultContractData_StormResult struct {
+	Data boc.Cell
+}
+
+func GetVaultContractData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 98607 for "get_vault_contract_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 98607, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetVaultContractData_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetVaultContractData_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetVaultContractData_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetVaultContractData_StormResult", result, err
+}
+
+type GetVaultData_AffluentLendingVaultResult struct {
+	TotalSupply        tlb.Int257
+	OwnerAddress       tlb.MsgAddress
+	ManagerAddress     tlb.MsgAddress
+	AssetAddress       tlb.MsgAddress
+	Balance            tlb.Int257
+	Cash               tlb.Int257
+	TotalTargetWeight  tlb.Int257
+	AssetWalletAddress tlb.MsgAddress
+	WhitelistedPool    []struct {
+		PoolAddress   tlb.MsgAddress
+		IsWhitelisted bool
+		TargetWeight  tlb.Int257
+		SupplyShare   tlb.Int257
+		SupplyAmount  tlb.Int257
+		PoolCash      tlb.Int257
+	}
+
+	JettonWalletCode   boc.Cell
+	PoolAggregatorCode boc.Cell
+}
+
+type GetVaultData_AffluentMultiplyVaultResult struct {
+	AffluentVaultData struct {
+		OwnerAddress                  tlb.MsgAddress
+		Assets                        boc.Cell
+		FactorialPools                *boc.Cell
+		AggregatorIndex               tlb.Int257
+		RfqIndex                      tlb.Int257
+		TotalSupply                   tlb.Int257
+		CollectedManagementFee        tlb.Int257
+		CollectedProtocolFee          tlb.Int257
+		IsExecutingStrategy           bool
+		Config                        boc.Cell
+		Code                          boc.Cell
+		ProtocolFeeManagerAddress     tlb.MsgAddress
+		Manager                       tlb.MsgAddress
+		IsPrivateVault                bool
+		DepositCloseTimestamp         int64
+		WithdrawCloseTimestamp        int64
+		WhitelistedMinters            *boc.Cell
+		LastCollectedTime             int64
+		ManagementFeeRatePerYear      int32
+		ProtocolFeeRatePerYear        int32
+		MaxLeverageRatio              int32
+		AssetWalletDict               tlb.Any
+		WalletAssetDict               tlb.Any
+		RfqConfig                     *boc.Cell
+		GasConfig                     *boc.Cell
+		OracleConfig                  *boc.Cell
+		ManagementFeeRecipientAddress *tlb.MsgAddress
+		GuardianAddress               *tlb.MsgAddress
+		Timelock                      tlb.Int257
+		PendingOwnerActionIndex       tlb.Int257
+		PendingOwnerActionCount       tlb.Int257
+		PendingOwnerAction            *tlb.MsgAddress
+		WalletCode                    boc.Cell
+		DataAggregatorCode            boc.Cell
+		RfqCode                       boc.Cell
+		Content                       boc.Cell
+	}
+}
+
+type GetVaultData_AffluentMultiplyVaultV2Result struct {
+	AffluentVaultData struct {
+		OwnerAddress                  tlb.MsgAddress
+		Assets                        boc.Cell
+		FactorialPools                *boc.Cell
+		AggregatorIndex               tlb.Int257
+		RfqIndex                      tlb.Int257
+		TotalSupply                   tlb.Int257
+		CollectedManagementFee        tlb.Int257
+		CollectedProtocolFee          tlb.Int257
+		IsExecutingStrategy           bool
+		Config                        boc.Cell
+		Code                          boc.Cell
+		ProtocolFeeManagerAddress     tlb.MsgAddress
+		Manager                       tlb.MsgAddress
+		IsPrivateVault                bool
+		DepositCloseTimestamp         int64
+		WithdrawCloseTimestamp        int64
+		WhitelistedMinters            *boc.Cell
+		LastCollectedTime             int64
+		ManagementFeeRatePerYear      int32
+		ProtocolFeeRatePerYear        int32
+		MaxLeverageRatio              int32
+		AssetWalletDict               tlb.Any
+		WalletAssetDict               tlb.Any
+		RfqConfig                     *boc.Cell
+		GasConfig                     *boc.Cell
+		OracleConfig                  *boc.Cell
+		ManagementFeeRecipientAddress *tlb.MsgAddress
+		GuardianAddress               *tlb.MsgAddress
+		Timelock                      tlb.Int257
+		PendingOwnerActionIndex       tlb.Int257
+		PendingOwnerActionCount       tlb.Int257
+		PendingOwnerAction            *tlb.MsgAddress
+		WalletCode                    boc.Cell
+		DataAggregatorCode            boc.Cell
+		RfqCode                       boc.Cell
+		Content                       boc.Cell
+		GlobalDepositValueCap         tlb.Int257
+		WithdrawFeeRate               tlb.Int257
+		QueueWithdrawFeeRate          tlb.Int257
+		DepositQueueTotalSize         tlb.Int257
+		DepositQueueCounter           tlb.Int257
+		DepositQueuePendingDict       *boc.Cell
+		DepositQueueProcessingDict    *boc.Cell
+		WithdrawQueueTotalSize        tlb.Int257
+		WithdrawQueueCounter          tlb.Int257
+		WithdrawQueuePendingDict      *boc.Cell
+		WithdrawQueueProcessingDict   *boc.Cell
+		InteractiveVaults             *boc.Cell
+		XchainConnectorAddress        boc.Cell
+		XchainConfig                  *boc.Cell
+		XchainUpdateHash              tlb.Int257
+	}
+}
+
+type GetVaultData_StonfiV2Result struct {
+	OwnerAddress    tlb.MsgAddress
+	TokenAddress    tlb.MsgAddress
+	RouterAddress   tlb.MsgAddress
+	DepositedAmount tlb.Int257
+}
+
+type GetVaultData_StormResult struct {
+	JettonWallet     tlb.MsgAddress
+	Rate             uint64
+	TotalSupply      tlb.Grams
+	FreeBalance      tlb.Grams
+	LockedBalance    tlb.Grams
+	BufferBalance    uint64
+	StakersBalance   tlb.Grams
+	ExecutorsBalance tlb.Grams
+	V3Paused         bool
+}
+
+func GetVaultData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 127184 for "get_vault_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 127184, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetVaultData_AffluentLendingVaultResult, DecodeGetVaultData_AffluentMultiplyVaultResult, DecodeGetVaultData_AffluentMultiplyVaultV2Result, DecodeGetVaultData_StonfiV2Result, DecodeGetVaultData_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetVaultData_AffluentLendingVaultResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 11 || (stack.Peek(10).SumType != "VmStkTinyInt" && stack.Peek(10).SumType != "VmStkInt") || (stack.Peek(9).SumType != "VmStkSlice") || (stack.Peek(8).SumType != "VmStkSlice") || (stack.Peek(7).SumType != "VmStkSlice") || (stack.Peek(6).SumType != "VmStkTinyInt" && stack.Peek(6).SumType != "VmStkInt") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkSlice") || (stack.Peek(2).SumType != "VmStkTuple" && stack.Peek(2).SumType != "VmStkNull") || (stack.Peek(1).SumType != "VmStkCell") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetVaultData_AffluentLendingVaultResult
+	err = stack.Unmarshal(&result)
+	return "GetVaultData_AffluentLendingVaultResult", result, err
+}
+
+func DecodeGetVaultData_AffluentMultiplyVaultResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTuple") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetVaultData_AffluentMultiplyVaultResult
+	err = stack.Unmarshal(&result)
+	return "GetVaultData_AffluentMultiplyVaultResult", result, err
+}
+
+func DecodeGetVaultData_AffluentMultiplyVaultV2Result(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTuple") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetVaultData_AffluentMultiplyVaultV2Result
+	err = stack.Unmarshal(&result)
+	return "GetVaultData_AffluentMultiplyVaultV2Result", result, err
+}
+
+func DecodeGetVaultData_StonfiV2Result(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 4 || (stack.Peek(3).SumType != "VmStkSlice") || (stack.Peek(2).SumType != "VmStkSlice") || (stack.Peek(1).SumType != "VmStkSlice") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetVaultData_StonfiV2Result
+	err = stack.Unmarshal(&result)
+	return "GetVaultData_StonfiV2Result", result, err
+}
+
+func DecodeGetVaultData_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 9 || (stack.Peek(8).SumType != "VmStkSlice") || (stack.Peek(7).SumType != "VmStkTinyInt" && stack.Peek(7).SumType != "VmStkInt") || (stack.Peek(6).SumType != "VmStkTinyInt" && stack.Peek(6).SumType != "VmStkInt") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetVaultData_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetVaultData_StormResult", result, err
+}
+
+type GetVaultType_StormResult struct {
+	VaultType uint32
+}
+
+func GetVaultType(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 101877 for "get_vault_type" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 101877, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetVaultType_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetVaultType_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetVaultType_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetVaultType_StormResult", result, err
+}
+
+type GetVaultWhitelistedAddresses_StormResult struct {
+	WhitelistedAddrsDict boc.Cell
+}
+
+func GetVaultWhitelistedAddresses(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 69018 for "get_vault_whitelisted_addresses" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 69018, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetVaultWhitelistedAddresses_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetVaultWhitelistedAddresses_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetVaultWhitelistedAddresses_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetVaultWhitelistedAddresses_StormResult", result, err
+}
+
+type GetVersion_StormResult struct {
+	Version uint32
+}
+
+func GetVersion(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 82320 for "get_version" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 82320, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetVersion_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetVersion_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetVersion_StormResult
+	err = stack.Unmarshal(&result)
+	return "GetVersion_StormResult", result, err
+}
+
+type GetVestingDataResult struct {
+	VestingStartTime     int32
+	VestingTotalDuration int32
+	UnlockPeriod         int32
+	CliffDuration        int32
+	VestingTotalAmount   int64
+	VestingSenderAddress tlb.MsgAddress
+	OwnerAddress         tlb.MsgAddress
+	Whitelist            boc.Cell
+}
+
+type GetVestingData_MoonResult struct {
+	VestingStartTime uint64
+	VestingTime      uint64
+	Recipient        tlb.MsgAddress
+}
+
+func GetVestingData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 107618 for "get_vesting_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 107618, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetVestingData_MoonResult, DecodeGetVestingDataResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetVestingData_MoonResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 3 || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetVestingData_MoonResult
+	err = stack.Unmarshal(&result)
+	return "GetVestingData_MoonResult", result, err
+}
+
+func DecodeGetVestingDataResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 8 || (stack.Peek(7).SumType != "VmStkTinyInt" && stack.Peek(7).SumType != "VmStkInt") || (stack.Peek(6).SumType != "VmStkTinyInt" && stack.Peek(6).SumType != "VmStkInt") || (stack.Peek(5).SumType != "VmStkTinyInt" && stack.Peek(5).SumType != "VmStkInt") || (stack.Peek(4).SumType != "VmStkTinyInt" && stack.Peek(4).SumType != "VmStkInt") || (stack.Peek(3).SumType != "VmStkTinyInt" && stack.Peek(3).SumType != "VmStkInt") || (stack.Peek(2).SumType != "VmStkSlice") || (stack.Peek(1).SumType != "VmStkSlice") || (stack.Peek(0).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetVestingDataResult
+	err = stack.Unmarshal(&result)
+	return "GetVestingDataResult", result, err
+}
+
+type GetWalletAddrResult struct {
+	WalletAddr tlb.MsgAddress
+}
+
+func GetWalletAddr(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 69014 for "get_wallet_addr" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 69014, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetWalletAddrResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetWalletAddrResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetWalletAddrResult
+	err = stack.Unmarshal(&result)
+	return "GetWalletAddrResult", result, err
+}
+
+type GetWalletAddressResult struct {
+	JettonWalletAddress tlb.MsgAddress
+}
+
+func GetWalletAddress(ctx context.Context, executor Executor, reqAccountID ton.AccountID, ownerAddress tlb.MsgAddress) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val, err = tlb.TlbStructToVmCellSlice(ownerAddress)
+	if err != nil {
+		return "", nil, err
+	}
+	stack.Put(val)
+
+	// MethodID = 103289 for "get_wallet_address" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 103289, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetWalletAddressResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetWalletAddressResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 1 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetWalletAddressResult
+	err = stack.Unmarshal(&result)
+	return "GetWalletAddressResult", result, err
+}
+
+type GetWalletDataResult struct {
+	Balance          tlb.Int257
+	Owner            tlb.MsgAddress
+	Jetton           tlb.MsgAddress
+	JettonWalletCode tlb.Any
+}
+
+func GetWalletData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 97026 for "get_wallet_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 97026, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetWalletDataResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetWalletDataResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 4 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkSlice") || (stack.Peek(stack.Len()-2-1).SumType != "VmStkSlice") || (stack.Peek(stack.Len()-3-1).SumType != "VmStkCell") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetWalletDataResult
+	err = stack.Unmarshal(&result)
+	return "GetWalletDataResult", result, err
+}
+
+type GetWalletParamsResult struct {
+	Seqno     uint32
+	Subwallet uint32
+	PublicKey tlb.Int257
+}
+
+func GetWalletParams(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 130271 for "get_wallet_params" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 130271, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeGetWalletParamsResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeGetWalletParamsResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 3 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-1-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-2-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-2-1).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result GetWalletParamsResult
+	err = stack.Unmarshal(&result)
+	return "GetWalletParamsResult", result, err
+}
+
+type IsActiveResult struct {
+	IsActive bool
+}
+
+type IsActive_CoffeeResult struct {
+	Active bool
+}
+
+func IsActive(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 122058 for "is_active" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 122058, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeIsActiveResult, DecodeIsActive_CoffeeResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeIsActiveResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 1 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result IsActiveResult
+	err = stack.Unmarshal(&result)
+	return "IsActiveResult", result, err
+}
+
+func DecodeIsActive_CoffeeResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result IsActive_CoffeeResult
+	err = stack.Unmarshal(&result)
+	return "IsActive_CoffeeResult", result, err
+}
+
+type IsClaimedResult struct {
+	Claimed bool
+}
+
+func IsClaimed(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 122284 for "is_claimed" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 122284, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeIsClaimedResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeIsClaimedResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result IsClaimedResult
+	err = stack.Unmarshal(&result)
+	return "IsClaimedResult", result, err
+}
+
+type IsPluginInstalledResult struct {
+	Success bool
+}
+
+func IsPluginInstalled(ctx context.Context, executor Executor, reqAccountID ton.AccountID, workchain int32, addrHash tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkTinyInt", VmStkTinyInt: int64(workchain)}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: addrHash}
+	stack.Put(val)
+
+	// MethodID = 76407 for "is_plugin_installed" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 76407, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeIsPluginInstalledResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeIsPluginInstalledResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 1 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result IsPluginInstalledResult
+	err = stack.Unmarshal(&result)
+	return "IsPluginInstalledResult", result, err
+}
+
+type IsSignatureAllowedResult struct {
+	Allowed bool
+}
+
+func IsSignatureAllowed(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 88459 for "is_signature_allowed" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 88459, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeIsSignatureAllowedResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeIsSignatureAllowedResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result IsSignatureAllowedResult
+	err = stack.Unmarshal(&result)
+	return "IsSignatureAllowedResult", result, err
+}
+
+type IsStable_DedustResult struct {
+	IsStable bool
+}
+
+func IsStable(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 103723 for "is_stable" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 103723, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeIsStable_DedustResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeIsStable_DedustResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result IsStable_DedustResult
+	err = stack.Unmarshal(&result)
+	return "IsStable_DedustResult", result, err
+}
+
+type IsStrategyVault_AffluentResult struct {
+	IsStrategyVault bool
+}
+
+func IsStrategyVault(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 120297 for "is_strategy_vault" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 120297, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeIsStrategyVault_AffluentResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeIsStrategyVault_AffluentResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result IsStrategyVault_AffluentResult
+	err = stack.Unmarshal(&result)
+	return "IsStrategyVault_AffluentResult", result, err
+}
+
+type JettonWalletLockDataResult struct {
+	FullBalance          tlb.Int257
+	IndividualUnlockTime uint32
+}
+
+func JettonWalletLockData(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 128979 for "jetton_wallet_lock_data" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 128979, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeJettonWalletLockDataResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeJettonWalletLockDataResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 2 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-1-1).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result JettonWalletLockDataResult
+	err = stack.Unmarshal(&result)
+	return "JettonWalletLockDataResult", result, err
+}
+
+type ListNominatorsResult struct {
+	Nominators []struct {
+		Address              tlb.Bits256
+		Amount               uint64
+		PendingDepositAmount uint64
+		WithdrawRequested    bool
+	}
+}
+
+func ListNominators(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 111161 for "list_nominators" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 111161, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeListNominatorsResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeListNominatorsResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 1 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTuple" && stack.Peek(stack.Len()-0-1).SumType != "VmStkNull") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result ListNominatorsResult
+	err = stack.Unmarshal(&result)
+	return "ListNominatorsResult", result, err
+}
+
+type ListVotesResult struct {
+	Votes []struct {
+		ProposalHash   tlb.Bits256
+		VoteCreateTime uint32
+	}
+}
+
+func ListVotes(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 130309 for "list_votes" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 130309, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeListVotesResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeListVotesResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 1 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTuple" && stack.Peek(stack.Len()-0-1).SumType != "VmStkNull") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result ListVotesResult
+	err = stack.Unmarshal(&result)
+	return "ListVotesResult", result, err
+}
+
+type Processed_StormResult struct {
+	Shift     uint16
+	BitNumber uint16
+	NeedClean bool
+}
+
+func Processed(ctx context.Context, executor Executor, reqAccountID ton.AccountID, shift tlb.Int257, bitNumber tlb.Int257, needClean tlb.Int257) (string, any, error) {
+	stack := tlb.VmStack{}
+	var (
+		val tlb.VmStackValue
+		err error
+	)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: shift}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: bitNumber}
+	stack.Put(val)
+	val = tlb.VmStackValue{SumType: "VmStkInt", VmStkInt: needClean}
+	stack.Put(val)
+
+	// MethodID = 117746 for "processed?" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 117746, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeProcessed_StormResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeProcessed_StormResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 3 || (stack.Peek(2).SumType != "VmStkTinyInt" && stack.Peek(2).SumType != "VmStkInt") || (stack.Peek(1).SumType != "VmStkTinyInt" && stack.Peek(1).SumType != "VmStkInt") || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result Processed_StormResult
+	err = stack.Unmarshal(&result)
+	return "Processed_StormResult", result, err
+}
+
+type RoyaltyParamsResult struct {
+	Numerator   uint16
+	Denominator uint16
+	Destination tlb.MsgAddress
+}
+
+func RoyaltyParams(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 85719 for "royalty_params" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 85719, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeRoyaltyParamsResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeRoyaltyParamsResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() < 3 || (stack.Peek(stack.Len()-0-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-0-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-1-1).SumType != "VmStkTinyInt" && stack.Peek(stack.Len()-1-1).SumType != "VmStkInt") || (stack.Peek(stack.Len()-2-1).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result RoyaltyParamsResult
+	err = stack.Unmarshal(&result)
+	return "RoyaltyParamsResult", result, err
+}
+
+type SeqnoResult struct {
+	State uint32
+}
+
+func Seqno(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 85143 for "seqno" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 85143, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeSeqnoResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeSeqnoResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkTinyInt" && stack.Peek(0).SumType != "VmStkInt") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result SeqnoResult
+	err = stack.Unmarshal(&result)
+	return "SeqnoResult", result, err
+}
+
+type Whoami_BidaskResult struct {
+	PoolType string
+}
+
+func Whoami(ctx context.Context, executor Executor, reqAccountID ton.AccountID) (string, any, error) {
+	stack := tlb.VmStack{}
+
+	// MethodID = 79794 for "whoami" method
+	errCode, stack, err := executor.RunSmcMethodByID(ctx, reqAccountID, 79794, stack)
+	if err != nil {
+		return "", nil, err
+	}
+	if errCode != 0 && errCode != 1 {
+		return "", nil, fmt.Errorf("method execution failed with code: %v", errCode)
+	}
+	for _, f := range []func(tlb.VmStack) (string, any, error){DecodeWhoami_BidaskResult} {
+		s, r, err := f(stack)
+		if err == nil {
+			return s, r, nil
+		}
+	}
+	return "", nil, fmt.Errorf("can not decode outputs")
+}
+
+func DecodeWhoami_BidaskResult(stack tlb.VmStack) (resultType string, resultAny any, err error) {
+	if stack.Len() != 1 || (stack.Peek(0).SumType != "VmStkSlice") {
+		return "", nil, fmt.Errorf("invalid stack format")
+	}
+	var result Whoami_BidaskResult
+	err = stack.Unmarshal(&result)
+	return "Whoami_BidaskResult", result, err
+}

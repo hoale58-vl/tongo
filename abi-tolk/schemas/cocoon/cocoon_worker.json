@@ -1,0 +1,207 @@
+{
+  "abi_schema_version": "1.0",
+  "contract_name": "",
+  "unique_types": [
+    {
+      "kind": "void"
+    },
+    {
+      "kind": "int"
+    },
+    {
+      "kind": "slice"
+    },
+    {
+      "kind": "cell"
+    },
+    {
+      "kind": "builder"
+    },
+    {
+      "kind": "bool"
+    },
+    {
+      "kind": "coins"
+    },
+    {
+      "kind": "address"
+    },
+    {
+      "kind": "intN",
+      "n": 32
+    },
+    {
+      "kind": "uintN",
+      "n": 32
+    },
+    {
+      "kind": "intN",
+      "n": 64
+    },
+    {
+      "kind": "uintN",
+      "n": 64
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "ReturnExcessesBack"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "WorkerProxyRequest"
+    },
+    {
+      "kind": "uintN",
+      "n": 2
+    },
+    {
+      "kind": "nullable",
+      "inner_ty_idx": 3
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "CocoonWorkerData"
+    },
+    {
+      "kind": "uintN",
+      "n": 256
+    }
+  ],
+  "struct_instantiations": [],
+  "alias_instantiations": [],
+  "declarations": [
+    {
+      "kind": "struct",
+      "name": "CocoonWorkerData",
+      "ty_idx": 16,
+      "fields": [
+        {
+          "name": "ownerAddress",
+          "ty_idx": 7
+        },
+        {
+          "name": "proxyAddress",
+          "ty_idx": 7
+        },
+        {
+          "name": "proxyPublicKey",
+          "ty_idx": 17
+        },
+        {
+          "name": "state",
+          "ty_idx": 14
+        },
+        {
+          "name": "tokens",
+          "ty_idx": 11
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "ReturnExcessesBack",
+      "ty_idx": 12,
+      "prefix": {
+        "prefix_num": 627413836,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "WorkerProxyRequest",
+      "ty_idx": 13,
+      "prefix": {
+        "prefix_num": 1299340588,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        },
+        {
+          "name": "ownerAddress",
+          "ty_idx": 7
+        },
+        {
+          "name": "state",
+          "ty_idx": 14
+        },
+        {
+          "name": "tokens",
+          "ty_idx": 11
+        },
+        {
+          "name": "payload",
+          "ty_idx": 15
+        }
+      ]
+    }
+  ],
+  "incoming_messages": [],
+  "incoming_external": [],
+  "outgoing_messages": [
+    {
+      "body_ty_idx": 12
+    },
+    {
+      "body_ty_idx": 13
+    }
+  ],
+  "emitted_events": [],
+  "storage": {},
+  "get_methods": [
+    {
+      "tvm_method_id": 106427,
+      "name": "get_cocoon_worker_data",
+      "parameters": [],
+      "return_ty_idx": 16
+    }
+  ],
+  "thrown_errors": [
+    {
+      "kind": "constant",
+      "name": "ERROR_OLD_MESSAGE",
+      "err_code": 1000
+    },
+    {
+      "kind": "constant",
+      "name": "ERROR_LOW_MSG_VALUE",
+      "err_code": 1003
+    },
+    {
+      "kind": "constant",
+      "name": "ERROR_SIGNED_MSG_FORMAT_MISMATCH",
+      "err_code": 1005
+    },
+    {
+      "kind": "constant",
+      "name": "ERROR_CLOSED",
+      "err_code": 1006
+    },
+    {
+      "kind": "constant",
+      "name": "ERROR_BAD_SIGNATURE",
+      "err_code": 1007
+    },
+    {
+      "kind": "constant",
+      "name": "ERROR_EXPECTED_MESSAGE_FROM_OWNER",
+      "err_code": 1010
+    },
+    {
+      "kind": "constant",
+      "name": "ERROR_EXPECTED_MY_ADDRESS",
+      "err_code": 1015
+    }
+  ],
+  "compiler_name": "tolk",
+  "compiler_version": "1.4.1",
+  "code_boc64": "te6ccgECCgEAAg8AART/APSkE/S88sgLAQIBYgIDAgLPBAUAJaE/d9qJofSR9JGn/6YDpn+oY6MD2z4kfJAIMcAkTDg+CdvEPiXofgvoIIQBo53gLYJIdcLH4IQmhJHwLqRW+DtRND6SPpI0//TAdM/10wiwwLy4+74l4IQBfXhALzy4+sn1ywlAgVpROMC1ywnr5NRtOMCMTM2AdcsITdr+yzjAvI/gBgYHAfUMzQ0NvgoEscF8uP3BI4RMzVTMbvy4+iCCJiWgHD7AnKbU1C58uPoA3D7AgXiI9DTSDH6APoAMFJHoVMGqFAnoajIz5Ajn0DaUAb6AlAF+gIV+lLJyM+FiFJw+lKCEE1yXSzPC44Vyz9ScPpSI88LASHPCz8U9ADJgwaAJAcQwB9Mf0z/6SIMI1xjU0SD5AFMo+RDy4+8g0NMf1ws/URa68uPtJLry4+0g0NcsJQIFaUSOK9csJ6+TUbSS8j/h0z/TP/pIMBDOEL0QrBCbEIoQiRB4EGcQVhBFEDR/8AHjDQgApPiSJMcF8uPyBHD7AgPTP/pIMHFtyM+FiBX6UgH6AoIQTXJdLM8LiiLPCz8U+lIUywEUyz8T9ADJcfsAyM+FCBL6UoIQJWWTTM8Ljss/yYMG+wAAQNM/0z/6SDAQzhC9EKwQmxCKEIkQeBBnEFYQRRA0cPABACr7AAXI+lIU+lISy/8SywHLP8zJ7VQ="
+}

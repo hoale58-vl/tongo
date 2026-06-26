@@ -3,6 +3,7 @@ package tlb
 import (
 	"encoding/hex"
 	"fmt"
+	"math"
 	"strconv"
 	"strings"
 
@@ -17,6 +18,80 @@ type Message struct {
 	Info CommonMsgInfo
 	Init Maybe[EitherRef[StateInit]]
 	Body EitherRef[Any]
+
+	hash Bits256
+}
+
+// Hash returns a hash of this Message.
+// it's strongly recommended to normalize hash
+func (m *Message) Hash(normalizeExternal bool) Bits256 {
+	if !normalizeExternal || m.Info.SumType != "ExtInMsgInfo" {
+		return m.hash
+	}
+	// normalize ExtIn message
+	c := boc.NewCell()
+	_ = c.WriteUint(2, 2) // message$_ -> info:CommonMsgInfo -> ext_in_msg_info$10
+	_ = c.WriteUint(0, 2) // message$_ -> info:CommonMsgInfo -> src:MsgAddressExt -> addr_none$00
+	m.Info.ExtInMsgInfo.Dest.AddrStd.Anycast.Exists = false
+	_ = m.Info.ExtInMsgInfo.Dest.MarshalTLB(c, nil) // message$_ -> info:CommonMsgInfo -> dest:MsgAddressInt
+	_ = c.WriteUint(0, 4)                           // message$_ -> info:CommonMsgInfo -> import_fee:Grams -> 0
+	_ = c.WriteBit(false)                           // message$_ -> init:(Maybe (Either StateInit ^StateInit)) -> nothing$0
+	_ = c.WriteBit(true)                            // message$_ -> body:(Either X ^X) -> right$1
+	body := boc.Cell(m.Body.Value)
+	_ = c.AddRef(body.CopyRemaining())
+	hash, _ := c.Hash256()
+	return hash
+}
+
+func (m *Message) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
+	var (
+		hash []byte
+		err  error
+	)
+	if decoder.hasher != nil {
+		hash, err = decoder.hasher.Hash(c)
+	} else {
+		hash, err = c.Hash()
+	}
+	if err != nil {
+		return err
+	}
+	copy(m.hash[:], hash[:])
+	c.ShallowResetCounters()
+
+	var msg struct {
+		Info CommonMsgInfo
+		Init Maybe[EitherRef[StateInit]]
+		Body EitherRef[Any]
+	}
+	if err := decoder.Unmarshal(c, &msg); err != nil {
+		return err
+	}
+	m.Info = msg.Info
+	m.Init = msg.Init
+	m.Body = msg.Body
+	return nil
+}
+
+func (m Message) MarshalTLB(c *boc.Cell, encoder *Encoder) error {
+	if err := encoder.Marshal(c, m.Info); err != nil {
+		return err
+	}
+	if err := encoder.Marshal(c, m.Init); err != nil {
+		return err
+	}
+	if err := encoder.Marshal(c, m.Body); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m Message) ToCell() (*boc.Cell, error) {
+	c := boc.NewCell()
+	if err := m.MarshalTLB(c, &Encoder{}); err != nil {
+		return nil, err
+	}
+	return c, nil
 }
 
 // CommonMsgInfo
@@ -37,7 +112,7 @@ type CommonMsgInfo struct {
 		Src         MsgAddress
 		Dest        MsgAddress
 		Value       CurrencyCollection
-		IhrFee      Grams
+		IhrFee      VarUInteger16
 		FwdFee      Grams
 		CreatedLt   uint64
 		CreatedAt   uint32
@@ -45,7 +120,7 @@ type CommonMsgInfo struct {
 	ExtInMsgInfo *struct {
 		Src       MsgAddress
 		Dest      MsgAddress
-		ImportFee Grams
+		ImportFee VarUInteger16
 	} `tlbSumType:"ext_in_msg_info$10"`
 	ExtOutMsgInfo *struct {
 		Src       MsgAddress
@@ -65,6 +140,129 @@ type StateInit struct {
 	Code       Maybe[Ref[boc.Cell]]
 	Data       Maybe[Ref[boc.Cell]]
 	Library    HashmapE[Bits256, SimpleLib]
+}
+
+// BuildInternal marshals body and wraps it in an internal Message (int_msg_info$0).
+// dest is the destination address, amount is the attached value, bounce controls the bounce flag.
+// Src is left as addr_none (the node fills it in on send).
+func BuildInternal[T, Ts CodecTLB](body T, dest InternalAddress, amount Grams, bounce bool, init *StateInitT[Ts]) (Message, error) {
+	bodyCell := boc.NewCell()
+	if err := Marshal(bodyCell, body); err != nil {
+		return Message{}, fmt.Errorf("marshal body: %w", err)
+	}
+	var value CurrencyCollection
+	value.Grams = amount
+	msg := Message{
+		Info: CommonMsgInfo{
+			SumType: "IntMsgInfo",
+			IntMsgInfo: &struct {
+				IhrDisabled bool
+				Bounce      bool
+				Bounced     bool
+				Src         MsgAddress
+				Dest        MsgAddress
+				Value       CurrencyCollection
+				IhrFee      VarUInteger16
+				FwdFee      Grams
+				CreatedLt   uint64
+				CreatedAt   uint32
+			}{
+				IhrDisabled: true,
+				Bounce:      bounce,
+				Src:         NoneMsgAddress(),
+				Dest:        dest.ToMsgAddress(),
+				Value:       value,
+			},
+		},
+		Body: EitherRef[Any]{IsRight: true, Value: Any(*bodyCell)},
+	}
+	if init != nil {
+		si, err := init.ToStateInit()
+		if err != nil {
+			return Message{}, fmt.Errorf("marshal init: %w", err)
+		}
+		msg.Init = Just(EitherRef[StateInit]{
+			IsRight: true,
+			Value:   si,
+		})
+	}
+	return msg, nil
+}
+
+type StateInitT[T CodecTLB] struct {
+	SplitDepth Maybe[Uint5]
+	Special    Maybe[TickTock]
+	Code       Maybe[Ref[boc.Cell]]
+	Data       Maybe[Ref[T]]
+	Library    HashmapE[Bits256, SimpleLib]
+}
+
+func (sit StateInitT[T]) Hash() ([]byte, error) {
+	siCell, err := sit.ToCell()
+	if err != nil {
+		return nil, fmt.Errorf("serialize state init: %w", err)
+	}
+	hash, err := siCell.Hash()
+	if err != nil {
+		return nil, fmt.Errorf("hash state init: %w", err)
+	}
+	return hash, nil
+}
+
+func (sit StateInitT[T]) ToCell() (*boc.Cell, error) {
+	cell := boc.NewCell()
+	err := sit.MarshalTLB(cell, &Encoder{})
+	return cell, err
+}
+
+func (sit StateInitT[T]) MarshalTLB(c *boc.Cell, encoder *Encoder) (err error) {
+	si, err := sit.ToStateInit()
+	if err != nil {
+		return err
+	}
+	return Marshal(c, si)
+}
+
+func (sit *StateInitT[T]) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
+	si := StateInit{}
+	err := decoder.Unmarshal(c, &si)
+	if err != nil {
+		return err
+	}
+	sit.Code = si.Code
+	sit.Library = si.Library
+	sit.Special = si.Special
+	sit.SplitDepth = si.SplitDepth
+	sit.Data = Nothing[Ref[T]]()
+	if si.Data.Exists {
+		var data T
+		err := decoder.Unmarshal(&si.Data.Value.Value, &data)
+		if err != nil {
+			return err
+		}
+		sit.Data = Just(Ref[T]{Value: data})
+	}
+	return nil
+}
+
+func (sit StateInitT[T]) ToStateInit() (StateInit, error) {
+	result := StateInit{
+		SplitDepth: sit.SplitDepth,
+		Special:    sit.Special,
+		Code:       sit.Code,
+		Library:    sit.Library,
+	}
+	if sit.Data.Exists {
+		dataCell := boc.NewCell()
+		if err := sit.Data.Value.Value.MarshalTLB(dataCell, &Encoder{}); err != nil {
+			return StateInit{}, fmt.Errorf("marshal init data: %w", err)
+		}
+		result.Data = Maybe[Ref[boc.Cell]]{
+			Exists: true,
+			Value:  Ref[boc.Cell]{Value: *dataCell},
+		}
+	}
+	return result, nil
 }
 
 // Anycast
@@ -118,11 +316,8 @@ type MsgAddress struct {
 	SumType
 	AddrNone struct {
 	} `tlbSumType:"addr_none$00"`
-	AddrExtern *struct {
-		Len             Uint9
-		ExternalAddress boc.BitString
-	} `tlbSumType:"addr_extern$01"`
-	AddrStd struct {
+	AddrExtern *boc.BitString `tlbSumType:"addr_extern$01"`
+	AddrStd    struct {
 		Anycast     Maybe[Anycast]
 		WorkchainId int8
 		Address     Bits256
@@ -133,6 +328,12 @@ type MsgAddress struct {
 		WorkchainId int32
 		Address     boc.BitString
 	} `tlbSumType:"addr_var$11"`
+}
+
+func NoneMsgAddress() MsgAddress {
+	return MsgAddress{
+		SumType: "AddrNone",
+	}
 }
 
 func (a *MsgAddress) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
@@ -154,13 +355,7 @@ func (a *MsgAddress) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
 			return err
 		}
 		a.SumType = "AddrExtern"
-		a.AddrExtern = &struct {
-			Len             Uint9
-			ExternalAddress boc.BitString
-		}{
-			Len:             Uint9(ln),
-			ExternalAddress: addr,
-		}
+		a.AddrExtern = &addr
 		return nil
 	case 2:
 		var anycast Maybe[Anycast]
@@ -211,6 +406,54 @@ func (a *MsgAddress) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
 	return fmt.Errorf("invalid tag")
 }
 
+func (a MsgAddress) MarshalTLB(c *boc.Cell, encoder *Encoder) error {
+	switch a.SumType {
+	case "AddrNone":
+		return c.WriteUint(0, 2)
+	case "AddrExtern":
+		err := c.WriteUint(1, 2)
+		if err != nil {
+			return err
+		}
+		a.AddrExtern.ResetCounter()
+		l := a.AddrExtern.BitsAvailableForRead()
+		if l > 511 {
+			return fmt.Errorf("external address is too long")
+		}
+		err = c.WriteUint(uint64(l), 9)
+		if err != nil {
+			return err
+		}
+		return c.WriteBitString(*a.AddrExtern)
+	case "AddrStd":
+		if err := c.WriteUint(2, 2); err != nil {
+			return err
+		}
+		if err := a.AddrStd.Anycast.MarshalTLB(c, encoder); err != nil {
+			return err
+		}
+		if err := c.WriteInt(int64(a.AddrStd.WorkchainId), 8); err != nil {
+			return err
+		}
+		return c.WriteBytes(a.AddrStd.Address[:])
+	case "AddrVar":
+		if err := c.WriteUint(3, 2); err != nil {
+			return err
+		}
+		if err := a.AddrVar.Anycast.MarshalTLB(c, encoder); err != nil {
+			return err
+		}
+		if err := c.WriteUint(uint64(a.AddrVar.AddrLen), 9); err != nil {
+			return err
+		}
+		if err := c.WriteInt(int64(a.AddrVar.WorkchainId), 32); err != nil {
+			return err
+		}
+		return c.WriteBitString(a.AddrVar.Address)
+	}
+	return fmt.Errorf("invalid MsgAddress.SumType: %s", a.SumType)
+}
+
 func (a MsgAddress) MarshalJSON() ([]byte, error) {
 	var x string
 	var extra string
@@ -218,7 +461,7 @@ func (a MsgAddress) MarshalJSON() ([]byte, error) {
 	case "AddrExtern":
 		// we assume that AddrExtern.ExternalAddress has exactly AddrExtern.Len bits
 		// that's always true, if the current MsgAddress was deserialized from TL-B.
-		x = a.AddrExtern.ExternalAddress.ToFiftHex()
+		x = a.AddrExtern.ToFiftHex()
 	case "AddrStd":
 		if a.AddrStd.Anycast.Exists {
 			extra = fmt.Sprintf(":Anycast(%d,%d)", a.AddrStd.Anycast.Value.Depth, a.AddrStd.Anycast.Value.RewritePfx)
@@ -248,23 +491,13 @@ func (a *MsgAddress) UnmarshalJSON(b []byte) error {
 			return err
 		}
 		*a = MsgAddress{
-			SumType: "AddrExtern",
-			AddrExtern: &struct {
-				Len             Uint9
-				ExternalAddress boc.BitString
-			}{
-				Len:             Uint9(externalAddr.BitsAvailableForRead()),
-				ExternalAddress: *externalAddr,
-			},
+			SumType:    "AddrExtern",
+			AddrExtern: externalAddr,
 		}
 		return nil
 	}
 	if len(parts) != 2 && len(parts) != 3 {
 		return fmt.Errorf("unknown MsgAddress format")
-	}
-	workchain, err := strconv.ParseInt(parts[0], 10, 8)
-	if err != nil {
-		return fmt.Errorf("failed to parse %v workchain: %w", parts[0], err)
 	}
 
 	var anycast *Anycast
@@ -284,11 +517,17 @@ func (a *MsgAddress) UnmarshalJSON(b []byte) error {
 		}
 	}
 	// try AddrStd first
-	if len(parts[1]) == 64 {
+	num, err := strconv.ParseInt(parts[0], 10, 32)
+	isWorkchainInt8 := err == nil && num >= int64(math.MinInt8) && num <= int64(math.MaxInt8)
+	if len(parts[1]) == 64 && isWorkchainInt8 && !strings.HasSuffix(parts[1], "_") {
 		var dst [32]byte
 		_, err := hex.Decode(dst[:], []byte(parts[1]))
 		if err != nil {
 			return err
+		}
+		workchain, err := strconv.ParseInt(parts[0], 10, 8)
+		if err != nil {
+			return fmt.Errorf("failed to parse %v workchain: %w", parts[0], err)
 		}
 		*a = MsgAddress{
 			SumType: "AddrStd",
@@ -313,6 +552,10 @@ func (a *MsgAddress) UnmarshalJSON(b []byte) error {
 	if err != nil {
 		return fmt.Errorf("failed to parse fift hex: %w", err)
 	}
+	workchain, err := strconv.ParseInt(parts[0], 10, 32)
+	if err != nil {
+		return fmt.Errorf("failed to parse %v workchain: %w", parts[0], err)
+	}
 	*a = MsgAddress{
 		SumType: "AddrVar",
 		AddrVar: &struct {
@@ -335,6 +578,22 @@ func (a *MsgAddress) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
+func (a *MsgAddress) ReadFromStack(stack *VmStack) error {
+	stItem, ok := stack.Pop()
+	if !ok {
+		return ErrStackEmpty
+	}
+	switch stItem.SumType {
+	case "VmStkNull":
+		a.SumType = "AddrNone"
+		return nil
+	case "VmStkSlice":
+		return a.UnmarshalTLB(stItem.VmStkSlice.Cell(), NewDecoder())
+	default:
+		return fmt.Errorf("unexpected for address, stack value type: %v", stItem.SumType)
+	}
+}
+
 // TickTock
 // tick_tock$_ tick:Bool tock:Bool = TickTock;
 type TickTock struct {
@@ -350,32 +609,30 @@ type SimpleLib struct {
 }
 
 // msg_import_ext$000 msg:^(Message Any) transaction:^Transaction
-//
 //	= InMsg;
-//
+
 // msg_import_ihr$010 msg:^(Message Any) transaction:^Transaction
-//
 //	ihr_fee:Grams proof_created:^Cell = InMsg;
-//
+
 // msg_import_imm$011 in_msg:^MsgEnvelope
-//
 //	transaction:^Transaction fwd_fee:Grams = InMsg;
-//
+
 // msg_import_fin$100 in_msg:^MsgEnvelope
-//
 //	transaction:^Transaction fwd_fee:Grams = InMsg;
-//
+
 // msg_import_tr$101  in_msg:^MsgEnvelope out_msg:^MsgEnvelope
-//
 //	transit_fee:Grams = InMsg;
-//
+
 // msg_discard_fin$110 in_msg:^MsgEnvelope transaction_id:uint64
-//
 //	fwd_fee:Grams = InMsg;
-//
+
 // msg_discard_tr$111 in_msg:^MsgEnvelope transaction_id:uint64
-//
 //	fwd_fee:Grams proof_delivered:^Cell = InMsg;
+
+//msg_import_deferred_fin$00100 in_msg:^MsgEnvelope
+//    transaction:^Transaction fwd_fee:Grams = InMsg;
+
+// msg_import_deferred_tr$00101 in_msg:^MsgEnvelope out_msg:^MsgEnvelope = InMsg;
 type InMsg struct {
 	SumType
 	MsgImportExt *struct {
@@ -414,6 +671,15 @@ type InMsg struct {
 		FwdFee         Grams
 		ProofDelivered boc.Cell `tlb:"^"`
 	} `tlbSumType:"msg_discard_tr$111"`
+	MsgImportDeferredFin *struct {
+		InMsg         MsgEnvelope `tlb:"^"`
+		TransactionId Transaction `tlb:"^"`
+		FwdFee        Grams
+	} `tlbSumType:"msg_import_deferred_fin$00100"`
+	MsgImportDeferredTr *struct {
+		InMsg  MsgEnvelope `tlb:"^"`
+		OutMsg MsgEnvelope `tlb:"^"`
+	} `tlbSumType:"msg_import_deferred_tr$00101"`
 }
 
 // import_fees$_ fees_collected:Grams
@@ -456,6 +722,14 @@ type ImportFees struct {
 // msg_export_deq_imm$100 out_msg:^MsgEnvelope
 //
 //	reimport:^InMsg = OutMsg;
+//
+// msg_export_new_defer$10100 out_msg:^MsgEnvelope
+//
+//	transaction:^Transaction = OutMsg;
+//
+// msg_export_deferred_tr$10101  out_msg:^MsgEnvelope
+//
+//	imported:^InMsg = OutMsg;
 type OutMsg struct {
 	SumType
 	MsgExportExt struct {
@@ -493,14 +767,36 @@ type OutMsg struct {
 		OutMsg   MsgEnvelope `tlb:"^"`
 		Reimport InMsg       `tlb:"^"`
 	} `tlbSumType:"msg_export_deq_imm$100"`
+	MsgExportNewDefer *struct {
+		OutMsg      MsgEnvelope `tlb:"^"`
+		Transaction Transaction `tlb:"^"`
+	} `tlbSumType:"msg_export_new_defer$10100"`
+	MsgExportDeferredTr *struct {
+		OutMsg   MsgEnvelope `tlb:"^"`
+		Imported InMsg       `tlb:"^"`
+	} `tlbSumType:"msg_export_deferred_tr$10101"`
+}
+
+// dispatch_queue:DispatchQueue out_queue_size:(Maybe uint48) = OutMsgQueueExtra;
+type OutMsgQueueExtra struct {
+	Magic Magic `tlb:"out_msg_queue_extra#0"`
+	// key - sender address, aug - min created_lt
+	DispatchQueue HashmapAugE[Bits256, AccountDispatchQueue, uint64]
+	OutQueueSize  Maybe[Uint48]
+}
+
+// _ messages:(HashmapE 64 EnqueuedMsg) count:uint48 = AccountDispatchQueue;
+type AccountDispatchQueue struct {
+	Messages HashmapE[Uint64, EnqueuedMsg]
+	Count    Uint48
 }
 
 // _ out_queue:OutMsgQueue proc_info:ProcessedInfo
 // ihr_pending:IhrPendingInfo = OutMsgQueueInfo;
 type OutMsgQueueInfo struct {
-	OutQueue  HashmapAugE[Bits352, EnqueuedMsg, uint64]
-	ProcInfo  HashmapE[Bits96, ProcessedUpto]
-	IhrPendig HashmapE[Bits320, IhrPendingSince]
+	OutQueue HashmapAugE[Bits352, EnqueuedMsg, uint64]
+	ProcInfo HashmapE[Bits96, ProcessedUpto]
+	Extra    Maybe[OutMsgQueueExtra]
 }
 
 // _ enqueued_lt:uint64 out_msg:^MsgEnvelope = EnqueuedMsg;
@@ -512,12 +808,37 @@ type EnqueuedMsg struct {
 //		msg_envelope#4 cur_addr:IntermediateAddress
 //	 next_addr:IntermediateAddress fwd_fee_remaining:Grams
 //	 msg:^(Message Any) = MsgEnvelope;
+//
+// msg_envelope_v2#5 cur_addr:IntermediateAddress
+//
+//	next_addr:IntermediateAddress fwd_fee_remaining:Grams
+//	msg:^(Message Any)
+//	emitted_lt:(Maybe uint64)
+//	metadata:(Maybe MsgMetadata) = MsgEnvelope;
 type MsgEnvelope struct {
-	Magic           Magic `tlb:"msg_envelope#4"`
-	CurrentAddress  IntermediateAddress
-	NextAddress     IntermediateAddress
-	FwdFeeRemaining Grams
-	Msg             Message `tlb:"^"`
+	SumType SumType
+	V1      struct {
+		CurrentAddress  IntermediateAddress
+		NextAddress     IntermediateAddress
+		FwdFeeRemaining Grams
+		Msg             Message `tlb:"^"`
+	} `tlbSumType:"msg_envelope#4"`
+	V2 struct {
+		CurrentAddress  IntermediateAddress
+		NextAddress     IntermediateAddress
+		FwdFeeRemaining Grams
+		Msg             Message      `tlb:"^"`
+		EmittedLT       *uint64      `tlb:"maybe"`
+		Metadata        *MsgMetadata `tlb:"maybe"`
+	} `tlbSumType:"msg_envelope_v2#5"`
+}
+
+// msg_metadata#0 depth:uint32 initiator_addr:MsgAddressInt initiator_lt:uint64 = MsgMetadata;
+type MsgMetadata struct {
+	Magic         Magic `tlb:"msg_metadata#0"`
+	Depth         uint32
+	InitiatorAddr MsgAddress
+	InitiatorLT   uint64
 }
 
 // interm_addr_regular$0 use_dest_bits:(#<= 96) = IntermediateAddress;

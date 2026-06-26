@@ -1,0 +1,53 @@
+<abi>
+    <types>
+        _ value:CurrencyCollection created_lt:uint64 created_at:uint32 = NewBounceOriginalInfo;
+        _ gas_used:uint32 vm_steps:uint32 = NewBounceComputePhaseInfo;
+    </types>
+
+    <!--   Internal messages    -->
+    <internal name="bounce">
+        bounce_message#ffffffff payload:Cell = InternalMsgBody;
+    </internal>
+
+    <internal name="bounce_v2">
+        new_bounce_body#fffffffe original_body:^Cell original_info:^NewBounceOriginalInfo bounced_by_phase:uint8 exit_code:int32 compute_phase:(Maybe NewBounceComputePhaseInfo) = InternalMsgBody;
+    </internal>
+
+    <!--    Text    -->
+    <internal name="text_comment">
+        text_comment#00000000 text:Text = InternalMsgBody;
+    </internal>
+    <internal name="encrypted_text_comment">
+        text_comment#2167da4b cipher_text:Bytes = InternalMsgBody;
+    </internal>
+    <internal name="excess">
+        excesses#d53276db query_id:uint64 = InternalMsgBody;
+    </internal>
+
+    <internal name="top_up" fixed_length="true">
+        top_up#d372158c query_id:uint64 = InternalMsgBody;
+    </internal>
+    <internal name="credit" fixed_length="true">
+        credit#1690c604 query_id:uint64 amount:Coins = InternalMsgBody;
+    </internal>
+    <internal name="approve" fixed_length="true">
+        approve#7b4b42e6 query_id:uint64 = InternalMsgBody;
+    </internal>
+    <internal name="disapprove" fixed_length="true">
+        disapprove#e8a0abfe query_id:uint64 = InternalMsgBody;
+    </internal>
+    <jetton_payload name="text_comment">
+        jetton_payload#00000000 text:Text = JettonMsgPayload;
+    </jetton_payload>
+    <jetton_payload name="encrypted_text_comment">
+        jetton_payload#2167da4b cipher_text:Bytes = JettonMsgPayload;
+    </jetton_payload>
+    <nft_payload name="text_comment">
+        nft_payload#00000000 text:Text = NFTMsgPayload;
+    </nft_payload>
+    <nft_payload name="encrypted_text_comment">
+        nft_payload#2167da4b cipher_text:Bytes = NFTMsgPayload;
+    </nft_payload>
+
+
+</abi>

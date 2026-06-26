@@ -1,0 +1,2734 @@
+// Code generated - DO NOT EDIT.
+
+package abi
+
+import (
+	"github.com/tonkeeper/tongo/ton"
+)
+
+const (
+	IUnknown ContractInterface = iota
+	AffluentBatch
+	AffluentLendingVault
+	AffluentMultiplyVault
+	AffluentMultiplyVaultV2
+	AffluentPool
+	AirdropInterlockerV1
+	AirdropInterlockerV2
+	BidaskDammLpWallet
+	BidaskDammPool
+	BidaskInternalLiquidityVault
+	BidaskLpMultitoken
+	BidaskPool
+	BidaskRange
+	CoffeeCrossDex
+	CoffeeFactory
+	CoffeeMevProtector
+	CoffeePool
+	CoffeeStakingItem
+	CoffeeStakingMaster
+	CoffeeStakingVault
+	CoffeeVault
+	CoffeeVaultExtra
+	CoffeeVaultJetton
+	CoffeeVaultNative
+	Cron
+	DaolamaVault
+	DedustFactory
+	DedustLiquidityDeposit
+	DedustPool
+	DedustV2Cpmm
+	DedustVault
+	Dns
+	Editable
+	GramMiner
+	JettonMaster
+	JettonWallet
+	JettonWalletCoffeeLp
+	JettonWalletGoverned
+	JettonWalletRegulated
+	JettonWalletV1
+	JettonWalletV2
+	Locker
+	LockerBill
+	LockupUniversal
+	LockupVesting
+	MegatonfiExchange
+	MegatonfiRouter
+	MoonBooster
+	MoonOrder
+	MoonOrderFactory
+	MoonPool
+	MultisigOrderV2
+	MultisigV2
+	Mytonwallet2Fa
+	NftAuctionGetgemsV3
+	NftAuctionGetgemsV4
+	NftAuctionV1
+	NftCollection
+	NftItem
+	NftItemSimple
+	NftOfferGetgemsV1
+	NftSale
+	NftSaleGetgemsV2
+	NftSaleGetgemsV3
+	NftSaleGetgemsV4
+	NftSaleV1
+	NftSaleV2
+	OmnistonReferral
+	PaymentChannel
+	Sbt
+	ScaledUi
+	SmartAccount
+	SmartAccountBlank
+	SmartAccountFactory
+	StonfiLpAccountV2
+	StonfiPool
+	StonfiPoolV2
+	StonfiPoolV2ConstProduct
+	StonfiPoolV2Stableswap
+	StonfiPoolV2WeightedStableswap
+	StonfiRouter
+	StonfiRouterV2
+	StonfiVaultV2
+	StorageContract
+	StorageProvider
+	StormExecutor
+	StormExecutorCollection
+	StormPositionManager
+	StormReferral
+	StormReferralCollection
+	StormVamm
+	StormVammCoinm
+	StormVault
+	StormVaultNative
+	SubscriptionV1
+	SubscriptionV2
+	Teleitem
+	ToncoAccount
+	ToncoPool
+	ToncoRouter
+	Tonkeeper2Fa
+	TonstakePool
+	TvPool
+	ValidatorController
+	Wallet
+	WalletHighloadV1R1
+	WalletHighloadV1R2
+	WalletHighloadV2
+	WalletHighloadV2R1
+	WalletHighloadV2R2
+	WalletHighloadV3R1
+	WalletPreprocessedV2
+	WalletV1R1
+	WalletV1R2
+	WalletV1R3
+	WalletV2R1
+	WalletV2R2
+	WalletV3R1
+	WalletV3R2
+	WalletV4R1
+	WalletV4R2
+	WalletV5Beta
+	WalletV5R1
+	WalletVesting
+	WhalesPool
+	_xmlContractInterfaceEnd // sentinel used by Tolk codegen for non-overlapping constant values
+)
+
+func (c ContractInterface) String() string {
+	switch c {
+	case AffluentBatch:
+		return "affluent_batch"
+	case AffluentLendingVault:
+		return "affluent_lending_vault"
+	case AffluentMultiplyVault:
+		return "affluent_multiply_vault"
+	case AffluentMultiplyVaultV2:
+		return "affluent_multiply_vault_v2"
+	case AffluentPool:
+		return "affluent_pool"
+	case AirdropInterlockerV1:
+		return "airdrop_interlocker_v1"
+	case AirdropInterlockerV2:
+		return "airdrop_interlocker_v2"
+	case BidaskDammLpWallet:
+		return "bidask_damm_lp_wallet"
+	case BidaskDammPool:
+		return "bidask_damm_pool"
+	case BidaskInternalLiquidityVault:
+		return "bidask_internal_liquidity_vault"
+	case BidaskLpMultitoken:
+		return "bidask_lp_multitoken"
+	case BidaskPool:
+		return "bidask_pool"
+	case BidaskRange:
+		return "bidask_range"
+	case CoffeeCrossDex:
+		return "coffee_cross_dex"
+	case CoffeeFactory:
+		return "coffee_factory"
+	case CoffeeMevProtector:
+		return "coffee_mev_protector"
+	case CoffeePool:
+		return "coffee_pool"
+	case CoffeeStakingItem:
+		return "coffee_staking_item"
+	case CoffeeStakingMaster:
+		return "coffee_staking_master"
+	case CoffeeStakingVault:
+		return "coffee_staking_vault"
+	case CoffeeVault:
+		return "coffee_vault"
+	case CoffeeVaultExtra:
+		return "coffee_vault_extra"
+	case CoffeeVaultJetton:
+		return "coffee_vault_jetton"
+	case CoffeeVaultNative:
+		return "coffee_vault_native"
+	case Cron:
+		return "cron"
+	case DaolamaVault:
+		return "daolama_vault"
+	case DedustFactory:
+		return "dedust_factory"
+	case DedustLiquidityDeposit:
+		return "dedust_liquidity_deposit "
+	case DedustPool:
+		return "dedust_pool"
+	case DedustV2Cpmm:
+		return "dedust_v2_cpmm"
+	case DedustVault:
+		return "dedust_vault"
+	case Dns:
+		return "dns"
+	case Editable:
+		return "editable"
+	case GramMiner:
+		return "gram_miner"
+	case JettonMaster:
+		return "jetton_master"
+	case JettonWallet:
+		return "jetton_wallet"
+	case JettonWalletCoffeeLp:
+		return "jetton_wallet_coffee_lp"
+	case JettonWalletGoverned:
+		return "jetton_wallet_governed"
+	case JettonWalletRegulated:
+		return "jetton_wallet_regulated"
+	case JettonWalletV1:
+		return "jetton_wallet_v1"
+	case JettonWalletV2:
+		return "jetton_wallet_v2"
+	case Locker:
+		return "locker"
+	case LockerBill:
+		return "locker_bill"
+	case LockupUniversal:
+		return "lockup_universal"
+	case LockupVesting:
+		return "lockup_vesting"
+	case MegatonfiExchange:
+		return "megatonfi_exchange"
+	case MegatonfiRouter:
+		return "megatonfi_router"
+	case MoonBooster:
+		return "moon_booster"
+	case MoonOrder:
+		return "moon_order"
+	case MoonOrderFactory:
+		return "moon_order_factory"
+	case MoonPool:
+		return "moon_pool"
+	case MultisigOrderV2:
+		return "multisig_order_v2"
+	case MultisigV2:
+		return "multisig_v2"
+	case Mytonwallet2Fa:
+		return "mytonwallet_2fa"
+	case NftAuctionGetgemsV3:
+		return "nft_auction_getgems_v3"
+	case NftAuctionGetgemsV4:
+		return "nft_auction_getgems_v4"
+	case NftAuctionV1:
+		return "nft_auction_v1"
+	case NftCollection:
+		return "nft_collection"
+	case NftItem:
+		return "nft_item"
+	case NftItemSimple:
+		return "nft_item_simple"
+	case NftOfferGetgemsV1:
+		return "nft_offer_getgems_v1"
+	case NftSale:
+		return "nft_sale"
+	case NftSaleGetgemsV2:
+		return "nft_sale_getgems_v2"
+	case NftSaleGetgemsV3:
+		return "nft_sale_getgems_v3"
+	case NftSaleGetgemsV4:
+		return "nft_sale_getgems_v4"
+	case NftSaleV1:
+		return "nft_sale_v1"
+	case NftSaleV2:
+		return "nft_sale_v2"
+	case OmnistonReferral:
+		return "omniston_referral"
+	case PaymentChannel:
+		return "payment_channel"
+	case Sbt:
+		return "sbt"
+	case ScaledUi:
+		return "scaled_ui"
+	case SmartAccount:
+		return "smart_account"
+	case SmartAccountBlank:
+		return "smart_account_blank"
+	case SmartAccountFactory:
+		return "smart_account_factory"
+	case StonfiLpAccountV2:
+		return "stonfi_lp_account_v2"
+	case StonfiPool:
+		return "stonfi_pool"
+	case StonfiPoolV2:
+		return "stonfi_pool_v2"
+	case StonfiPoolV2ConstProduct:
+		return "stonfi_pool_v2_const_product"
+	case StonfiPoolV2Stableswap:
+		return "stonfi_pool_v2_stableswap"
+	case StonfiPoolV2WeightedStableswap:
+		return "stonfi_pool_v2_weighted_stableswap"
+	case StonfiRouter:
+		return "stonfi_router"
+	case StonfiRouterV2:
+		return "stonfi_router_v2"
+	case StonfiVaultV2:
+		return "stonfi_vault_v2"
+	case StorageContract:
+		return "storage_contract"
+	case StorageProvider:
+		return "storage_provider"
+	case StormExecutor:
+		return "storm_executor"
+	case StormExecutorCollection:
+		return "storm_executor_collection"
+	case StormPositionManager:
+		return "storm_position_manager"
+	case StormReferral:
+		return "storm_referral"
+	case StormReferralCollection:
+		return "storm_referral_collection"
+	case StormVamm:
+		return "storm_vamm"
+	case StormVammCoinm:
+		return "storm_vamm_coinm"
+	case StormVault:
+		return "storm_vault"
+	case StormVaultNative:
+		return "storm_vault_native"
+	case SubscriptionV1:
+		return "subscription_v1"
+	case SubscriptionV2:
+		return "subscription_v2"
+	case Teleitem:
+		return "teleitem"
+	case ToncoAccount:
+		return "tonco_account"
+	case ToncoPool:
+		return "tonco_pool"
+	case ToncoRouter:
+		return "tonco_router"
+	case Tonkeeper2Fa:
+		return "tonkeeper_2fa"
+	case TonstakePool:
+		return "tonstake_pool"
+	case TvPool:
+		return "tv_pool"
+	case ValidatorController:
+		return "validator_controller"
+	case Wallet:
+		return "wallet"
+	case WalletHighloadV1R1:
+		return "wallet_highload_v1r1"
+	case WalletHighloadV1R2:
+		return "wallet_highload_v1r2"
+	case WalletHighloadV2:
+		return "wallet_highload_v2"
+	case WalletHighloadV2R1:
+		return "wallet_highload_v2r1"
+	case WalletHighloadV2R2:
+		return "wallet_highload_v2r2"
+	case WalletHighloadV3R1:
+		return "wallet_highload_v3r1"
+	case WalletPreprocessedV2:
+		return "wallet_preprocessed_v2"
+	case WalletV1R1:
+		return "wallet_v1r1"
+	case WalletV1R2:
+		return "wallet_v1r2"
+	case WalletV1R3:
+		return "wallet_v1r3"
+	case WalletV2R1:
+		return "wallet_v2r1"
+	case WalletV2R2:
+		return "wallet_v2r2"
+	case WalletV3R1:
+		return "wallet_v3r1"
+	case WalletV3R2:
+		return "wallet_v3r2"
+	case WalletV4R1:
+		return "wallet_v4r1"
+	case WalletV4R2:
+		return "wallet_v4r2"
+	case WalletV5Beta:
+		return "wallet_v5_beta"
+	case WalletV5R1:
+		return "wallet_v5r1"
+	case WalletVesting:
+		return "wallet_vesting"
+	case WhalesPool:
+		return "whales_pool"
+	default:
+		if s, ok := tolkContractInterfaceStrings[c]; ok {
+			return s
+		}
+		return "unknown"
+	}
+}
+
+func ContractInterfaceFromString(s string) ContractInterface {
+	switch s {
+	case "affluent_batch":
+		return AffluentBatch
+	case "affluent_lending_vault":
+		return AffluentLendingVault
+	case "affluent_multiply_vault":
+		return AffluentMultiplyVault
+	case "affluent_multiply_vault_v2":
+		return AffluentMultiplyVaultV2
+	case "affluent_pool":
+		return AffluentPool
+	case "airdrop_interlocker_v1":
+		return AirdropInterlockerV1
+	case "airdrop_interlocker_v2":
+		return AirdropInterlockerV2
+	case "bidask_damm_lp_wallet":
+		return BidaskDammLpWallet
+	case "bidask_damm_pool":
+		return BidaskDammPool
+	case "bidask_internal_liquidity_vault":
+		return BidaskInternalLiquidityVault
+	case "bidask_lp_multitoken":
+		return BidaskLpMultitoken
+	case "bidask_pool":
+		return BidaskPool
+	case "bidask_range":
+		return BidaskRange
+	case "coffee_cross_dex":
+		return CoffeeCrossDex
+	case "coffee_factory":
+		return CoffeeFactory
+	case "coffee_mev_protector":
+		return CoffeeMevProtector
+	case "coffee_pool":
+		return CoffeePool
+	case "coffee_staking_item":
+		return CoffeeStakingItem
+	case "coffee_staking_master":
+		return CoffeeStakingMaster
+	case "coffee_staking_vault":
+		return CoffeeStakingVault
+	case "coffee_vault":
+		return CoffeeVault
+	case "coffee_vault_extra":
+		return CoffeeVaultExtra
+	case "coffee_vault_jetton":
+		return CoffeeVaultJetton
+	case "coffee_vault_native":
+		return CoffeeVaultNative
+	case "cron":
+		return Cron
+	case "daolama_vault":
+		return DaolamaVault
+	case "dedust_factory":
+		return DedustFactory
+	case "dedust_liquidity_deposit ":
+		return DedustLiquidityDeposit
+	case "dedust_pool":
+		return DedustPool
+	case "dedust_v2_cpmm":
+		return DedustV2Cpmm
+	case "dedust_vault":
+		return DedustVault
+	case "dns":
+		return Dns
+	case "editable":
+		return Editable
+	case "gram_miner":
+		return GramMiner
+	case "jetton_master":
+		return JettonMaster
+	case "jetton_wallet":
+		return JettonWallet
+	case "jetton_wallet_coffee_lp":
+		return JettonWalletCoffeeLp
+	case "jetton_wallet_governed":
+		return JettonWalletGoverned
+	case "jetton_wallet_regulated":
+		return JettonWalletRegulated
+	case "jetton_wallet_v1":
+		return JettonWalletV1
+	case "jetton_wallet_v2":
+		return JettonWalletV2
+	case "locker":
+		return Locker
+	case "locker_bill":
+		return LockerBill
+	case "lockup_universal":
+		return LockupUniversal
+	case "lockup_vesting":
+		return LockupVesting
+	case "megatonfi_exchange":
+		return MegatonfiExchange
+	case "megatonfi_router":
+		return MegatonfiRouter
+	case "moon_booster":
+		return MoonBooster
+	case "moon_order":
+		return MoonOrder
+	case "moon_order_factory":
+		return MoonOrderFactory
+	case "moon_pool":
+		return MoonPool
+	case "multisig_order_v2":
+		return MultisigOrderV2
+	case "multisig_v2":
+		return MultisigV2
+	case "mytonwallet_2fa":
+		return Mytonwallet2Fa
+	case "nft_auction_getgems_v3":
+		return NftAuctionGetgemsV3
+	case "nft_auction_getgems_v4":
+		return NftAuctionGetgemsV4
+	case "nft_auction_v1":
+		return NftAuctionV1
+	case "nft_collection":
+		return NftCollection
+	case "nft_item":
+		return NftItem
+	case "nft_item_simple":
+		return NftItemSimple
+	case "nft_offer_getgems_v1":
+		return NftOfferGetgemsV1
+	case "nft_sale":
+		return NftSale
+	case "nft_sale_getgems_v2":
+		return NftSaleGetgemsV2
+	case "nft_sale_getgems_v3":
+		return NftSaleGetgemsV3
+	case "nft_sale_getgems_v4":
+		return NftSaleGetgemsV4
+	case "nft_sale_v1":
+		return NftSaleV1
+	case "nft_sale_v2":
+		return NftSaleV2
+	case "omniston_referral":
+		return OmnistonReferral
+	case "payment_channel":
+		return PaymentChannel
+	case "sbt":
+		return Sbt
+	case "scaled_ui":
+		return ScaledUi
+	case "smart_account":
+		return SmartAccount
+	case "smart_account_blank":
+		return SmartAccountBlank
+	case "smart_account_factory":
+		return SmartAccountFactory
+	case "stonfi_lp_account_v2":
+		return StonfiLpAccountV2
+	case "stonfi_pool":
+		return StonfiPool
+	case "stonfi_pool_v2":
+		return StonfiPoolV2
+	case "stonfi_pool_v2_const_product":
+		return StonfiPoolV2ConstProduct
+	case "stonfi_pool_v2_stableswap":
+		return StonfiPoolV2Stableswap
+	case "stonfi_pool_v2_weighted_stableswap":
+		return StonfiPoolV2WeightedStableswap
+	case "stonfi_router":
+		return StonfiRouter
+	case "stonfi_router_v2":
+		return StonfiRouterV2
+	case "stonfi_vault_v2":
+		return StonfiVaultV2
+	case "storage_contract":
+		return StorageContract
+	case "storage_provider":
+		return StorageProvider
+	case "storm_executor":
+		return StormExecutor
+	case "storm_executor_collection":
+		return StormExecutorCollection
+	case "storm_position_manager":
+		return StormPositionManager
+	case "storm_referral":
+		return StormReferral
+	case "storm_referral_collection":
+		return StormReferralCollection
+	case "storm_vamm":
+		return StormVamm
+	case "storm_vamm_coinm":
+		return StormVammCoinm
+	case "storm_vault":
+		return StormVault
+	case "storm_vault_native":
+		return StormVaultNative
+	case "subscription_v1":
+		return SubscriptionV1
+	case "subscription_v2":
+		return SubscriptionV2
+	case "teleitem":
+		return Teleitem
+	case "tonco_account":
+		return ToncoAccount
+	case "tonco_pool":
+		return ToncoPool
+	case "tonco_router":
+		return ToncoRouter
+	case "tonkeeper_2fa":
+		return Tonkeeper2Fa
+	case "tonstake_pool":
+		return TonstakePool
+	case "tv_pool":
+		return TvPool
+	case "validator_controller":
+		return ValidatorController
+	case "wallet":
+		return Wallet
+	case "wallet_highload_v1r1":
+		return WalletHighloadV1R1
+	case "wallet_highload_v1r2":
+		return WalletHighloadV1R2
+	case "wallet_highload_v2":
+		return WalletHighloadV2
+	case "wallet_highload_v2r1":
+		return WalletHighloadV2R1
+	case "wallet_highload_v2r2":
+		return WalletHighloadV2R2
+	case "wallet_highload_v3r1":
+		return WalletHighloadV3R1
+	case "wallet_preprocessed_v2":
+		return WalletPreprocessedV2
+	case "wallet_v1r1":
+		return WalletV1R1
+	case "wallet_v1r2":
+		return WalletV1R2
+	case "wallet_v1r3":
+		return WalletV1R3
+	case "wallet_v2r1":
+		return WalletV2R1
+	case "wallet_v2r2":
+		return WalletV2R2
+	case "wallet_v3r1":
+		return WalletV3R1
+	case "wallet_v3r2":
+		return WalletV3R2
+	case "wallet_v4r1":
+		return WalletV4R1
+	case "wallet_v4r2":
+		return WalletV4R2
+	case "wallet_v5_beta":
+		return WalletV5Beta
+	case "wallet_v5r1":
+		return WalletV5R1
+	case "wallet_vesting":
+		return WalletVesting
+	case "whales_pool":
+		return WhalesPool
+	default:
+		if c, ok := tolkContractInterfaceFromString[s]; ok {
+			return c
+		}
+		return IUnknown
+	}
+}
+
+var methodInvocationOrder = []MethodDescription{
+	{
+		Name:     "getAllTickInfos",
+		InvokeFn: GetAllTickInfos,
+	},
+	{
+		Name:     "getChildContracts",
+		InvokeFn: GetChildContracts,
+	},
+	{
+		Name:     "getIsActive",
+		InvokeFn: GetIsActive,
+	},
+	{
+		Name:     "getPoolStateAndConfiguration",
+		InvokeFn: GetPoolStateAndConfiguration,
+	},
+	{
+		Name:     "getRouterState",
+		InvokeFn: GetRouterState,
+	},
+	{
+		Name:     "get_account_data",
+		InvokeFn: GetAccountData,
+	},
+	{
+		Name:     "get_active_range",
+		InvokeFn: GetActiveRange,
+	},
+	{
+		Name:     "get_admin_address",
+		InvokeFn: GetAdminAddress,
+	},
+	{
+		Name:     "get_amm_contract_data",
+		InvokeFn: GetAmmContractData,
+	},
+	{
+		Name:     "get_amm_name",
+		InvokeFn: GetAmmName,
+	},
+	{
+		Name:     "get_amm_state",
+		InvokeFn: GetAmmState,
+	},
+	{
+		Name:     "get_amm_status",
+		InvokeFn: GetAmmStatus,
+	},
+	{
+		Name:     "get_asset",
+		InvokeFn: GetAsset,
+	},
+	{
+		Name:     "get_assets",
+		InvokeFn: GetAssets,
+	},
+	{
+		Name:     "get_auction_data_v4",
+		InvokeFn: GetAuctionDataV4,
+	},
+	{
+		Name:     "get_auction_info",
+		InvokeFn: GetAuctionInfo,
+	},
+	{
+		Name:     "get_authority_address",
+		InvokeFn: GetAuthorityAddress,
+	},
+	{
+		Name:     "get_available_claim_amount",
+		InvokeFn: GetAvailableClaimAmount,
+	},
+	{
+		Name:     "get_balances",
+		InvokeFn: GetBalances,
+	},
+	{
+		Name:     "get_bill_amount",
+		InvokeFn: GetBillAmount,
+	},
+	{
+		Name:     "get_bins_number",
+		InvokeFn: GetBinsNumber,
+	},
+	{
+		Name:     "get_blank_storage_data",
+		InvokeFn: GetBlankStorageData,
+	},
+	{
+		Name:     "get_buffer_data",
+		InvokeFn: GetBufferData,
+	},
+	{
+		Name:     "get_channel_data",
+		InvokeFn: GetChannelData,
+	},
+	{
+		Name:     "get_claimer_address",
+		InvokeFn: GetClaimerAddress,
+	},
+	{
+		Name:     "get_code",
+		InvokeFn: GetCode,
+	},
+	{
+		Name:     "get_collected_fees_info",
+		InvokeFn: GetCollectedFeesInfo,
+	},
+	{
+		Name:     "get_collection_data",
+		InvokeFn: GetCollectionData,
+	},
+	{
+		Name:     "get_contract_data",
+		InvokeFn: GetContractData,
+	},
+	{
+		Name:     "get_cron_info",
+		InvokeFn: GetCronInfo,
+	},
+	{
+		Name:     "get_current_bin",
+		InvokeFn: GetCurrentBin,
+	},
+	{
+		Name:     "get_day_trading_data",
+		InvokeFn: GetDayTradingData,
+	},
+	{
+		Name:     "get_default_referral_fees",
+		InvokeFn: GetDefaultReferralFees,
+	},
+	{
+		Name:     "get_delegation_state",
+		InvokeFn: GetDelegationState,
+	},
+	{
+		Name:     "get_display_multiplier",
+		InvokeFn: GetDisplayMultiplier,
+	},
+	{
+		Name:     "get_distribution_info",
+		InvokeFn: GetDistributionInfo,
+	},
+	{
+		Name:     "get_domain",
+		InvokeFn: GetDomain,
+	},
+	{
+		Name:     "get_dynamic_fees_info",
+		InvokeFn: GetDynamicFeesInfo,
+	},
+	{
+		Name:     "get_editor",
+		InvokeFn: GetEditor,
+	},
+	{
+		Name:     "get_exchange_settings",
+		InvokeFn: GetExchangeSettings,
+	},
+	{
+		Name:     "get_executor_balances",
+		InvokeFn: GetExecutorBalances,
+	},
+	{
+		Name:     "get_executor_collection_address",
+		InvokeFn: GetExecutorCollectionAddress,
+	},
+	{
+		Name:     "get_executor_vaults_whitelist",
+		InvokeFn: GetExecutorVaultsWhitelist,
+	},
+	{
+		Name:     "get_extensions",
+		InvokeFn: GetExtensions,
+	},
+	{
+		Name:     "get_factory_data",
+		InvokeFn: GetFactoryData,
+	},
+	{
+		Name:     "get_farming_info",
+		InvokeFn: GetFarmingInfo,
+	},
+	{
+		Name:     "get_fees_info",
+		InvokeFn: GetFeesInfo,
+	},
+	{
+		Name:     "get_fix_price_data_v4",
+		InvokeFn: GetFixPriceDataV4,
+	},
+	{
+		Name:     "get_full_domain",
+		InvokeFn: GetFullDomain,
+	},
+	{
+		Name:     "get_funding_settings",
+		InvokeFn: GetFundingSettings,
+	},
+	{
+		Name:     "get_highload_data",
+		InvokeFn: GetHighloadData,
+	},
+	{
+		Name:     "get_id",
+		InvokeFn: GetId,
+	},
+	{
+		Name:     "get_is_inited",
+		InvokeFn: GetIsInited,
+	},
+	{
+		Name:     "get_jetton_data",
+		InvokeFn: GetJettonData,
+	},
+	{
+		Name:     "get_keys_data",
+		InvokeFn: GetKeysData,
+	},
+	{
+		Name:     "get_last_clean_time",
+		InvokeFn: GetLastCleanTime,
+	},
+	{
+		Name:     "get_last_fill_up_time",
+		InvokeFn: GetLastFillUpTime,
+	},
+	{
+		Name:     "get_last_position_manager_code",
+		InvokeFn: GetLastPositionManagerCode,
+	},
+	{
+		Name:     "get_lazer_data",
+		InvokeFn: GetLazerData,
+	},
+	{
+		Name:     "get_liquidity_data",
+		InvokeFn: GetLiquidityData,
+	},
+	{
+		Name:     "get_liquidity_info",
+		InvokeFn: GetLiquidityInfo,
+	},
+	{
+		Name:     "get_locker_bill_data",
+		InvokeFn: GetLockerBillData,
+	},
+	{
+		Name:     "get_locker_data",
+		InvokeFn: GetLockerData,
+	},
+	{
+		Name:     "get_lockup_data",
+		InvokeFn: GetLockupData,
+	},
+	{
+		Name:     "get_lp_account_data",
+		InvokeFn: GetLpAccountData,
+	},
+	{
+		Name:     "get_lp_data",
+		InvokeFn: GetLpData,
+	},
+	{
+		Name:     "get_lp_mining_data",
+		InvokeFn: GetLpMiningData,
+	},
+	{
+		Name:     "get_lp_minter_address",
+		InvokeFn: GetLpMinterAddress,
+	},
+	{
+		Name:     "get_lp_swap_data",
+		InvokeFn: GetLpSwapData,
+	},
+	{
+		Name:     "get_master_address",
+		InvokeFn: GetMasterAddress,
+	},
+	{
+		Name:     "get_members_raw",
+		InvokeFn: GetMembersRaw,
+	},
+	{
+		Name:     "get_min_fees",
+		InvokeFn: GetMinFees,
+	},
+	{
+		Name:     "get_mining_data",
+		InvokeFn: GetMiningData,
+	},
+	{
+		Name:     "get_multisig_data",
+		InvokeFn: GetMultisigData,
+	},
+	{
+		Name:     "get_next_admin_address",
+		InvokeFn: GetNextAdminAddress,
+	},
+	{
+		Name:     "get_next_proof_info",
+		InvokeFn: GetNextProofInfo,
+	},
+	{
+		Name:     "get_nft_api_info",
+		InvokeFn: GetNftApiInfo,
+	},
+	{
+		Name:     "get_nft_data",
+		InvokeFn: GetNftData,
+	},
+	{
+		Name:     "get_oracle_data",
+		InvokeFn: GetOracleData,
+	},
+	{
+		Name:     "get_order_amount",
+		InvokeFn: GetOrderAmount,
+	},
+	{
+		Name:     "get_order_data",
+		InvokeFn: GetOrderData,
+	},
+	{
+		Name:     "get_params",
+		InvokeFn: GetParams,
+	},
+	{
+		Name:     "get_pause_time",
+		InvokeFn: GetPauseTime,
+	},
+	{
+		Name:     "get_payment_info",
+		InvokeFn: GetPaymentInfo,
+	},
+	{
+		Name:     "get_plugin_list",
+		InvokeFn: GetPluginList,
+	},
+	{
+		Name:     "get_pool",
+		InvokeFn: GetPool,
+	},
+	{
+		Name:     "get_pool_addr",
+		InvokeFn: GetPoolAddr,
+	},
+	{
+		Name:     "get_pool_data",
+		InvokeFn: GetPoolData,
+	},
+	{
+		Name:     "get_pool_full_data",
+		InvokeFn: GetPoolFullData,
+	},
+	{
+		Name:     "get_pool_info",
+		InvokeFn: GetPoolInfo,
+	},
+	{
+		Name:     "get_pool_status",
+		InvokeFn: GetPoolStatus,
+	},
+	{
+		Name:     "get_pool_type",
+		InvokeFn: GetPoolType,
+	},
+	{
+		Name:     "get_position",
+		InvokeFn: GetPosition,
+	},
+	{
+		Name:     "get_position_manager_address",
+		InvokeFn: GetPositionManagerAddress,
+	},
+	{
+		Name:     "get_position_manager_contract_data",
+		InvokeFn: GetPositionManagerContractData,
+	},
+	{
+		Name:     "get_position_manager_data",
+		InvokeFn: GetPositionManagerData,
+	},
+	{
+		Name:     "get_pow_params",
+		InvokeFn: GetPowParams,
+	},
+	{
+		Name:     "get_proxy",
+		InvokeFn: GetProxy,
+	},
+	{
+		Name:     "get_public_key",
+		InvokeFn: GetPublicKey,
+	},
+	{
+		Name:     "get_referral_collection_address",
+		InvokeFn: GetReferralCollectionAddress,
+	},
+	{
+		Name:     "get_referral_data",
+		InvokeFn: GetReferralData,
+	},
+	{
+		Name:     "get_referral_vaults_whitelist",
+		InvokeFn: GetReferralVaultsWhitelist,
+	},
+	{
+		Name:     "get_reserves",
+		InvokeFn: GetReserves,
+	},
+	{
+		Name:     "get_revoked_time",
+		InvokeFn: GetRevokedTime,
+	},
+	{
+		Name:     "get_root_pubkey",
+		InvokeFn: GetRootPubkey,
+	},
+	{
+		Name:     "get_router_data",
+		InvokeFn: GetRouterData,
+	},
+	{
+		Name:     "get_router_version",
+		InvokeFn: GetRouterVersion,
+	},
+	{
+		Name:     "get_sale_data",
+		InvokeFn: GetSaleData,
+	},
+	{
+		Name:     "get_seed_pubkey",
+		InvokeFn: GetSeedPubkey,
+	},
+	{
+		Name:     "get_settlement_oracle_data",
+		InvokeFn: GetSettlementOracleData,
+	},
+	{
+		Name:     "get_spot_price",
+		InvokeFn: GetSpotPrice,
+	},
+	{
+		Name:     "get_sqrt_p",
+		InvokeFn: GetSqrtP,
+	},
+	{
+		Name:     "get_staking_status",
+		InvokeFn: GetStakingStatus,
+	},
+	{
+		Name:     "get_start_trade_time",
+		InvokeFn: GetStartTradeTime,
+	},
+	{
+		Name:     "get_status",
+		InvokeFn: GetStatus,
+	},
+	{
+		Name:     "get_storage_contract_data",
+		InvokeFn: GetStorageContractData,
+	},
+	{
+		Name:     "get_storage_data",
+		InvokeFn: GetStorageData,
+	},
+	{
+		Name:     "get_storage_params",
+		InvokeFn: GetStorageParams,
+	},
+	{
+		Name:     "get_stored_data",
+		InvokeFn: GetStoredData,
+	},
+	{
+		Name:     "get_subscription_data",
+		InvokeFn: GetSubscriptionData,
+	},
+	{
+		Name:     "get_subscription_info",
+		InvokeFn: GetSubscriptionInfo,
+	},
+	{
+		Name:     "get_subwallet_id",
+		InvokeFn: GetSubwalletId,
+	},
+	{
+		Name:     "get_target_balances",
+		InvokeFn: GetTargetBalances,
+	},
+	{
+		Name:     "get_telemint_auction_config",
+		InvokeFn: GetTelemintAuctionConfig,
+	},
+	{
+		Name:     "get_telemint_auction_state",
+		InvokeFn: GetTelemintAuctionState,
+	},
+	{
+		Name:     "get_telemint_token_name",
+		InvokeFn: GetTelemintTokenName,
+	},
+	{
+		Name:     "get_terminal_amm_price",
+		InvokeFn: GetTerminalAmmPrice,
+	},
+	{
+		Name:     "get_timeout",
+		InvokeFn: GetTimeout,
+	},
+	{
+		Name:     "get_torrent_hash",
+		InvokeFn: GetTorrentHash,
+	},
+	{
+		Name:     "get_trade_fee",
+		InvokeFn: GetTradeFee,
+	},
+	{
+		Name:     "get_unlocks_info",
+		InvokeFn: GetUnlocksInfo,
+	},
+	{
+		Name:     "get_user_fees_info",
+		InvokeFn: GetUserFeesInfo,
+	},
+	{
+		Name:     "get_user_public_keys",
+		InvokeFn: GetUserPublicKeys,
+	},
+	{
+		Name:     "get_validator_controller_data",
+		InvokeFn: GetValidatorControllerData,
+	},
+	{
+		Name:     "get_vamm_type",
+		InvokeFn: GetVammType,
+	},
+	{
+		Name:     "get_vault_contract_data",
+		InvokeFn: GetVaultContractData,
+	},
+	{
+		Name:     "get_vault_data",
+		InvokeFn: GetVaultData,
+	},
+	{
+		Name:     "get_vault_type",
+		InvokeFn: GetVaultType,
+	},
+	{
+		Name:     "get_vault_whitelisted_addresses",
+		InvokeFn: GetVaultWhitelistedAddresses,
+	},
+	{
+		Name:     "get_version",
+		InvokeFn: GetVersion,
+	},
+	{
+		Name:     "get_vesting_data",
+		InvokeFn: GetVestingData,
+	},
+	{
+		Name:     "get_wallet_addr",
+		InvokeFn: GetWalletAddr,
+	},
+	{
+		Name:     "get_wallet_data",
+		InvokeFn: GetWalletData,
+	},
+	{
+		Name:     "get_wallet_params",
+		InvokeFn: GetWalletParams,
+	},
+	{
+		Name:     "is_active",
+		InvokeFn: IsActive,
+	},
+	{
+		Name:     "is_claimed",
+		InvokeFn: IsClaimed,
+	},
+	{
+		Name:     "is_signature_allowed",
+		InvokeFn: IsSignatureAllowed,
+	},
+	{
+		Name:     "is_stable",
+		InvokeFn: IsStable,
+	},
+	{
+		Name:     "is_strategy_vault",
+		InvokeFn: IsStrategyVault,
+	},
+	{
+		Name:     "jetton_wallet_lock_data",
+		InvokeFn: JettonWalletLockData,
+	},
+	{
+		Name:     "list_nominators",
+		InvokeFn: ListNominators,
+	},
+	{
+		Name:     "list_votes",
+		InvokeFn: ListVotes,
+	},
+	{
+		Name:     "royalty_params",
+		InvokeFn: RoyaltyParams,
+	},
+	{
+		Name:     "seqno",
+		InvokeFn: Seqno,
+	},
+	{
+		Name:     "whoami",
+		InvokeFn: Whoami,
+	},
+}
+
+var contractInterfacesOrder = []InterfaceDescription{
+	{
+		Name: AffluentPool,
+		Results: []string{
+			"GetPoolData_AffluentResult",
+		},
+	},
+	{
+		Name: AffluentMultiplyVault,
+		Results: []string{
+			"GetJettonDataResult",
+			"GetVaultData_AffluentMultiplyVaultResult",
+			"IsStrategyVault_AffluentResult",
+		},
+	},
+	{
+		Name: AffluentMultiplyVaultV2,
+		Results: []string{
+			"GetJettonDataResult",
+			"GetVaultData_AffluentMultiplyVaultV2Result",
+			"IsStrategyVault_AffluentResult",
+		},
+	},
+	{
+		Name: AffluentLendingVault,
+		Results: []string{
+			"GetJettonDataResult",
+			"GetVaultData_AffluentLendingVaultResult",
+		},
+	},
+	{
+		Name: BidaskPool,
+		Results: []string{
+			"GetActiveRange_BidaskResult",
+			"GetCurrentBin_BidaskResult",
+			"GetDynamicFeesInfo_BidaskResult",
+			"GetFarmingInfo_BidaskResult",
+			"GetPoolInfo_BidaskResult",
+			"GetSqrtP_BidaskResult",
+			"Whoami_BidaskResult",
+		},
+	},
+	{
+		Name: BidaskRange,
+		Results: []string{
+			"GetPoolAddr_BidaskResult",
+		},
+	},
+	{
+		Name: BidaskLpMultitoken,
+		Results: []string{
+			"GetBinsNumber_BidaskResult",
+			"GetNftDataResult",
+		},
+	},
+	{
+		Name: BidaskInternalLiquidityVault,
+		Results: []string{
+			"GetLiquidityData_BidaskResult",
+		},
+	},
+	{
+		Name: BidaskDammPool,
+		Results: []string{
+			"GetCollectedFeesInfo_BidaskDammResult",
+			"GetFarmingInfo_BidaskDammResult",
+			"GetFeesInfo_BidaskDammResult",
+			"GetJettonDataResult",
+			"GetLiquidityInfo_BidaskDammResult",
+			"GetPoolInfo_BidaskDammResult",
+			"GetStartTradeTime_BidaskDammResult",
+			"Whoami_BidaskResult",
+		},
+	},
+	{
+		Name: BidaskDammLpWallet,
+		Results: []string{
+			"GetUserFeesInfo_BidaskDammResult",
+			"GetWalletDataResult",
+		},
+	},
+	{
+		Name: Cron,
+		Results: []string{
+			"GetCronInfoResult",
+		},
+	},
+	{
+		Name: DaolamaVault,
+		Results: []string{
+			"GetPoolData_DaolamaResult",
+		},
+	},
+	{
+		Name: DedustLiquidityDeposit,
+		Results: []string{
+			"GetBalances_DedustResult",
+			"GetTargetBalances_DedustResult",
+		},
+	},
+	{
+		Name: DedustPool,
+		Results: []string{
+			"GetAssets_DedustResult",
+			"GetJettonDataResult",
+			"GetReserves_DedustResult",
+			"GetTradeFee_DedustResult",
+			"IsStable_DedustResult",
+		},
+	},
+	{
+		Name: DedustVault,
+		Results: []string{
+			"GetAsset_DedustResult",
+		},
+	},
+	{
+		Name: DedustV2Cpmm,
+		Results: []string{
+			"GetPoolData_DedustV2Result",
+		},
+	},
+	{
+		Name: JettonMaster,
+		Results: []string{
+			"GetJettonDataResult",
+		},
+	},
+	{
+		Name: ScaledUi,
+		Results: []string{
+			"GetDisplayMultiplierResult",
+		},
+	},
+	{
+		Name: JettonWallet,
+		Results: []string{
+			"GetWalletDataResult",
+		},
+	},
+	{
+		Name: TonstakePool,
+		Results: []string{
+			"GetPoolFullDataResult",
+		},
+	},
+	{
+		Name: ValidatorController,
+		Results: []string{
+			"GetValidatorControllerDataResult",
+		},
+	},
+	{
+		Name: Locker,
+		Results: []string{
+			"GetLockerDataResult",
+		},
+	},
+	{
+		Name: LockerBill,
+		Results: []string{
+			"GetLockerBillDataResult",
+		},
+	},
+	{
+		Name: LockupVesting,
+		Results: []string{
+			"GetLockupDataResult",
+		},
+	},
+	{
+		Name: LockupUniversal,
+		Results: []string{
+			"GetBalancesResult",
+		},
+	},
+	{
+		Name: MegatonfiRouter,
+		Results: []string{
+			"GetLpData_MegatonResult",
+			"GetMiningData_MegatonResult",
+		},
+	},
+	{
+		Name: MegatonfiExchange,
+		Results: []string{
+			"GetLpMiningData_MegatonResult",
+			"GetLpSwapData_MegatonResult",
+		},
+	},
+	{
+		Name: MoonPool,
+		Results: []string{
+			"GetAssets_MoonResult",
+			"GetJettonDataResult",
+			"GetReserves_MoonResult",
+		},
+	},
+	{
+		Name: NftSaleV1,
+		Results: []string{
+			"GetSaleData_BasicResult",
+		},
+	},
+	{
+		Name: NftSaleV2,
+		Results: []string{
+			"GetSaleData_GetgemsResult",
+		},
+	},
+	{
+		Name: NftAuctionV1,
+		Results: []string{
+			"GetSaleData_GetgemsAuctionResult",
+		},
+	},
+	{
+		Name: NftCollection,
+		Results: []string{
+			"GetCollectionDataResult",
+		},
+	},
+	{
+		Name: NftItem,
+		Results: []string{
+			"GetNftDataResult",
+		},
+	},
+	{
+		Name: Editable,
+		Results: []string{
+			"GetEditorResult",
+		},
+	},
+	{
+		Name: Sbt,
+		Results: []string{
+			"GetAuthorityAddressResult",
+		},
+	},
+	{
+		Name: PaymentChannel,
+		Results: []string{
+			"GetChannelDataResult",
+		},
+	},
+	{
+		Name: StonfiPool,
+		Results: []string{
+			"GetPoolData_StonfiResult",
+		},
+	},
+	{
+		Name: StonfiPoolV2ConstProduct,
+		Results: []string{
+			"GetPoolData_StonfiV2Result",
+		},
+	},
+	{
+		Name: StonfiPoolV2Stableswap,
+		Results: []string{
+			"GetPoolData_StonfiV2StableswapResult",
+		},
+	},
+	{
+		Name: StonfiPoolV2WeightedStableswap,
+		Results: []string{
+			"GetPoolData_StonfiV2WeightedStableswapResult",
+		},
+	},
+	{
+		Name: StonfiRouter,
+		Results: []string{
+			"GetRouterData_StonfiResult",
+		},
+	},
+	{
+		Name: StonfiRouterV2,
+		Results: []string{
+			"GetRouterData_StonfiV2Result",
+			"GetRouterVersion_StonfiV2Result",
+		},
+	},
+	{
+		Name: StonfiLpAccountV2,
+		Results: []string{
+			"GetLpAccountData_StonfiResult",
+		},
+	},
+	{
+		Name: StonfiVaultV2,
+		Results: []string{
+			"GetVaultData_StonfiV2Result",
+		},
+	},
+	{
+		Name: StorageProvider,
+		Results: []string{
+			"GetPublicKeyResult",
+			"GetStorageParamsResult",
+			"GetWalletParamsResult",
+			"SeqnoResult",
+		},
+	},
+	{
+		Name: StorageContract,
+		Results: []string{
+			"GetNextProofInfoResult",
+			"GetStorageContractDataResult",
+			"GetTorrentHashResult",
+			"IsActiveResult",
+		},
+	},
+	{
+		Name: StormVamm,
+		Results: []string{
+			"GetAmmContractData_StormResult",
+			"GetAmmName_StormResult",
+			"GetAmmState_StormResult",
+			"GetAmmStatus_StormResult",
+			"GetDayTradingData_StormResult",
+			"GetExchangeSettings_StormResult",
+			"GetFundingSettings_StormResult",
+			"GetLazerData_StormResult",
+			"GetOracleData_StormResult",
+			"GetPauseTime_StormResult",
+			"GetPositionManagerAddress_StormResult",
+			"GetSpotPrice_StormResult",
+			"GetTerminalAmmPrice_StormResult",
+			"GetVammType_StormResult",
+		},
+	},
+	{
+		Name: StormVammCoinm,
+		Results: []string{
+			"GetAmmContractData_StormResult",
+			"GetAmmName_StormResult",
+			"GetAmmState_StormResult",
+			"GetAmmStatus_StormResult",
+			"GetDayTradingData_StormResult",
+			"GetExchangeSettings_StormResult",
+			"GetFundingSettings_StormResult",
+			"GetLazerData_StormResult",
+			"GetOracleData_StormResult",
+			"GetPauseTime_StormResult",
+			"GetPositionManagerAddress_StormResult",
+			"GetSettlementOracleData_StormResult",
+			"GetSpotPrice_StormResult",
+			"GetTerminalAmmPrice_StormResult",
+			"GetVammType_StormResult",
+		},
+	},
+	{
+		Name: StormVault,
+		Results: []string{
+			"GetBufferDataResult",
+			"GetClaimerAddressResult",
+			"GetExecutorCollectionAddressResult",
+			"GetLastPositionManagerCodeResult",
+			"GetLpMinterAddressResult",
+			"GetReferralCollectionAddressResult",
+			"GetVaultContractDataResult",
+			"GetVaultDataResult",
+			"GetVaultTypeResult",
+			"GetVaultWhitelistedAddressesResult",
+		},
+	},
+	{
+		Name: StormVaultNative,
+		Results: []string{
+			"GetBufferDataResult",
+			"GetClaimerAddressResult",
+			"GetExecutorCollectionAddressResult",
+			"GetLastPositionManagerCodeResult",
+			"GetLpMinterAddressResult",
+			"GetReferralCollectionAddressResult",
+			"GetVaultContractDataResult",
+			"GetVaultDataResult",
+			"GetVaultTypeResult",
+			"GetVaultWhitelistedAddressesResult",
+		},
+	},
+	{
+		Name: SmartAccountBlank,
+		Results: []string{
+			"GetBlankStorageData_StormResult",
+			"GetNftDataResult",
+		},
+	},
+	{
+		Name: SmartAccount,
+		Results: []string{
+			"GetHighloadData_StormResult",
+			"GetKeysData_StormResult",
+			"GetNftDataResult",
+			"GetPosition_StormResult",
+			"GetStorageData_StormResult",
+			"GetUserPublicKeys_StormResult",
+		},
+	},
+	{
+		Name: SmartAccountFactory,
+		Results: []string{
+			"GetCollectionDataResult",
+			"GetFactoryDataResult",
+			"GetMinFeesResult",
+			"RoyaltyParamsResult",
+		},
+	},
+	{
+		Name: StormReferral,
+		Results: []string{
+			"GetNftDataResult",
+			"GetReferralData_StormResult",
+		},
+	},
+	{
+		Name: StormReferralCollection,
+		Results: []string{
+			"GetCollectionDataResult",
+			"GetDefaultReferralFeesResult",
+			"GetReferralVaultsWhitelistResult",
+			"RoyaltyParamsResult",
+		},
+	},
+	{
+		Name: StormExecutor,
+		Results: []string{
+			"GetExecutorBalancesResult",
+			"GetNftDataResult",
+		},
+	},
+	{
+		Name: StormExecutorCollection,
+		Results: []string{
+			"GetCollectionDataResult",
+			"GetExecutorVaultsWhitelistResult",
+			"RoyaltyParamsResult",
+		},
+	},
+	{
+		Name: StormPositionManager,
+		Results: []string{
+			"GetIsInitedResult",
+			"GetPositionManagerContractDataResult",
+			"GetPositionManagerDataResult",
+			"GetVersionResult",
+		},
+	},
+	{
+		Name: SubscriptionV1,
+		Results: []string{
+			"GetSubscriptionDataResult",
+		},
+	},
+	{
+		Name: CoffeeStakingMaster,
+		Results: []string{
+			"GetCollectionDataResult",
+			"GetStoredData_CoffeeStakingMasterResult",
+		},
+	},
+	{
+		Name: CoffeeStakingVault,
+		Results: []string{
+			"GetMasterAddress_CoffeeStakingVaultResult",
+			"GetStoredData_CoffeeStakingVaultResult",
+		},
+	},
+	{
+		Name: CoffeeStakingItem,
+		Results: []string{
+			"GetNftDataResult",
+			"GetStoredData_CoffeeStakingItemResult",
+		},
+	},
+	{
+		Name: CoffeeFactory,
+		Results: []string{
+			"GetAdminAddress_CoffeeResult",
+			"GetCode_CoffeeResult",
+		},
+	},
+	{
+		Name: CoffeeVault,
+		Results: []string{
+			"GetAsset_CoffeeResult",
+			"IsActive_CoffeeResult",
+		},
+	},
+	{
+		Name: CoffeeVaultNative,
+		Results: []string{
+			"GetAsset_CoffeeResult",
+			"IsActive_CoffeeResult",
+		},
+	},
+	{
+		Name: CoffeeVaultJetton,
+		Results: []string{
+			"GetAsset_CoffeeResult",
+			"IsActive_CoffeeResult",
+		},
+	},
+	{
+		Name: CoffeeVaultExtra,
+		Results: []string{
+			"GetAsset_CoffeeResult",
+			"IsActive_CoffeeResult",
+		},
+	},
+	{
+		Name: CoffeePool,
+		Results: []string{
+			"GetJettonDataResult",
+			"GetPoolData_CoffeeResult",
+		},
+	},
+	{
+		Name: Teleitem,
+		Results: []string{
+			"GetTelemintTokenNameResult",
+		},
+	},
+	{
+		Name: ToncoAccount,
+		Results: []string{
+			"GetAccountData_ToncoResult",
+		},
+	},
+	{
+		Name: TvPool,
+		Results: []string{
+			"GetPoolData_TfResult",
+			"ListNominatorsResult",
+			"ListVotesResult",
+		},
+	},
+	{
+		Name: WhalesPool,
+		Results: []string{
+			"GetParams_WhalesNominatorResult",
+			"GetPoolStatusResult",
+			"GetStakingStatusResult",
+		},
+	},
+}
+
+func (c ContractInterface) recursiveImplements(other ContractInterface) bool {
+	switch c {
+	case CoffeeVaultExtra:
+		return CoffeeVault.Implements(other)
+	case CoffeeVaultJetton:
+		return CoffeeVault.Implements(other)
+	case CoffeeVaultNative:
+		return CoffeeVault.Implements(other)
+	case JettonWalletCoffeeLp:
+		return JettonWallet.Implements(other)
+	case JettonWalletGoverned:
+		return JettonWallet.Implements(other)
+	case JettonWalletRegulated:
+		return JettonWallet.Implements(other)
+	case JettonWalletV1:
+		return JettonWallet.Implements(other)
+	case JettonWalletV2:
+		return JettonWallet.Implements(other)
+	case MultisigV2:
+		return Wallet.Implements(other)
+	case NftAuctionGetgemsV3:
+		return NftAuctionV1.Implements(other)
+	case NftAuctionGetgemsV4:
+		return NftSale.Implements(other)
+	case NftItemSimple:
+		return NftItem.Implements(other)
+	case NftSaleGetgemsV2:
+		return NftSaleV2.Implements(other)
+	case NftSaleGetgemsV3:
+		return NftSaleV2.Implements(other)
+	case NftSaleGetgemsV4:
+		return NftSale.Implements(other)
+	case NftSaleV1:
+		return NftSale.Implements(other)
+	case NftSaleV2:
+		return NftSale.Implements(other)
+	case StonfiPoolV2ConstProduct:
+		return StonfiPoolV2.Implements(other)
+	case StonfiPoolV2Stableswap:
+		return StonfiPoolV2.Implements(other)
+	case StonfiPoolV2WeightedStableswap:
+		return StonfiPoolV2.Implements(other)
+	case SubscriptionV2:
+		return Cron.Implements(other)
+	case WalletHighloadV1R1:
+		return Wallet.Implements(other)
+	case WalletHighloadV1R2:
+		return Wallet.Implements(other)
+	case WalletHighloadV2:
+		return Wallet.Implements(other)
+	case WalletHighloadV2R1:
+		return Wallet.Implements(other)
+	case WalletHighloadV2R2:
+		return Wallet.Implements(other)
+	case WalletHighloadV3R1:
+		return Wallet.Implements(other)
+	case WalletPreprocessedV2:
+		return Wallet.Implements(other)
+	case WalletV1R1:
+		return Wallet.Implements(other)
+	case WalletV1R2:
+		return Wallet.Implements(other)
+	case WalletV1R3:
+		return Wallet.Implements(other)
+	case WalletV2R1:
+		return Wallet.Implements(other)
+	case WalletV2R2:
+		return Wallet.Implements(other)
+	case WalletV3R1:
+		return Wallet.Implements(other)
+	case WalletV3R2:
+		return Wallet.Implements(other)
+	case WalletV4R1:
+		return Wallet.Implements(other)
+	case WalletV4R2:
+		return Wallet.Implements(other)
+	case WalletV5Beta:
+		return Wallet.Implements(other)
+	case WalletV5R1:
+		return Wallet.Implements(other)
+	case WalletVesting:
+		return Wallet.Implements(other)
+	}
+	return false
+}
+
+var knownContracts = map[ton.Bits256]knownContractDescription{
+	ton.MustParseHash("0432bae477ebbfe5c75ebfa7db38c6cd6c1f96d40227de6838f7007e5c503f94"): {
+		contractInterfaces: []ContractInterface{AffluentBatch},
+		getMethods:         []InvokeFn{},
+	},
+	ton.MustParseHash("0dceed21269d66013e95b19fbb5c55a6f01adad40837baa8e521cde3a02aa46c"): {
+		contractInterfaces: []ContractInterface{WalletHighloadV1R2},
+		getMethods:         []InvokeFn{},
+	},
+	ton.MustParseHash("0ff44a96fc2481111236d8d9920fd6e29b6108215e3ec5ba761ead9602adada4"): {
+		contractInterfaces: []ContractInterface{AirdropInterlockerV2},
+		getMethods: []InvokeFn{
+			GetAvailableClaimAmount,
+			GetDistributionInfo,
+			GetUnlocksInfo,
+		},
+	},
+	ton.MustParseHash("11acad7955844090f283bf238bc1449871f783e7cc0979408d3f4859483e8525"): {
+		contractInterfaces: []ContractInterface{WalletHighloadV3R1},
+		getMethods: []InvokeFn{
+			GetPublicKey,
+			GetSubwalletId,
+			GetTimeout,
+		},
+	},
+	ton.MustParseHash("14dbe27de307b26faf75361dc5429d1a14b5288f9a82ce08727513c02835e4f7"): {
+		contractInterfaces: []ContractInterface{Mytonwallet2Fa},
+		getMethods:         []InvokeFn{},
+	},
+	ton.MustParseHash("1bd9c5a39bffb7a0f341588b5dd92b813a842bf65ef14109382200ceaf8f72df"): {
+		contractInterfaces: []ContractInterface{NftAuctionGetgemsV3},
+		getMethods: []InvokeFn{
+			GetSaleData,
+		},
+	},
+	ton.MustParseHash("203dd4f358adb49993129aa925cac39916b68a0e4f78d26e8f2c2b69eafa5679"): {
+		contractInterfaces: []ContractInterface{WalletHighloadV2R2},
+		getMethods: []InvokeFn{
+			GetPublicKey,
+		},
+	},
+	ton.MustParseHash("20834b7b72b112147e1b2fb457b84e74d1a30f04f737d4f62a668e9552d2b72f"): {
+		contractInterfaces: []ContractInterface{WalletV5R1},
+		getMethods: []InvokeFn{
+			GetExtensions,
+			GetPublicKey,
+			GetSubwalletId,
+			IsSignatureAllowed,
+			Seqno,
+		},
+	},
+	ton.MustParseHash("24221fa571e542e055c77bedfdbf527c7af460cfdc7f344c450787b4cfa1eb4d"): {
+		contractInterfaces: []ContractInterface{NftSaleGetgemsV3},
+		getMethods: []InvokeFn{
+			GetSaleData,
+		},
+	},
+	ton.MustParseHash("32050dfac44f64866bcc86f2cd9e1305fe9dcadb3959c002237cfb0902d44323"): {
+		contractInterfaces: []ContractInterface{NftSaleGetgemsV3},
+		getMethods: []InvokeFn{
+			GetSaleData,
+		},
+	},
+	ton.MustParseHash("45ebbce9b5d235886cb6bfe1c3ad93b708de058244892365c9ee0dfe439cb7b5"): {
+		contractInterfaces: []ContractInterface{WalletPreprocessedV2},
+		getMethods:         []InvokeFn{},
+	},
+	ton.MustParseHash("48942963827c5147fe935cd22e88ba418011fe656eab78b79c5c6343d84d421a"): {
+		contractInterfaces: []ContractInterface{SubscriptionV2},
+		getMethods: []InvokeFn{
+			GetCronInfo,
+			GetPaymentInfo,
+			GetSubscriptionInfo,
+		},
+	},
+	ton.MustParseHash("4c9123828682fa6f43797ab41732bca890cae01766e0674100250516e0bf8d42"): {
+		contractInterfaces: []ContractInterface{NftItemSimple},
+		getMethods: []InvokeFn{
+			GetNftData,
+		},
+	},
+	ton.MustParseHash("587cc789eff1c84f46ec3797e45fc809a14ff5ae24f1e0c7a6a99cc9dc9061ff"): {
+		contractInterfaces: []ContractInterface{WalletV1R3},
+		getMethods: []InvokeFn{
+			GetPublicKey,
+			Seqno,
+		},
+	},
+	ton.MustParseHash("58fbc2dba2684d38b80bfce3dc5a9ffce00af9b464c7b4dc21cf57e3aae11f1c"): {
+		contractInterfaces: []ContractInterface{CoffeeMevProtector},
+		getMethods:         []InvokeFn{},
+	},
+	ton.MustParseHash("5c9a5e68c108e18721a07c42f9956bfb39ad77ec6d624b60c576ec88eee65329"): {
+		contractInterfaces: []ContractInterface{WalletV2R1},
+		getMethods: []InvokeFn{
+			Seqno,
+		},
+	},
+	ton.MustParseHash("64dd54805522c5be8a9db59cea0105ccf0d08786ca79beb8cb79e880a8d7322d"): {
+		contractInterfaces: []ContractInterface{WalletV4R1},
+		getMethods: []InvokeFn{
+			GetPluginList,
+			GetPublicKey,
+			GetSubwalletId,
+			Seqno,
+		},
+	},
+	ton.MustParseHash("6668872fa79705443ffd47523e8e9ea9f76ab99f9a0b59d27de8f81a1c27b9d4"): {
+		contractInterfaces: []ContractInterface{NftAuctionGetgemsV3},
+		getMethods: []InvokeFn{
+			GetSaleData,
+		},
+	},
+	ton.MustParseHash("6b95a6418b9c9d2359045d1e7559b8d549ae0e506f24caab58fa30c8fb1feb86"): {
+		contractInterfaces: []ContractInterface{NftSaleGetgemsV4},
+		getMethods: []InvokeFn{
+			GetFixPriceDataV4,
+		},
+	},
+	ton.MustParseHash("6cda351c3c0ee368873a5ea10f53b9a47a55aacdc8deb3fd103c2f968c952527"): {
+		contractInterfaces: []ContractInterface{OmnistonReferral},
+		getMethods:         []InvokeFn{},
+	},
+	ton.MustParseHash("6e5d667fa6efa8187c6d029efd4015601232fd2e36c291dbc346dedab6dc8024"): {
+		contractInterfaces: []ContractInterface{NftOfferGetgemsV1},
+		getMethods:         []InvokeFn{},
+	},
+	ton.MustParseHash("8278f4c5233de6fbedc969af519344a7a9bffc544856dba986a95c0bcf8571c9"): {
+		contractInterfaces: []ContractInterface{NftSaleGetgemsV2},
+		getMethods: []InvokeFn{
+			GetSaleData,
+		},
+	},
+	ton.MustParseHash("84dafa449f98a6987789ba232358072bc0f76dc4524002a5d0918b9a75d2d599"): {
+		contractInterfaces: []ContractInterface{WalletV3R2},
+		getMethods: []InvokeFn{
+			GetPublicKey,
+			Seqno,
+		},
+	},
+	ton.MustParseHash("88c38d29586b5d748badbc7b4dbfe239c25cb85ca9c4586a44e05507a6edf6a6"): {
+		contractInterfaces: []ContractInterface{MoonOrder},
+		getMethods: []InvokeFn{
+			GetOrderAmount,
+			GetStatus,
+			GetVestingData,
+		},
+	},
+	ton.MustParseHash("89468f02c78e570802e39979c8516fc38df07ea76a48357e0536f2ba7b3ee37b"): {
+		contractInterfaces: []ContractInterface{JettonWalletGoverned},
+		getMethods: []InvokeFn{
+			GetWalletData,
+		},
+	},
+	ton.MustParseHash("8ceb45b3cd4b5cc60eaae1c13b9c092392677fe536b2e9b2d801b62eff931fe1"): {
+		contractInterfaces: []ContractInterface{WalletHighloadV2R1},
+		getMethods:         []InvokeFn{},
+	},
+	ton.MustParseHash("8d28ea421b77e805fea52acf335296499f03aec8e9fd21ddb5f2564aa65c48de"): {
+		contractInterfaces: []ContractInterface{JettonWalletV2},
+		getMethods: []InvokeFn{
+			GetWalletData,
+		},
+	},
+	ton.MustParseHash("9494d1cc8edf12f05671a1a9ba09921096eb50811e1924ec65c3c629fbb80812"): {
+		contractInterfaces: []ContractInterface{WalletHighloadV2},
+		getMethods: []InvokeFn{
+			GetPublicKey,
+		},
+	},
+	ton.MustParseHash("9b9891eaa7db7becc6ccdda1bd9a8d25dc3df2817d57e4b27ec003daf81a4439"): {
+		contractInterfaces: []ContractInterface{ToncoRouter},
+		getMethods: []InvokeFn{
+			GetChildContracts,
+			GetRouterState,
+		},
+	},
+	ton.MustParseHash("a01e057fbd4288402b9898d78d67bd4e90254c93c5866879bc2d1d12865436bc"): {
+		contractInterfaces: []ContractInterface{MultisigOrderV2},
+		getMethods: []InvokeFn{
+			GetOrderData,
+		},
+	},
+	ton.MustParseHash("a0cfc2c48aee16a271f2cfc0b7382d81756cecb1017d077faaab3bb602f6868c"): {
+		contractInterfaces: []ContractInterface{WalletV1R1},
+		getMethods:         []InvokeFn{},
+	},
+	ton.MustParseHash("acd2b8ec4db7414396fa53698653ecc04a416ee3649d8f5b20b41f176ad833f0"): {
+		contractInterfaces: []ContractInterface{AirdropInterlockerV1},
+		getMethods: []InvokeFn{
+			GetContractData,
+		},
+	},
+	ton.MustParseHash("b48b531abec3b714638291f7d77ed6dc9f6a2729efca20477137374d4ae8b590"): {
+		contractInterfaces: []ContractInterface{WalletVesting},
+		getMethods: []InvokeFn{
+			GetPublicKey,
+			GetVestingData,
+			Seqno,
+		},
+	},
+	ton.MustParseHash("b61041a58a7980b946e8fb9e198e3c904d24799ffa36574ea4251c41a566f581"): {
+		contractInterfaces: []ContractInterface{WalletV3R1},
+		getMethods: []InvokeFn{
+			Seqno,
+		},
+	},
+	ton.MustParseHash("bc947d16346c2fdc845b7a446382f59c86acb075e2a31dbfa956cd0c9e54678e"): {
+		contractInterfaces: []ContractInterface{ToncoPool},
+		getMethods: []InvokeFn{
+			GetAllTickInfos,
+			GetChildContracts,
+			GetCollectionData,
+			GetIsActive,
+			GetPoolStateAndConfiguration,
+		},
+	},
+	ton.MustParseHash("beb0683ebeb8927fe9fc8ec0a18bc7dd17899689825a121eab46c5a3a860d0ce"): {
+		contractInterfaces: []ContractInterface{JettonWalletV1},
+		getMethods: []InvokeFn{
+			GetWalletData,
+		},
+	},
+	ton.MustParseHash("c5ef19df22aee8b707bd7a181174e400a4225223c5ae40d8320f5ddd707d34a1"): {
+		contractInterfaces: []ContractInterface{Tonkeeper2Fa},
+		getMethods: []InvokeFn{
+			GetDelegationState,
+			GetRootPubkey,
+			GetSeedPubkey,
+			GetWalletAddr,
+		},
+	},
+	ton.MustParseHash("ccae6ffb603c7d3e779ab59ec267ffc22dc1ebe0af9839902289a7a83e4c00f1"): {
+		contractInterfaces: []ContractInterface{GramMiner},
+		getMethods: []InvokeFn{
+			GetPowParams,
+		},
+	},
+	ton.MustParseHash("ce5a78534eaaa6ceed8dafd486d076eb60a9b0d6dbfb53676f662649c0689956"): {
+		contractInterfaces: []ContractInterface{NftAuctionGetgemsV4},
+		getMethods: []InvokeFn{
+			GetAuctionDataV4,
+		},
+	},
+	ton.MustParseHash("ce84c382c8b6ac0d05212bbaa34d05e54e1e30e2cc9289f2d9c9d64726a112a8"): {
+		contractInterfaces: []ContractInterface{MoonBooster},
+		getMethods: []InvokeFn{
+			GetPool,
+			GetStatus,
+		},
+	},
+	ton.MustParseHash("d04737d6f678103a9e448c22109919d0f9cbe05ef1b1a83c5e7b886683a54704"): {
+		contractInterfaces: []ContractInterface{MoonOrderFactory},
+		getMethods: []InvokeFn{
+			GetId,
+		},
+	},
+	ton.MustParseHash("d3d14da9a627f0ec3533341829762af92b9540b21bf03665fac09c2b46eabbac"): {
+		contractInterfaces: []ContractInterface{MultisigV2},
+		getMethods: []InvokeFn{
+			GetMultisigData,
+		},
+	},
+	ton.MustParseHash("d4902fcc9fad74698fa8e353220a68da0dcf72e32bcb2eb9ee04217c17d3062c"): {
+		contractInterfaces: []ContractInterface{WalletV1R2},
+		getMethods: []InvokeFn{
+			Seqno,
+		},
+	},
+	ton.MustParseHash("d7c38fa994a8282657209f93ebc5dfe908a5f06d2e41f0c085e917bc4f54a2b3"): {
+		contractInterfaces: []ContractInterface{JettonWalletCoffeeLp},
+		getMethods: []InvokeFn{
+			GetWalletData,
+		},
+	},
+	ton.MustParseHash("d8cdbbb79f2c5caa677ac450770be0351be21e1250486de85cc52aa33dd16484"): {
+		contractInterfaces: []ContractInterface{WalletHighloadV1R1},
+		getMethods:         []InvokeFn{},
+	},
+	ton.MustParseHash("deb53b6c5765c1e6cd238bf47bc5e83ba596bdcc04b0b84cd50ab1e474a08f31"): {
+		contractInterfaces: []ContractInterface{NftSaleGetgemsV3},
+		getMethods: []InvokeFn{
+			GetSaleData,
+		},
+	},
+	ton.MustParseHash("e4cf3b2f4c6d6a61ea0f2b5447d266785b26af3637db2deee6bcd1aa826f3412"): {
+		contractInterfaces: []ContractInterface{WalletV5Beta},
+		getMethods: []InvokeFn{
+			Seqno,
+		},
+	},
+	ton.MustParseHash("e82ca5b820228565747a837c7634bef30bb48f5297937b2141fe5f6118ffaa4c"): {
+		contractInterfaces: []ContractInterface{OmnistonReferral},
+		getMethods:         []InvokeFn{},
+	},
+	ton.MustParseHash("e9aa0c02aafd5b38a295cc489019882439cf35c9738cc6dbeece4403dd066a5a"): {
+		contractInterfaces: []ContractInterface{JettonWalletRegulated},
+		getMethods: []InvokeFn{
+			GetWalletData,
+		},
+	},
+	ton.MustParseHash("edcc62f1752297fbda2408c09ca420b3af9528102e33b9e0a0ebe38553c18fec"): {
+		contractInterfaces: []ContractInterface{OmnistonReferral},
+		getMethods:         []InvokeFn{},
+	},
+	ton.MustParseHash("ee07140b3ccfe261ed28580f60a16bda4c4b9c6d7da7ae05f5b7c7e2b1dfe226"): {
+		contractInterfaces: []ContractInterface{MoonOrder},
+		getMethods: []InvokeFn{
+			GetOrderAmount,
+			GetStatus,
+			GetVestingData,
+		},
+	},
+	ton.MustParseHash("f3d7ca53493deedac28b381986a849403cbac3d2c584779af081065af0ac4b93"): {
+		contractInterfaces: []ContractInterface{WalletV5Beta},
+		getMethods: []InvokeFn{
+			Seqno,
+		},
+	},
+	ton.MustParseHash("fc8df8be21d83d3876984d7859c078c916dfd7654bc465bf9cd64602eeb4c587"): {
+		contractInterfaces: []ContractInterface{OmnistonReferral},
+		getMethods:         []InvokeFn{},
+	},
+	ton.MustParseHash("fe9530d3243853083ef2ef0b4c2908c0abf6fa1c31ea243aacaa5bf8c7d753f1"): {
+		contractInterfaces: []ContractInterface{WalletV2R2},
+		getMethods: []InvokeFn{
+			GetPublicKey,
+			Seqno,
+		},
+	},
+	ton.MustParseHash("fea9c6a1ef5eab2c5ca94d6bef1e33994c5786abeb5264760e150da33bfb3677"): {
+		contractInterfaces: []ContractInterface{CoffeeCrossDex},
+		getMethods:         []InvokeFn{},
+	},
+	ton.MustParseHash("feb5ff6820e2ff0d9483e7e0d62c817d846789fb4ae580c878866d959dabd5c0"): {
+		contractInterfaces: []ContractInterface{WalletV4R2},
+		getMethods: []InvokeFn{
+			GetPluginList,
+			GetPublicKey,
+			GetSubwalletId,
+			Seqno,
+		},
+	},
+}
+
+func (c ContractInterface) IntMsgs() []msgDecoderFunc {
+	switch c {
+	case BidaskDammLpWallet:
+		return []msgDecoderFunc{
+			decodeFuncBidaskDammBurnMsgBody,
+			decodeFuncBidaskDammClaimFeesMsgBody,
+		}
+	case BidaskDammPool:
+		return []msgDecoderFunc{
+			decodeFuncJettonNotifyMsgBody,
+			decodeFuncBidaskDammSwapMsgBody,
+			decodeFuncBidaskDammProvideOneSideMsgBody,
+			decodeFuncBidaskDammInternalBurnMsgBody,
+			decodeFuncBidaskDammInternalClaimMsgBody,
+		}
+	case BidaskInternalLiquidityVault:
+		return []msgDecoderFunc{
+			decodeFuncBidaskSaveLiquidityInfoMsgBody,
+		}
+	case BidaskLpMultitoken:
+		return []msgDecoderFunc{
+			decodeFuncBidaskBurnMsgBody,
+			decodeFuncBidaskBurnAllMsgBody,
+		}
+	case BidaskPool:
+		return []msgDecoderFunc{
+			decodeFuncJettonNotifyMsgBody,
+			decodeFuncBidaskSwapMsgBody,
+			decodeFuncBidaskSwapV2MsgBody,
+			decodeFuncBidaskProvideMsgBody,
+			decodeFuncBidaskSwapSuccessMsgBody,
+			decodeFuncBidaskSwapSuccessV2MsgBody,
+			decodeFuncBidaskSwapFallbackMsgBody,
+			decodeFuncBidaskSwapFallbackV2MsgBody,
+			decodeFuncBidaskProvideRefundMsgBody,
+			decodeFuncBidaskBurnPayoutMsgBody,
+			decodeFuncBidaskAddingLiquidityNotifyMsgBody,
+		}
+	case BidaskRange:
+		return []msgDecoderFunc{
+			decodeFuncBidaskInternalSwapMsgBody,
+			decodeFuncBidaskInternalSwapV2MsgBody,
+			decodeFuncBidaskInternalContinueSwapMsgBody,
+			decodeFuncBidaskInternalContinueSwapV2MsgBody,
+			decodeFuncBidaskInternalContinueProvideMsgBody,
+			decodeFuncBidaskInternalBurnMsgBody,
+		}
+	case CoffeeCrossDex:
+		return []msgDecoderFunc{
+			decodeFuncJettonNotifyMsgBody,
+			decodeFuncCoffeeCrossDexResendMsgBody,
+			decodeFuncCoffeeCrossDexFailureMsgBody,
+		}
+	case CoffeeFactory:
+		return []msgDecoderFunc{
+			decodeFuncCoffeeCreatePoolCreatorRequestMsgBody,
+			decodeFuncCoffeeCreateLiquidityDepositoryRequestMsgBody,
+			decodeFuncCoffeeCreatePoolRequestMsgBody,
+			decodeFuncCoffeeCreateVaultMsgBody,
+			decodeFuncCoffeeUpdateAdminMsgBody,
+			decodeFuncCoffeeUpdateWithdrawerMsgBody,
+			decodeFuncCoffeeUpdateCodeCellsMsgBody,
+			decodeFuncCoffeeUpdateContractMsgBody,
+			decodeFuncCoffeeActivateVaultMsgBody,
+			decodeFuncCoffeeWithdrawMsgBody,
+		}
+	case CoffeeMevProtector:
+		return []msgDecoderFunc{
+			decodeFuncJettonNotifyMsgBody,
+			decodeFuncCoffeeMevProtectHoldFundsMsgBody,
+			decodeFuncCoffeeMevProtectFailedSwapMsgBody,
+		}
+	case CoffeePool:
+		return []msgDecoderFunc{
+			decodeFuncJettonBurnNotificationMsgBody,
+			decodeFuncCoffeeSwapInternalMsgBody,
+			decodeFuncCoffeeDepositLiquidityInternalMsgBody,
+			decodeFuncCoffeeWithdrawInternalMsgBody,
+			decodeFuncCoffeeUpdateContractInternalMsgBody,
+			decodeFuncCoffeeCreatePoolInternalMsgBody,
+			decodeFuncCoffeeDeployMsgBody,
+		}
+	case CoffeeStakingItem:
+		return []msgDecoderFunc{
+			decodeFuncCoffeeStakingInitMsgBody,
+		}
+	case CoffeeStakingMaster:
+		return []msgDecoderFunc{
+			decodeFuncCoffeeStakingInitMsgBody,
+			decodeFuncCoffeeStakingDepositMsgBody,
+			decodeFuncCoffeeStakingUpdateRewardsMsgBody,
+			decodeFuncCoffeeStakingClaimRewardsMsgBody,
+		}
+	case CoffeeStakingVault:
+		return []msgDecoderFunc{
+			decodeFuncCoffeeStakingInitMsgBody,
+			decodeFuncJettonNotifyMsgBody,
+		}
+	case CoffeeVaultExtra:
+		return []msgDecoderFunc{
+			decodeFuncCoffeePayoutInternalMsgBody,
+			decodeFuncCoffeeSwapExtraMsgBody,
+			decodeFuncCoffeeDepositLiquidityExtraMsgBody,
+			decodeFuncCoffeeCreatePoolExtraMsgBody,
+			decodeFuncCoffeeUpdateContractInternalMsgBody,
+		}
+	case CoffeeVaultJetton:
+		return []msgDecoderFunc{
+			decodeFuncJettonNotifyMsgBody,
+			decodeFuncCoffeePayoutInternalMsgBody,
+			decodeFuncCoffeeCreateVaultInternalMsgBody,
+			decodeFuncCoffeeActivateVaultInternalMsgBody,
+			decodeFuncCoffeeUpdateContractInternalMsgBody,
+		}
+	case CoffeeVaultNative:
+		return []msgDecoderFunc{
+			decodeFuncCoffeePayoutInternalMsgBody,
+			decodeFuncCoffeeSwapMsgBody,
+			decodeFuncCoffeeDepositLiquidityMsgBody,
+			decodeFuncCoffeeCreatePoolMsgBody,
+			decodeFuncCoffeeUpdateContractInternalMsgBody,
+		}
+	case DaolamaVault:
+		return []msgDecoderFunc{
+			decodeFuncDaolamaVaultSupplyMsgBody,
+			decodeFuncDaolamaVaultWithdrawMsgBody,
+		}
+	case DedustFactory:
+		return []msgDecoderFunc{
+			decodeFuncDedustCreateVaultMsgBody,
+			decodeFuncDedustCreateVolatilePoolMsgBody,
+		}
+	case DedustPool:
+		return []msgDecoderFunc{
+			decodeFuncDedustSwapExternalMsgBody,
+			decodeFuncDedustSwapPeerMsgBody,
+			decodeFuncJettonBurnNotificationMsgBody,
+		}
+	case DedustV2Cpmm:
+		return []msgDecoderFunc{
+			decodeFuncJettonNotifyMsgBody,
+			decodeFuncJettonTransferMsgBody,
+		}
+	case DedustVault:
+		return []msgDecoderFunc{
+			decodeFuncJettonNotifyMsgBody,
+			decodeFuncJettonTransferMsgBody,
+			decodeFuncDedustSwapMsgBody,
+			decodeFuncDedustDepositLiquidityMsgBody,
+			decodeFuncDedustPayoutFromPoolMsgBody,
+		}
+	case Dns:
+		return []msgDecoderFunc{
+			decodeFuncDnsBalanceReleaseMsgBody,
+			decodeFuncProcessGovernanceDecisionMsgBody,
+		}
+	case GramMiner:
+		return []msgDecoderFunc{
+			decodeFuncGramSubmitProofOfWorkMsgBody,
+		}
+	case JettonMaster:
+		return []msgDecoderFunc{
+			decodeFuncJettonBurnNotificationMsgBody,
+		}
+	case JettonWallet:
+		return []msgDecoderFunc{
+			decodeFuncJettonTransferMsgBody,
+			decodeFuncJettonInternalTransferMsgBody,
+			decodeFuncJettonBurnMsgBody,
+		}
+	case MoonOrder:
+		return []msgDecoderFunc{
+			decodeFuncJettonNotifyMsgBody,
+			decodeFuncJettonTransferMsgBody,
+			decodeFuncMoonCancelOrderMsgBody,
+			decodeFuncMoonFillOrderMsgBody,
+		}
+	case MoonOrderFactory:
+		return []msgDecoderFunc{
+			decodeFuncJettonNotifyMsgBody,
+			decodeFuncJettonTransferMsgBody,
+			decodeFuncMoonCreateOrderMsgBody,
+		}
+	case MoonPool:
+		return []msgDecoderFunc{
+			decodeFuncJettonNotifyMsgBody,
+			decodeFuncJettonTransferMsgBody,
+			decodeFuncMoonSwapMsgBody,
+			decodeFuncMoonDepositLiquidityMsgBody,
+			decodeFuncMoonBoostPoolMsgBody,
+			decodeFuncMoonProvideLiquidityMsgBody,
+		}
+	case NftCollection:
+		return []msgDecoderFunc{
+			decodeFuncGetRoyaltyParamsMsgBody,
+		}
+	case NftItem:
+		return []msgDecoderFunc{
+			decodeFuncNftTransferMsgBody,
+			decodeFuncGetStaticDataMsgBody,
+		}
+	case SmartAccount:
+		return []msgDecoderFunc{
+			decodeFuncStormNotifyUpdatePositionMsgBody,
+			decodeFuncStormDepositNotifyMsgBody,
+			decodeFuncStormWithdrawRequestUserMsgBody,
+			decodeFuncStormFailNotificationMsgBody,
+			decodeFuncStormReferralFeesMsgBody,
+			decodeFuncStormExecuteOrdersBundleInternalMsgBody,
+			decodeFuncStormAddPublicKeyMsgBody,
+			decodeFuncStormRemovePublicKeyMsgBody,
+			decodeFuncStormRemoveAllKeysExceptCurrentMsgBody,
+			decodeFuncStormDepositTonMsgBody,
+		}
+	case SmartAccountBlank:
+		return []msgDecoderFunc{
+			decodeFuncStormDepositNotifyMsgBody,
+			decodeFuncStormReferralFeesMsgBody,
+			decodeFuncStormInitSaMsgBody,
+			decodeFuncStormDepositNotifyWithDeployMsgBody,
+		}
+	case SmartAccountFactory:
+		return []msgDecoderFunc{
+			decodeFuncStormNotifyWithDeployMsgBody,
+			decodeFuncStormDeployOrdinarySaMsgBody,
+		}
+	case StonfiLpAccountV2:
+		return []msgDecoderFunc{
+			decodeFuncStonfiAddLiquidityV2MsgBody,
+			decodeFuncPtonResetGasMsgBody,
+		}
+	case StonfiPoolV2:
+		return []msgDecoderFunc{
+			decodeFuncStonfiBurnNotificationExtV2MsgBody,
+			decodeFuncStonfiSwapV2MsgBody,
+			decodeFuncStonfiProvideLpV2MsgBody,
+			decodeFuncPtonResetGasMsgBody,
+			decodeFuncStonfiCbAddLiquidityV2MsgBody,
+		}
+	case StonfiRouterV2:
+		return []msgDecoderFunc{
+			decodeFuncJettonNotifyMsgBody,
+			decodeFuncPtonResetGasMsgBody,
+			decodeFuncStonfiPayToV2MsgBody,
+			decodeFuncStonfiPayVaultV2MsgBody,
+			decodeFuncStonfiVaultPayToV2MsgBody,
+		}
+	case StonfiVaultV2:
+		return []msgDecoderFunc{
+			decodeFuncStonfiWithdrawFeeV2MsgBody,
+			decodeFuncStonfiDepositRefFeeV2MsgBody,
+		}
+	case StormExecutor:
+		return []msgDecoderFunc{
+			decodeFuncStormMintExecutorMsgBody,
+			decodeFuncStormAddExecutorAmountMsgBody,
+			decodeFuncNftTransferMsgBody,
+			decodeFuncGetStaticDataMsgBody,
+		}
+	case StormPositionManager:
+		return []msgDecoderFunc{
+			decodeFuncStormTakeReferralFeesMsgBody,
+			decodeFuncStormCancelOrderMsgBody,
+			decodeFuncStormCreateOrderMsgBody,
+			decodeFuncStormCompleteOrderMsgBody,
+			decodeFuncStormActivateOrderMsgBody,
+			decodeFuncStormUpdatePositionMsgBody,
+			decodeFuncStormUpdatePositionWithStopLossMsgBody,
+			decodeFuncStormProvidePositionMsgBody,
+		}
+	case StormReferral:
+		return []msgDecoderFunc{
+			decodeFuncStormMintReferralMsgBody,
+			decodeFuncStormAddReferralAmountMsgBody,
+			decodeFuncNftTransferMsgBody,
+			decodeFuncGetStaticDataMsgBody,
+		}
+	case StormVamm:
+		return []msgDecoderFunc{
+			decodeFuncStormChangeSettingsMsgBody,
+			decodeFuncStormPayFundingMsgBody,
+			decodeFuncStormVammInitMsgBody,
+			decodeFuncStormExecuteOrderMsgBody,
+			decodeFuncTakePositionV2MsgBody,
+		}
+	case StormVammCoinm:
+		return []msgDecoderFunc{
+			decodeFuncStormChangeSettingsMsgBody,
+			decodeFuncStormPayFundingMsgBody,
+			decodeFuncStormVammInitMsgBody,
+			decodeFuncStormExecuteOrderMsgBody,
+			decodeFuncTakePositionV2MsgBody,
+		}
+	case StormVault:
+		return []msgDecoderFunc{
+			decodeFuncStormWithdrawReferralAmountMsgBody,
+			decodeFuncStormWithdrawExecutorAmountMsgBody,
+			decodeFuncStormVaultUnstakeMsgBody,
+			decodeFuncStormVaultInitMsgBody,
+			decodeFuncStormRequestWithdrawPositionMsgBody,
+			decodeFuncStormVaultTradeNotificationMsgBody,
+			decodeFuncJettonNotifyMsgBody,
+			decodeFuncStormDepositRevertMsgBody,
+			decodeFuncStormWithdrawRequestMsgBody,
+			decodeFuncStormTradeNotificationV2MsgBody,
+			decodeFuncStormFailedBundleExecutionMsgBody,
+		}
+	case StormVaultNative:
+		return []msgDecoderFunc{
+			decodeFuncStormWithdrawReferralAmountMsgBody,
+			decodeFuncStormWithdrawExecutorAmountMsgBody,
+			decodeFuncStormVaultStakeMsgBody,
+			decodeFuncStormVaultInitMsgBody,
+			decodeFuncStormRequestWithdrawPositionMsgBody,
+			decodeFuncStormVaultTradeNotificationMsgBody,
+			decodeFuncStormDepositNativeMsgBody,
+			decodeFuncStormDepositRevertMsgBody,
+			decodeFuncStormWithdrawRequestMsgBody,
+			decodeFuncStormTradeNotificationV2MsgBody,
+			decodeFuncStormFailedBundleExecutionMsgBody,
+		}
+	case SubscriptionV1:
+		return []msgDecoderFunc{
+			decodeFuncWalletPluginDestructMsgBody,
+			decodeFuncPaymentConfirmedMsgBody,
+		}
+	case SubscriptionV2:
+		return []msgDecoderFunc{
+			decodeFuncPaymentConfirmedMsgBody,
+			decodeFuncWalletPluginDestructMsgBody,
+			decodeFuncSubscriptionReducePaymentMsgBody,
+			decodeFuncSubscriptionDeployMsgBody,
+		}
+	case ToncoAccount:
+		return []msgDecoderFunc{
+			decodeFuncAccountv3AddLiquidityMsgBody,
+		}
+	case ToncoPool:
+		return []msgDecoderFunc{
+			decodeFuncPoolv3SwapMsgBody,
+		}
+	case ToncoRouter:
+		return []msgDecoderFunc{
+			decodeFuncJettonNotifyMsgBody,
+			decodeFuncPayToMsgBody,
+		}
+	case Tonkeeper2Fa:
+		return []msgDecoderFunc{
+			decodeFuncTonkeeper2FaSignedMsgBody,
+		}
+	case WalletV4R1:
+		return []msgDecoderFunc{
+			decodeFuncWalletPluginDestructMsgBody,
+			decodeFuncPaymentRequestMsgBody,
+		}
+	case WalletV4R2:
+		return []msgDecoderFunc{
+			decodeFuncWalletPluginDestructMsgBody,
+			decodeFuncPaymentRequestMsgBody,
+		}
+	case WalletV5R1:
+		return []msgDecoderFunc{
+			decodeFuncWalletSignedInternalV5R1MsgBody,
+			decodeFuncWalletExtensionActionV5R1MsgBody,
+		}
+	case WhalesPool:
+		return []msgDecoderFunc{
+			decodeFuncWhalesNominatorsWithdrawMsgBody,
+			decodeFuncWhalesNominatorsDepositMsgBody,
+			decodeFuncWhalesNominatorsSendStakeMsgBody,
+			decodeFuncWhalesNominatorsWithdrawUnownedMsgBody,
+			decodeFuncWhalesNominatorsForceKickMsgBody,
+		}
+	default:
+		return tolkIntMsgs[c]
+	}
+}
+
+func (c ContractInterface) ExtInMsgs() []msgDecoderFunc {
+	switch c {
+	case Cron:
+		return []msgDecoderFunc{
+			decodeFuncCronTriggerExtInMsgBody,
+		}
+	case SmartAccount:
+		return []msgDecoderFunc{
+			decodeFuncStormExecuteOrdersBundleExternalExtInMsgBody,
+		}
+	case SubscriptionV2:
+		return []msgDecoderFunc{
+			decodeFuncCronTriggerExtInMsgBody,
+		}
+	case Tonkeeper2Fa:
+		return []msgDecoderFunc{
+			decodeFuncTonkeeper2FaSignedExternalExtInMsgBody,
+		}
+	case WalletHighloadV2:
+		return []msgDecoderFunc{
+			decodeFuncHighloadWalletSignedV2ExtInMsgBody,
+		}
+	case WalletHighloadV2R2:
+		return []msgDecoderFunc{
+			decodeFuncHighloadWalletSignedV2ExtInMsgBody,
+		}
+	case WalletHighloadV3R1:
+		return []msgDecoderFunc{
+			decodeFuncHighloadWalletSignedV3ExtInMsgBody,
+		}
+	case WalletPreprocessedV2:
+		return []msgDecoderFunc{
+			decodeFuncPreprocessedWalletSignedV2ExtInMsgBody,
+		}
+	case WalletV3R1:
+		return []msgDecoderFunc{
+			decodeFuncWalletSignedV3ExtInMsgBody,
+		}
+	case WalletV3R2:
+		return []msgDecoderFunc{
+			decodeFuncWalletSignedV3ExtInMsgBody,
+		}
+	case WalletV4R1:
+		return []msgDecoderFunc{
+			decodeFuncWalletSignedV4ExtInMsgBody,
+		}
+	case WalletV4R2:
+		return []msgDecoderFunc{
+			decodeFuncWalletSignedV4ExtInMsgBody,
+		}
+	case WalletV5R1:
+		return []msgDecoderFunc{
+			decodeFuncWalletSignedExternalV5R1ExtInMsgBody,
+		}
+	default:
+		return tolkExtInMsgs[c]
+	}
+}
+
+func (c ContractInterface) ExtOutMsgs() []msgDecoderFunc {
+	switch c {
+	case CoffeePool:
+		return []msgDecoderFunc{
+			decodeFuncCoffeeSwapSucceededExtOutMsgBody,
+			decodeFuncCoffeeSwapFailedExtOutMsgBody,
+			decodeFuncCoffeeDepositLiquiditySucceededExtOutMsgBody,
+			decodeFuncCoffeeDepositLiquidityFailedExtOutMsgBody,
+			decodeFuncCoffeeWithdrawLiquiditySucceededExtOutMsgBody,
+		}
+	case CoffeeStakingMaster:
+		return []msgDecoderFunc{
+			decodeFuncCoffeeStakingRewardsUpdatedExtOutMsgBody,
+			decodeFuncCoffeeStakingRewardsClaimedExtOutMsgBody,
+		}
+	case DedustPool:
+		return []msgDecoderFunc{
+			decodeFuncDedustSwapExtOutMsgBody,
+			decodeFuncDedustDepositExtOutMsgBody,
+			decodeFuncDedustWithdrawalExtOutMsgBody,
+		}
+	case ScaledUi:
+		return []msgDecoderFunc{
+			decodeFuncDisplayMultiplierChangedExtOutMsgBody,
+		}
+	case StormVamm:
+		return []msgDecoderFunc{
+			decodeFuncIntentLogExtOutMsgBody,
+		}
+	case StormVammCoinm:
+		return []msgDecoderFunc{
+			decodeFuncIntentLogExtOutMsgBody,
+		}
+	default:
+		return tolkExtOutMsgs[c]
+	}
+}

@@ -7,6 +7,8 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"github.com/tonkeeper/tongo/boc"
 )
 
@@ -38,6 +40,40 @@ func TestMaybe(t *testing.T) {
 			t.Fatal("not equal")
 		}
 	}
+}
+
+func TestStackReadWideMaybeCallback(t *testing.T) {
+	t.Run("exists", func(t *testing.T) {
+		stack := VmStack{values: []VmStackValue{
+			{SumType: "VmStkTinyInt", VmStkTinyInt: 129},
+			{SumType: "VmStkTinyInt", VmStkTinyInt: 42},
+		}}
+		got, err := StackReadWideMaybeCallback(&stack, 2, func(stack *VmStack) (int64, error) {
+			value, ok := stack.Pop()
+			if !ok {
+				return 0, ErrStackEmpty
+			}
+			return value.VmStkTinyInt, nil
+		})
+		require.NoError(t, err)
+		assert.True(t, got.Exists)
+		assert.Equal(t, int64(42), got.Value)
+		assert.Equal(t, 0, stack.Len())
+	})
+
+	t.Run("nothing", func(t *testing.T) {
+		stack := VmStack{values: []VmStackValue{
+			{SumType: "VmStkTinyInt", VmStkTinyInt: 0},
+			{SumType: "VmStkNull"},
+		}}
+		got, err := StackReadWideMaybeCallback(&stack, 2, func(stack *VmStack) (int64, error) {
+			require.Fail(t, "inner callback must not be called")
+			return 0, nil
+		})
+		require.NoError(t, err)
+		assert.False(t, got.Exists)
+		assert.Equal(t, 0, stack.Len())
+	})
 }
 
 func TestUnary(t *testing.T) {
@@ -110,7 +146,7 @@ func TestHashMapE(t *testing.T) {
 		t.Fatalf("error: %v", err)
 	}
 	if len(res.OutMsgs.Keys()) != int(msgCount) {
-		t.Fatalf("ivalid number of out messages")
+		t.Fatalf("invalid number of out messages")
 	}
 }
 
@@ -384,5 +420,83 @@ func TestAny_JSON(t *testing.T) {
 	}
 	if boc.Cell(data.Data.Value).ToString() != boc.Cell(unmarshalled.Data.Value).ToString() {
 		t.Fatalf("want isRight: %v, got isRight: %v", data.Data.IsRight, unmarshalled.Data.IsRight)
+	}
+}
+
+func TestAny_UnmarshalTLB(t *testing.T) {
+	tests := []struct {
+		name       string
+		modifyCell func(cell *boc.Cell) error
+		wantBoc    string
+	}{
+		{
+			name: "test1",
+			modifyCell: func(cell *boc.Cell) error {
+				_, err := cell.ReadBytes(2)
+				return err
+			},
+			wantBoc: "te6ccgEBAwEAEAACBAwNAQIABgECAwAGBAUG",
+		},
+		{
+			name: "test2",
+			modifyCell: func(cell *boc.Cell) error {
+				if _, err := cell.ReadBytes(1); err != nil {
+					return err
+				}
+				if _, err := cell.NextRef(); err != nil {
+					return err
+				}
+				_, err := cell.NextRef()
+				return err
+			},
+			wantBoc: "te6ccgEBAQEABQAABgsMDQ==",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			cell, err := boc.DeserializeSinglRootBase64("te6ccgEBAwEAEgACCAoLDA0BAgAGAQIDAAYEBQY=")
+			if err != nil {
+				t.Fatalf("DeserializeSinglRootBase64() failed: %v", err)
+			}
+			if err := tt.modifyCell(cell); err != nil {
+				t.Fatalf("modifyCell() failed: %v", err)
+			}
+			value := &Any{}
+			if err := value.UnmarshalTLB(cell, &Decoder{}); err != nil {
+				t.Fatalf("UnmarshalTLB() failed: %v", err)
+			}
+			res := boc.Cell(*value)
+			resultBoc, err := res.ToBocBase64()
+			if err != nil {
+				t.Fatalf("ToBocBase64() failed: %v", err)
+			}
+			if resultBoc != tt.wantBoc {
+				t.Errorf("UnmarshalTLB() got = %v, want %v", resultBoc, tt.wantBoc)
+			}
+		})
+	}
+}
+
+func TestMagic_UnmarshalJSON(t *testing.T) {
+	tests := []struct {
+		name      string
+		b         []byte
+		wantErr   bool
+		wantMagic Magic
+	}{
+		{
+			name:      "test1",
+			b:         []byte(`"0x0ec3c86d"`),
+			wantErr:   false,
+			wantMagic: Magic(0x0ec3c86d),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			var m Magic
+			if err := m.UnmarshalJSON(tt.b); (err != nil) != tt.wantErr {
+				t.Errorf("UnmarshalJSON() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
 	}
 }

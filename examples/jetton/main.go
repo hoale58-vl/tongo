@@ -4,17 +4,18 @@ import (
 	"context"
 	"crypto/ed25519"
 	"encoding/base64"
+	"log"
+	"math/big"
+	"time"
+
 	"github.com/tonkeeper/tongo"
 	"github.com/tonkeeper/tongo/contract/jetton"
 	"github.com/tonkeeper/tongo/liteapi"
 	"github.com/tonkeeper/tongo/wallet"
-	"log"
-	"math/big"
-	"time"
 )
 
 func main() {
-	recipientAddr, _ := tongo.AccountIDFromRaw("0:507dea7d606f22d9e85678d3eede39bbe133a868d2a0e3e07f5502cb70b8a512")
+	recipientAddr := tongo.MustParseAddress("0:507dea7d606f22d9e85678d3eede39bbe133a868d2a0e3e07f5502cb70b8a512")
 
 	client, err := liteapi.NewClientWithDefaultTestnet()
 	if err != nil {
@@ -23,7 +24,7 @@ func main() {
 
 	pk, _ := base64.StdEncoding.DecodeString("OyAWIb4FeP1bY1VhALWrU2JN9/8O1Kv8kWZ0WfXXpOM=")
 	privateKey := ed25519.NewKeyFromSeed(pk)
-	w, err := wallet.New(privateKey, wallet.V4R2, 0, nil, client)
+	w, err := wallet.New(privateKey, wallet.V4R2, client)
 	if err != nil {
 		panic("unable to create wallet")
 	}
@@ -45,20 +46,22 @@ func main() {
 
 	log.Printf("Jetton balance: %v", b)
 	log.Printf("Jetton decimals: %v", d)
-	log.Printf("Jetton wallet owner address: %v", w.GetAddress().String())
+	log.Printf("Jetton wallet owner address: %s", w.GetAddress().ToHuman(false, true))
 	log.Printf("Jetton wallet address: %v", jw.String())
 
 	amount := big.NewInt(1000)
 	if amount.Cmp(b) == 1 {
 		log.Fatalf("%v jettons needed, but only %v on balance", amount, b)
 	}
-
+	ownerAddress := w.GetAddress()
 	jettonTransfer := jetton.TransferMessage{
-		Jetton:           j,
-		JettonAmount:     amount,
-		Destination:      recipientAddr,
-		AttachedTon:      400_000_000,
-		ForwardTonAmount: 200_000_000,
+		Jetton:              j,
+		JettonAmount:        amount,
+		Destination:         recipientAddr.ID,
+		AttachedGram:        400_000_000,
+		ForwardGramAmount:   200_000_000,
+		Sender:              w.GetAddress(),
+		ResponseDestination: &ownerAddress,
 	}
 	err = w.Send(context.Background(), jettonTransfer)
 	if err != nil {

@@ -1,5 +1,10 @@
 package tlb
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
 // validator_info$_
 //
 //	validator_list_hash_short:uint32
@@ -30,23 +35,31 @@ type ValidatorsSet struct {
 	//   total:(## 16) main:(## 16) { main <= total } { main >= 1 }
 	//   list:(Hashmap 16 ValidatorDescr) = ValidatorSet;
 	Validators *struct {
-		UtimeSince uint32
-		UtimeUntil uint32
-		Total      uint16
-		Main       uint16
-		List       Hashmap[Uint16, ValidatorDescr]
+		ValidatorSetsCommon
+		List Hashmap[Uint16, ValidatorDescr]
 	} `tlbSumType:"validators#11"`
 	// validators_ext#12 utime_since:uint32 utime_until:uint32
 	//   total:(## 16) main:(## 16) { main <= total } { main >= 1 }
 	//   total_weight:uint64 list:(HashmapE 16 ValidatorDescr) = ValidatorSet;
 	ValidatorsExt *struct {
-		UtimeSince  uint32
-		UtimeUntil  uint32
-		Total       uint16
-		Main        uint16
+		ValidatorSetsCommon
 		TotalWeight uint64
 		List        HashmapE[Uint16, ValidatorDescr]
 	} `tlbSumType:"validatorsext#12"`
+}
+
+type ValidatorSetsCommon struct {
+	UtimeSince uint32
+	UtimeUntil uint32
+	Total      uint16
+	Main       uint16
+}
+
+func (vs ValidatorsSet) Common() ValidatorSetsCommon {
+	if vs.SumType == "Validators" {
+		return vs.Validators.ValidatorSetsCommon
+	}
+	return vs.ValidatorsExt.ValidatorSetsCommon
 }
 
 type ValidatorDescr struct {
@@ -62,6 +75,32 @@ type ValidatorDescr struct {
 		Weight    uint64
 		AdnlAddr  Bits256
 	} `tlbSumType:"validatoraddr#73"`
+}
+
+func (vd ValidatorDescr) MarshalJSON() ([]byte, error) {
+	switch vd.SumType {
+	case "Validator":
+		bytes, err := json.Marshal(vd.Validator)
+		if err != nil {
+			return nil, err
+		}
+		return []byte(fmt.Sprintf(`{"SumType": "Validator","Validator":%v}`, string(bytes))), nil
+	case "ValidatorAddr":
+		bytes, err := json.Marshal(vd.ValidatorAddr)
+		if err != nil {
+			return nil, err
+		}
+		return []byte(fmt.Sprintf(`{"SumType": "ValidatorAddr","ValidatorAddr":%v}`, string(bytes))), nil
+	default:
+		return nil, fmt.Errorf("unknown sum type %v", vd.SumType)
+	}
+}
+
+func (vd ValidatorDescr) PubKey() Bits256 {
+	if vd.SumType == "Validator" {
+		return vd.Validator.PublicKey.PubKey
+	}
+	return vd.ValidatorAddr.PublicKey.PubKey
 }
 
 type SigPubKey struct {

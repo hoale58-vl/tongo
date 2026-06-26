@@ -1,0 +1,561 @@
+{
+  "abi_schema_version": "1.0",
+  "contract_name": "ff_vault",
+  "unique_types": [
+    {
+      "kind": "void"
+    },
+    {
+      "kind": "int"
+    },
+    {
+      "kind": "slice"
+    },
+    {
+      "kind": "cell"
+    },
+    {
+      "kind": "builder"
+    },
+    {
+      "kind": "bool"
+    },
+    {
+      "kind": "coins"
+    },
+    {
+      "kind": "address"
+    },
+    {
+      "kind": "intN",
+      "n": 32
+    },
+    {
+      "kind": "uintN",
+      "n": 32
+    },
+    {
+      "kind": "intN",
+      "n": 64
+    },
+    {
+      "kind": "uintN",
+      "n": 64
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "AssetDeposit"
+    },
+    {
+      "kind": "nullable",
+      "inner_ty_idx": 3
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "StableDeposit"
+    },
+    {
+      "kind": "union",
+      "variants": [
+        {
+          "variant_ty_idx": 12,
+          "prefix_num": 1397299139,
+          "prefix_len": 32,
+          "is_prefix_implicit": null,
+          "stack_type_id": 129,
+          "stack_width": 1
+        },
+        {
+          "variant_ty_idx": 14,
+          "prefix_num": 1030135223,
+          "prefix_len": 32,
+          "is_prefix_implicit": null,
+          "stack_type_id": 130,
+          "stack_width": 1
+        }
+      ],
+      "stack_width": 2
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "JettonTransferNotification",
+      "type_args_ty_idx": [
+        15
+      ]
+    },
+    {
+      "kind": "genericT",
+      "name_t": "T"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "JettonTransferNotification",
+      "type_args_ty_idx": [
+        17
+      ]
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "StakeOperation"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "UnstakeExecute"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "UnstakeOperation"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "UnstakeExecuteInternalCallback"
+    },
+    {
+      "kind": "uintN",
+      "n": 256
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "PositionData"
+    },
+    {
+      "kind": "cellOf",
+      "inner_ty_idx": 24
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "WithdrawJetton"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "VaultStorage"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "VaultStaticData"
+    },
+    {
+      "kind": "uintN",
+      "n": 8
+    },
+    {
+      "kind": "cellOf",
+      "inner_ty_idx": 28
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "CollectionData"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "StakingData"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "Balance"
+    }
+  ],
+  "struct_instantiations": [
+    {
+      "ty_idx": 16,
+      "struct_name": "JettonTransferNotification<AssetDeposit | StableDeposit>",
+      "monomorphic_fields_ty_idx": [
+        15
+      ]
+    }
+  ],
+  "alias_instantiations": [],
+  "declarations": [
+    {
+      "kind": "struct",
+      "name": "JettonTransferNotification",
+      "ty_idx": 18,
+      "type_params": [
+        "T"
+      ],
+      "prefix": {
+        "prefix_num": 1935855772,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "payload",
+          "ty_idx": 17
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "WithdrawJetton",
+      "ty_idx": 26,
+      "prefix": {
+        "prefix_num": 3830192452,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        },
+        {
+          "name": "jettonWallet",
+          "ty_idx": 7
+        },
+        {
+          "name": "toAddress",
+          "ty_idx": 7
+        },
+        {
+          "name": "amount",
+          "ty_idx": 6
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "StableDeposit",
+      "ty_idx": 14,
+      "prefix": {
+        "prefix_num": 1030135223,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "distributeBetweenStakers",
+          "ty_idx": 5
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "UnstakeExecute",
+      "ty_idx": 20,
+      "prefix": {
+        "prefix_num": 1317228664,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        },
+        {
+          "name": "priceUpdateData",
+          "ty_idx": 3
+        },
+        {
+          "name": "amountToUnstake",
+          "ty_idx": 6
+        },
+        {
+          "name": "itemIndex",
+          "ty_idx": 11
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "AssetDeposit",
+      "ty_idx": 12,
+      "prefix": {
+        "prefix_num": 1397299139,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "priceUpdateData",
+          "ty_idx": 13
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "StakeOperation",
+      "ty_idx": 19,
+      "prefix": {
+        "prefix_num": 2049527772,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        },
+        {
+          "name": "depositAddress",
+          "ty_idx": 7
+        },
+        {
+          "name": "assetAmount",
+          "ty_idx": 6
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "UnstakeOperation",
+      "ty_idx": 21,
+      "prefix": {
+        "prefix_num": 2533379442,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        },
+        {
+          "name": "amountToUnstake",
+          "ty_idx": 6
+        },
+        {
+          "name": "itemIndex",
+          "ty_idx": 11
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "PositionData",
+      "ty_idx": 24,
+      "fields": [
+        {
+          "name": "xautPriceStaked",
+          "ty_idx": 23
+        },
+        {
+          "name": "previousStablePerAssetCollected",
+          "ty_idx": 23
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "UnstakeExecuteInternalCallback",
+      "ty_idx": 22,
+      "prefix": {
+        "prefix_num": 1635078656,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        },
+        {
+          "name": "itemIndex",
+          "ty_idx": 11
+        },
+        {
+          "name": "amountToUnstake",
+          "ty_idx": 6
+        },
+        {
+          "name": "xautPriceActual",
+          "ty_idx": 23
+        },
+        {
+          "name": "owner",
+          "ty_idx": 7
+        },
+        {
+          "name": "positionData",
+          "ty_idx": 25
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "VaultStaticData",
+      "ty_idx": 28,
+      "fields": [
+        {
+          "name": "PYTHOracle",
+          "ty_idx": 7
+        },
+        {
+          "name": "AssetJettonWallet",
+          "ty_idx": 7
+        },
+        {
+          "name": "StableJettonWallet",
+          "ty_idx": 7
+        },
+        {
+          "name": "nftItemCode",
+          "ty_idx": 3
+        },
+        {
+          "name": "stableDecimals",
+          "ty_idx": 29
+        },
+        {
+          "name": "assetDecimals",
+          "ty_idx": 29
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "VaultStorage",
+      "ty_idx": 27,
+      "prefix": {
+        "prefix_num": 0,
+        "prefix_len": 8
+      },
+      "fields": [
+        {
+          "name": "assetStaked",
+          "ty_idx": 6
+        },
+        {
+          "name": "distributedStables",
+          "ty_idx": 23
+        },
+        {
+          "name": "maxPriceChange",
+          "ty_idx": 9
+        },
+        {
+          "name": "nextItemIndex",
+          "ty_idx": 11
+        },
+        {
+          "name": "admin",
+          "ty_idx": 7
+        },
+        {
+          "name": "assetAmountOnVault",
+          "ty_idx": 6
+        },
+        {
+          "name": "stableAmountOnVault",
+          "ty_idx": 6
+        },
+        {
+          "name": "staticData",
+          "ty_idx": 30
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "CollectionData",
+      "ty_idx": 31,
+      "fields": [
+        {
+          "name": "next_item_index",
+          "ty_idx": 1
+        },
+        {
+          "name": "content",
+          "ty_idx": 3
+        },
+        {
+          "name": "owner",
+          "ty_idx": 7
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "StakingData",
+      "ty_idx": 32,
+      "fields": [
+        {
+          "name": "tokensStaked",
+          "ty_idx": 6
+        },
+        {
+          "name": "distributedStables",
+          "ty_idx": 23
+        },
+        {
+          "name": "maxPriceChange",
+          "ty_idx": 9
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "Balance",
+      "ty_idx": 33,
+      "fields": [
+        {
+          "name": "assetAmount",
+          "ty_idx": 6
+        },
+        {
+          "name": "stableAmount",
+          "ty_idx": 6
+        }
+      ]
+    }
+  ],
+  "incoming_messages": [
+    {
+      "body_ty_idx": 16
+    },
+    {
+      "body_ty_idx": 19
+    },
+    {
+      "body_ty_idx": 20
+    },
+    {
+      "body_ty_idx": 21
+    },
+    {
+      "body_ty_idx": 22
+    },
+    {
+      "body_ty_idx": 26
+    }
+  ],
+  "incoming_external": [],
+  "outgoing_messages": [],
+  "emitted_events": [],
+  "storage": {
+    "storage_ty_idx": 27
+  },
+  "get_methods": [
+    {
+      "tvm_method_id": 102491,
+      "name": "get_collection_data",
+      "parameters": [],
+      "return_ty_idx": 31
+    },
+    {
+      "tvm_method_id": 92067,
+      "name": "get_nft_address_by_index",
+      "parameters": [
+        {
+          "name": "itemIndex",
+          "ty_idx": 1
+        }
+      ],
+      "return_ty_idx": 7
+    },
+    {
+      "tvm_method_id": 108033,
+      "name": "get_staking_data",
+      "parameters": [],
+      "return_ty_idx": 32
+    },
+    {
+      "tvm_method_id": 130343,
+      "name": "get_balance",
+      "parameters": [],
+      "return_ty_idx": 33
+    }
+  ],
+  "thrown_errors": [
+    {
+      "kind": "plain_int",
+      "err_code": 0
+    }
+  ],
+  "compiler_name": "tolk",
+  "compiler_version": "1.4.1",
+  "code_boc64": "te6ccgEBCgEARwABFP8A9KQT9LzyyAsBAgFiAgMAENAw+JHyQPIAAgEgBAUACb89H5AEAgEgBgcCASAICQAJu9J/IAgACbYLfkAQAAm0wD5AEA=="
+}

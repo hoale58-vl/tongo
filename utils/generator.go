@@ -1,10 +1,14 @@
 package utils
 
 import (
+	"fmt"
+	"go/format"
+	"os"
+	"strings"
+
 	"golang.org/x/exp/constraints"
 	"golang.org/x/exp/maps"
 	"golang.org/x/exp/slices"
-	"strings"
 )
 
 func ToCamelCase(s string) string {
@@ -51,8 +55,52 @@ func ToCamelCasePrivate(s string) string {
 	return res
 }
 
+func ToSnakeCase(s string) string {
+	s = strings.TrimSpace(s)
+	if s == "" {
+		return s
+	}
+
+	n := strings.Builder{}
+	n.Grow(len(s))
+	for i, v := range []byte(s) {
+		vIsCap := v >= 'A' && v <= 'Z'
+		vIsLow := v >= 'a' && v <= 'z'
+		vIsNum := v >= '0' && v <= '9'
+
+		if i != 0 && (vIsCap || v == '_' || v == ' ' || v == '-' || v == '.') {
+			n.WriteByte('_')
+		}
+
+		if vIsCap {
+			v += 'a'
+			v -= 'A'
+		}
+
+		if vIsLow || vIsCap || vIsNum {
+			n.WriteByte(v)
+		}
+	}
+	return n.String()
+}
+
 func GetOrderedKeys[M ~map[K]V, K constraints.Ordered, V any](m M) []K {
 	keys := maps.Keys(m)
 	slices.Sort(keys)
 	return keys
+}
+
+func WriteFormattedGoCode(path, content string) error {
+	formatted, fmtErr := format.Source([]byte(content))
+	if fmtErr != nil {
+		formatted = []byte(content)
+	}
+	if err := os.WriteFile(path, formatted, 0644); err != nil {
+		return fmt.Errorf("write %s: %w", path, err)
+	}
+	if fmtErr != nil {
+		return fmt.Errorf("generated %s with fmt error: %w", path, fmtErr)
+	}
+	fmt.Printf("%s\n", path)
+	return nil
 }

@@ -2,8 +2,11 @@ package tlb
 
 import (
 	"fmt"
-	"github.com/tonkeeper/tongo/boc"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+	"github.com/tonkeeper/tongo/boc"
 )
 
 func TestTuple(t *testing.T) {
@@ -35,7 +38,8 @@ func TestTuple(t *testing.T) {
 		PendingAmount Grams
 		Requested     bool
 	}
-	err = stack[0].VmStkTuple.Unmarshal(&items)
+	top := stack.Peek(0)
+	err = top.VmStkTuple.Unmarshal(&items)
 	if err != nil {
 		panic(err)
 	}
@@ -87,7 +91,8 @@ func TestTuple2(t *testing.T) {
 		Workchain int32
 		Address   Bits256
 	}
-	err = stack[0].VmStkTuple.Unmarshal(&plugins)
+	top := stack.Peek(0)
+	err = top.VmStkTuple.Unmarshal(&plugins)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -99,4 +104,38 @@ func TestTuple2(t *testing.T) {
 			t.Fatal(i)
 		}
 	}
+}
+
+func TestToStack(t *testing.T) {
+	tuple := VmStkTuple{
+		Len: 5,
+		Data: &VmTuple{
+			Head: VmTupleRef{
+				Ref: &VmTuple{
+					Head: VmTupleRef{
+						Ref: &VmTuple{
+							Head: VmTupleRef{
+								Ref: &VmTuple{
+									Head: VmTupleRef{Entry: &VmStackValue{SumType: "VmStkTinyInt", VmStkTinyInt: 1}},
+									Tail: stkTinyInt(2),
+								},
+							}, Tail: stkTinyInt(3),
+						},
+					}, Tail: stkTinyInt(4),
+				},
+			}, Tail: stkTinyInt(5),
+		},
+	}
+	stack, err := tuple.AsStack()
+	require.NoError(t, err)
+	require.Equal(t, 5, stack.Len())
+	assert.Equal(t, stkTinyInt(5), stack.Peek(0))
+	assert.Equal(t, stkTinyInt(4), stack.Peek(1))
+	assert.Equal(t, stkTinyInt(3), stack.Peek(2))
+	assert.Equal(t, stkTinyInt(2), stack.Peek(3))
+	assert.Equal(t, stkTinyInt(1), stack.Peek(4))
+}
+
+func stkTinyInt(n int64) VmStackValue {
+	return VmStackValue{SumType: "VmStkTinyInt", VmStkTinyInt: n}
 }

@@ -7,16 +7,47 @@ import (
 )
 
 type ABI struct {
-	Methods   []GetMethod `xml:"get_method"`
-	Internals []Message   `xml:"internal"`
-	Externals []Message   `xml:"external"`
-	Types     []string    `xml:"types"`
+	Methods        []GetMethod `xml:"get_method"`
+	Internals      []Message   `xml:"internal"`
+	ExtOut         []Message   `xml:"ext_out"`
+	ExtIn          []Message   `xml:"ext_in"`
+	JettonPayloads []Message   `xml:"jetton_payload"`
+	NFTPayloads    []Message   `xml:"nft_payload"`
+	Interfaces     []Interface `xml:"interface"`
+	Types          []string    `xml:"types"`
+}
+
+type Interface struct {
+	Name    string `xml:"name,attr"`
+	Methods []struct {
+		Name    string `xml:"name,attr"`
+		Version string `xml:"version,attr"`
+	} `xml:"get_method"`
+	Input struct {
+		Internals []InterfaceMessage `xml:"internal"`
+		Externals []InterfaceMessage `xml:"ext_in"`
+	} `xml:"msg_in"`
+	Output struct {
+		Internals []InterfaceMessage `xml:"internal"`
+		Externals []InterfaceMessage `xml:"ext_out"`
+	} `xml:"msg_out"`
+	CodeHashes []string `xml:"code_hash"`
+	Inherits   string   `xml:"inherits,attr"`
+	Errors     []struct {
+		Text string `xml:",chardata"`
+		Code int    `xml:"code,attr"`
+	} `xml:"error"`
+}
+
+type InterfaceMessage struct {
+	Name string `xml:"name,attr"`
 }
 
 type Message struct {
-	Name       string   `xml:"name,attr"`
-	Input      string   `xml:",chardata"`
-	Interfaces []string `xml:"interface,attr"`
+	Name  string `xml:"name,attr"`
+	Input string `xml:",chardata"`
+	// FixedLength means that a destination type must have the same size in bits as the number of bits in a cell.
+	FixedLength bool `xml:"fixed_length,attr"`
 }
 
 type GetMethod struct {
@@ -24,19 +55,15 @@ type GetMethod struct {
 	Input struct {
 		StackValues []StackRecord `xml:",any"`
 	} `xml:"input"`
-	Name       string            `xml:"name,attr"`
-	Interfaces []string          `xml:"interface,attr"`
-	ID         int               `xml:"id,attr"`
-	Output     []GetMethodOutput `xml:"output"`
-	// GolangName defines a name of a golang function generated to execute this get method.
-	GolangName string `xml:"golang_name,attr"`
+	Name   string            `xml:"name,attr"`
+	ID     int               `xml:"id,attr"`
+	Output []GetMethodOutput `xml:"output"`
 }
 
 type GetMethodOutput struct {
 	Version     string        `xml:"version,attr"`
 	FixedLength bool          `xml:"fixed_length,attr"`
 	Stack       []StackRecord `xml:",any"`
-	Interface   string        `xml:"interface,attr"`
 }
 
 func (o GetMethodOutput) FullResultName(methodName string) string {
@@ -62,9 +89,6 @@ func (m GetMethod) UsedByIntrospection() bool {
 }
 
 func (m GetMethod) GolangFunctionName() string {
-	if len(m.GolangName) > 0 {
-		return m.GolangName
-	}
 	return utils.ToCamelCase(m.Name)
 }
 

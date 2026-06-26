@@ -1,0 +1,11 @@
+// Code generated - DO NOT EDIT.
+
+package {{.Package}}
+
+import (
+{{ range $import := .Imports }}
+    "{{ $import }}"
+{{ end }}
+)
+
+{{ .Code }}

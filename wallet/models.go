@@ -2,13 +2,14 @@ package wallet
 
 import (
 	"context"
-	"crypto/ed25519"
 	"fmt"
+	"github.com/tonkeeper/tongo/utils"
+	"math/big"
 	"time"
 
-	"github.com/tonkeeper/tongo"
 	"github.com/tonkeeper/tongo/boc"
 	"github.com/tonkeeper/tongo/tlb"
+	"github.com/tonkeeper/tongo/ton"
 )
 
 type Version int
@@ -21,8 +22,11 @@ const (
 	V2R2
 	V3R1
 	V3R2
+	V3R2Lockup
 	V4R1
 	V4R2
+	V5Beta
+	V5R1
 	HighLoadV1R1
 	HighLoadV1R2
 	HighLoadV2
@@ -31,10 +35,37 @@ const (
 	// TODO: maybe add lockup wallet
 )
 
+var codeVersionToString = map[Version]string{
+	V1R1:         "v1R1",
+	V1R2:         "v1R2",
+	V1R3:         "v1R3",
+	V2R1:         "v2R1",
+	V2R2:         "v2R2",
+	V3R1:         "v3R1",
+	V3R2:         "v3R2",
+	V4R1:         "v4R1",
+	V4R2:         "v4R2",
+	V5Beta:       "v5Beta",
+	V5R1:         "v5R1",
+	HighLoadV2:   "highload_v2",
+	HighLoadV1R1: "highload_v1R1",
+	HighLoadV1R2: "highload_v1R2",
+	HighLoadV2R1: "highload_v2R1",
+	HighLoadV2R2: "highload_v2R2",
+}
+var stringToVersion = map[string]Version{}
+
 const (
-	DefaultSubWalletIdV3V4 = 698983191
+	// DefaultSubWallet is a recommended default value of subWalletID according to
+	// https://docs.ton.org/develop/smart-contracts/tutorials/wallet#subwallet-ids.
+	DefaultSubWallet       = 698983191
 	DefaultMessageLifetime = time.Minute * 3
 	DefaultMessageMode     = 3
+)
+
+var (
+	ErrAccountIsFrozen         = fmt.Errorf("account is frozen")
+	ErrAccountIsNotInitialized = fmt.Errorf("account is not initialized")
 )
 
 var codes = map[Version]string{
@@ -45,8 +76,11 @@ var codes = map[Version]string{
 	V2R2:         "te6cckEBAQEAYwAAwv8AIN0gggFMl7ohggEznLqxnHGw7UTQ0x/XC//jBOCk8mCDCNcYINMf0x8B+CO78mPtRNDTH9P/0VExuvKhA/kBVBBC+RDyovgAApMg10qW0wfUAvsA6NGkyMsfy//J7VQETNeh",
 	V3R1:         "te6cckEBAQEAYgAAwP8AIN0gggFMl7qXMO1E0NcLH+Ck8mCDCNcYINMf0x/TH/gjE7vyY+1E0NMf0x/T/9FRMrryoVFEuvKiBPkBVBBV+RDyo/gAkyDXSpbTB9QC+wDo0QGkyMsfyx/L/8ntVD++buA=",
 	V3R2:         "te6cckEBAQEAcQAA3v8AIN0gggFMl7ohggEznLqxn3Gw7UTQ0x/THzHXC//jBOCk8mCDCNcYINMf0x/TH/gjE7vyY+1E0NMf0x/T/9FRMrryoVFEuvKiBPkBVBBV+RDyo/gAkyDXSpbTB9QC+wDo0QGkyMsfyx/L/8ntVBC9ba0=",
+	V3R2Lockup:   "te6ccgECHgEAAmEAART/APSkE/S88sgLAQIBIAIDAgFIBAUB8vKDCNcYINMf0x/TH4AkA/gjuxPy8vADgCJRqboa8vSAI1G3uhvy9IAfC/kBVBDF+RAa8vT4AFBX+CPwBlCY+CPwBiBxKJMg10qOi9MHMdRRG9s8ErAB6DCSKaDfcvsCBpMg10qW0wfUAvsA6NEDpEdoFBVDMPAE7VQdAgLNBgcCASATFAIBIAgJAgEgDxACASAKCwAtXtRNDTH9Mf0//T//QE+gD0BPoA9ATRgD9wB0NMDAXGwkl8D4PpAMCHHAJJfA+AB0x8hwQKSXwTg8ANRtPABghCC6vnEUrC9sJJfDOCAKIIQgur5xBu6GvL0gCErghA7msoAvvL0B4MI1xiAICH5AVQQNvkQEvL00x+AKYIQNzqp9BO6EvL00wDTHzAB4w8QSBA3XjKAMDQ4AEwh10n0qG+lbDGAADBA5SArwBQAWEDdBCvAFCBBXUFYAEBAkQwDwBO1UAgEgERIARUjh4igCD0lm+lIJMwI7uRMeIgmDX6ANEToUATkmwh4rPmMIADUCMjKHxfKHxXL/xPL//QAAfoC9AAB+gL0AMmAAQxRIqBTE4Ag9A5voZb6ANEToAKRMOLIUAP6AkATgCD0QwGACASAVFgAVven3gBiCQvhHgAwCASAXGAIBSBscAC21GH4AbYiGioJgngDGIH4Axj8E7eILMAIBWBkaABetznaiaGmfmOuF/8AAF6x49qJoaY+Y64WPwAARsyX7UTQ1wsfgABex0b4I4IBCMPtQ9iAAKAHQ0wMBeLCSW3/g+kAx+kAwAfAB",
 	V4R1:         "te6cckECFQEAAvUAART/APSkE/S88sgLAQIBIAIDAgFIBAUE+PKDCNcYINMf0x/THwL4I7vyY+1E0NMf0x/T//QE0VFDuvKhUVG68qIF+QFUEGT5EPKj+AAkpMjLH1JAyx9SMMv/UhD0AMntVPgPAdMHIcAAn2xRkyDXSpbTB9QC+wDoMOAhwAHjACHAAuMAAcADkTDjDQOkyMsfEssfy/8REhMUA+7QAdDTAwFxsJFb4CHXScEgkVvgAdMfIYIQcGx1Z70ighBibG5jvbAighBkc3RyvbCSXwPgAvpAMCD6RAHIygfL/8nQ7UTQgQFA1yH0BDBcgQEI9ApvoTGzkl8F4ATTP8glghBwbHVnupEx4w0kghBibG5juuMABAYHCAIBIAkKAFAB+gD0BDCCEHBsdWeDHrFwgBhQBcsFJ88WUAP6AvQAEstpyx9SEMs/AFL4J28ighBibG5jgx6xcIAYUAXLBSfPFiT6AhTLahPLH1Iwyz8B+gL0AACSghBkc3Ryuo41BIEBCPRZMO1E0IEBQNcgyAHPFvQAye1UghBkc3Rygx6xcIAYUATLBVjPFiL6AhLLassfyz+UEDRfBOLJgED7AAIBIAsMAFm9JCtvaiaECAoGuQ+gIYRw1AgIR6STfSmRDOaQPp/5g3gSgBt4EBSJhxWfMYQCAVgNDgARuMl+1E0NcLH4AD2ynftRNCBAUDXIfQEMALIygfL/8nQAYEBCPQKb6ExgAgEgDxAAGa3OdqJoQCBrkOuF/8AAGa8d9qJoQBBrkOuFj8AAbtIH+gDU1CL5AAXIygcVy//J0Hd0gBjIywXLAiLPFlAF+gIUy2sSzMzJcfsAyEAUgQEI9FHypwIAbIEBCNcYyFQgJYEBCPRR8qeCEG5vdGVwdIAYyMsFywJQBM8WghAF9eEA+gITy2oSyx/JcfsAAgBygQEI1xgwUgKBAQj0WfKn+CWCEGRzdHJwdIAYyMsFywJQBc8WghAF9eEA+gIUy2oTyx8Syz/Jc/sAAAr0AMntVEap808=",
 	V4R2:         "te6cckECFAEAAtQAART/APSkE/S88sgLAQIBIAIDAgFIBAUE+PKDCNcYINMf0x/THwL4I7vyZO1E0NMf0x/T//QE0VFDuvKhUVG68qIF+QFUEGT5EPKj+AAkpMjLH1JAyx9SMMv/UhD0AMntVPgPAdMHIcAAn2xRkyDXSpbTB9QC+wDoMOAhwAHjACHAAuMAAcADkTDjDQOkyMsfEssfy/8QERITAubQAdDTAyFxsJJfBOAi10nBIJJfBOAC0x8hghBwbHVnvSKCEGRzdHK9sJJfBeAD+kAwIPpEAcjKB8v/ydDtRNCBAUDXIfQEMFyBAQj0Cm+hMbOSXwfgBdM/yCWCEHBsdWe6kjgw4w0DghBkc3RyupJfBuMNBgcCASAICQB4AfoA9AQw+CdvIjBQCqEhvvLgUIIQcGx1Z4MesXCAGFAEywUmzxZY+gIZ9ADLaRfLH1Jgyz8gyYBA+wAGAIpQBIEBCPRZMO1E0IEBQNcgyAHPFvQAye1UAXKwjiOCEGRzdHKDHrFwgBhQBcsFUAPPFiP6AhPLassfyz/JgED7AJJfA+ICASAKCwBZvSQrb2omhAgKBrkPoCGEcNQICEekk30pkQzmkD6f+YN4EoAbeBAUiYcVnzGEAgFYDA0AEbjJftRNDXCx+AA9sp37UTQgQFA1yH0BDACyMoHy//J0AGBAQj0Cm+hMYAIBIA4PABmtznaiaEAga5Drhf/AABmvHfaiaEAQa5DrhY/AAG7SB/oA1NQi+QAFyMoHFcv/ydB3dIAYyMsFywIizxZQBfoCFMtrEszMyXP7AMhAFIEBCPRR8qcCAHCBAQjXGPoA0z/IVCBHgQEI9FHyp4IQbm90ZXB0gBjIywXLAlAGzxZQBPoCFMtqEssfyz/Jc/sAAgBsgQEI1xj6ANM/MFIkgQEI9Fnyp4IQZHN0cnB0gBjIywXLAlAFzxZQA/oCE8tqyx8Syz/Jc/sAAAr0AMntVGliJeU=",
+	V5Beta:       "te6ccgEBAQEAIwAIQgLkzzsvTG1qYeoPK1RH0mZ4WyavNjfbLe7mvNGqgm80Eg==",
+	V5R1:         "te6cckECFAEAAoEAART/APSkE/S88sgLAQIBIAINAgFIAwQC3NAg10nBIJFbj2Mg1wsfIIIQZXh0br0hghBzaW50vbCSXwPgghBleHRuuo60gCDXIQHQdNch+kAw+kT4KPpEMFi9kVvg7UTQgQFB1yH0BYMH9A5voTGRMOGAQNchcH/bPOAxINdJgQKAuZEw4HDiEA8CASAFDAIBIAYJAgFuBwgAGa3OdqJoQCDrkOuF/8AAGa8d9qJoQBDrkOuFj8ACAUgKCwAXsyX7UTQcdch1wsfgABGyYvtRNDXCgCAAGb5fD2omhAgKDrkPoCwBAvIOAR4g1wsfghBzaWduuvLgin8PAeaO8O2i7fshgwjXIgKDCNcjIIAg1yHTH9Mf0x/tRNDSANMfINMf0//XCgAK+QFAzPkQmiiUXwrbMeHywIffArNQB7Dy0IRRJbry4IVQNrry4Ib4I7vy0IgikvgA3gGkf8jKAMsfAc8Wye1UIJL4D95w2zzYEAP27aLt+wL0BCFukmwhjkwCIdc5MHCUIccAs44tAdcoIHYeQ2wg10nACPLgkyDXSsAC8uCTINcdBscSwgBSMLDy0InXTNc5MAGk6GwShAe78uCT10rAAPLgk+1V4tIAAcAAkVvg69csCBQgkXCWAdcsCBwS4lIQseMPINdKERITAJYB+kAB+kT4KPpEMFi68uCR7UTQgQFB1xj0BQSdf8jKAEAEgwf0U/Lgi44UA4MH9Fvy4Iwi1woAIW4Bs7Dy0JDiyFADzxYS9ADJ7VQAcjDXLAgkji0h8uCS0gDtRNDSAFETuvLQj1RQMJExnAGBAUDXIdcKAPLgjuLIygBYzxbJ7VST8sCN4gAQk1vbMeHXTNC01sNe",
 	HighLoadV1R1: "te6ccgEBBgEAhgABFP8A9KQT9KDyyAsBAgEgAgMCAUgEBQC88oMI1xgg0x/TH9Mf+CMTu/Jj7UTQ0x/TH9P/0VEyuvKhUUS68qIE+QFUEFX5EPKj9ATR+AB/jhghgBD0eG+hb6EgmALTB9QwAfsAkTLiAbPmWwGkyMsfyx/L/8ntVAAE0DAAEaCZL9qJoa4WPw==",
 	HighLoadV1R2: "te6ccgEBCAEAmQABFP8A9KQT9LzyyAsBAgEgAgMCAUgEBQC88oMI1xgg0x/TH9Mf+CMTu/Jj7UTQ0x/TH9P/0VEyuvKhUUS68qIE+QFUEFX5EPKj9ATR+AB/jhghgBD0eG+hb6EgmALTB9QwAfsAkTLiAbPmWwGkyMsfyx/L/8ntVAAE0DACAUgGBwAXuznO1E0NM/MdcL/4ABG4yX7UTQ1wsfg=",
 	HighLoadV2:   "te6ccgEBCQEA5QABFP8A9KQT9LzyyAsBAgEgAgcCAUgDBAAE0DACASAFBgAXvZznaiaGmvmOuF/8AEG+X5dqJoaY+Y6Z/p/5j6AmipEEAgegc30JjJLb/JXdHxQB6vKDCNcYINMf0z/4I6ofUyC58mPtRNDTH9M/0//0BNFTYIBA9A5voTHyYFFzuvKiB/kBVBCH+RDyowL0BNH4AH+OFiGAEPR4b6UgmALTB9QwAfsAkTLiAbPmW4MlochANIBA9EOK5jEByMsfE8s/y//0AMntVAgANCCAQPSWb6VsEiCUMFMDud4gkzM2AZJsIeKz",
@@ -54,10 +88,56 @@ var codes = map[Version]string{
 	HighLoadV2R2: "te6ccgEBCQEA6QABFP8A9KQT9LzyyAsBAgEgAgMCAUgEBQHu8oMI1xgg0x/TP/gjqh9TILnyY+1E0NMf0z/T//QE0VNggED0Dm+hMfJgUXO68qIH+QFUEIf5EPKjAvQE0fgAf44YIYAQ9HhvoW+hIJgC0wfUMAH7AJEy4gGz5luDJaHIQDSAQPRDiuYxyBLLHxPLP8v/9ADJ7VQIAATQMAIBIAYHABe9nOdqJoaa+Y64X/wAQb5fl2omhpj5jpn+n/mPoCaKkQQCB6BzfQmMktv8ld0fFAA4IIBA9JZvoW+hMlEQlDBTA7neIJMzNgGSMjDisw==",
 }
 
+// codeHashToVersion maps code's hash to a wallet version.
+var codeHashToVersion = map[tlb.Bits256]Version{}
+
+func init() {
+	for ver := range codes {
+		codeHashToVersion[GetCodeHashByVer(ver)] = ver
+	}
+	for v, s := range codeVersionToString {
+		stringToVersion[s] = v
+	}
+}
+
+// GetWalletVersion returns a wallet version by the given state of an account and an incoming message to the account.
+// An incoming message is needed in case when a wallet has not been initialized yet.
+// In this case, we take its code from the message's StateInit.
+func GetWalletVersion(state tlb.ShardAccount, msg tlb.Message) (Version, bool, error) {
+	if state.Account.SumType == "AccountNone" || state.Account.Account.Storage.State.SumType == "AccountUninit" {
+		if !msg.Init.Exists {
+			return 0, false, ErrAccountIsNotInitialized
+		}
+		if !msg.Init.Value.Value.Code.Exists {
+			return 0, false, ErrAccountIsNotInitialized
+		}
+		code := msg.Init.Value.Value.Code.Value.Value
+		hash, err := code.Hash256()
+		if err != nil {
+			return 0, false, ErrAccountIsNotInitialized
+		}
+		ver, ok := GetVerByCodeHash(hash)
+		return ver, ok, nil
+	}
+	if state.Account.Account.Storage.State.SumType == "AccountFrozen" {
+		return 0, false, ErrAccountIsFrozen
+	}
+	code := state.Account.Account.Storage.State.AccountActive.StateInit.Code
+	if code.Exists {
+		hash, err := code.Value.Value.Hash256()
+		if err != nil {
+			return 0, false, err
+		}
+		ver, ok := GetVerByCodeHash(hash)
+		return ver, ok, nil
+	}
+	return 0, false, ErrAccountIsNotInitialized
+}
+
 type blockchain interface {
-	GetSeqno(ctx context.Context, account tongo.AccountID) (uint32, error)
+	GetSeqno(ctx context.Context, account ton.AccountID) (uint32, error)
 	SendMessage(ctx context.Context, payload []byte) (uint32, error)
-	GetAccountState(ctx context.Context, accountID tongo.AccountID) (tlb.ShardAccount, error)
+	GetAccountState(ctx context.Context, accountID ton.AccountID) (tlb.ShardAccount, error)
 }
 
 func GetCodeByVer(ver Version) *boc.Cell {
@@ -82,77 +162,41 @@ func GetCodeHashByVer(ver Version) tlb.Bits256 {
 	return hash
 }
 
-func GetVerByCodeHash(hash tlb.Bits256) Version {
-	// TODO: implement
-	return 0
+// GetVerByCodeHash returns (Version, true) if there is code with the given hash.
+// Otherwise, it returns (0, false).
+func GetVerByCodeHash(hash tlb.Bits256) (Version, bool) {
+	if ver, ok := codeHashToVersion[hash]; ok {
+		return ver, true
+	}
+	return 0, false
 }
 
 func (v Version) ToString() string {
-	names := []string{"v1R1", "v1R2", "v1R3", "v2R1", "v2R2", "v3R1", "v3R2", "v4R1", "v4R2", "highload_v1R1", "highload_v1R2", "highload_v2", "highload_v2R1", "highload_v2R2"}
-	if int(v) > len(names) {
+	s, ok := codeVersionToString[v]
+	if !ok {
 		panic("to string conversion for this ver not supported")
 	}
-	return names[v]
+	return s
 }
 
-type Wallet struct {
-	key         ed25519.PrivateKey
-	address     tongo.AccountID
-	ver         Version
-	subWalletId uint32
-	blockchain  blockchain
+func VersionFromString(s string) (Version, error) {
+	v, ok := stringToVersion[s]
+	if !ok {
+		return 0, fmt.Errorf("invalid wallet version")
+	}
+	return v, nil
 }
-
-// GetAddress returns current wallet address but you can also call function GenerateWalletAddress
-// which returns same address but doesn't require blockchain connection for calling
-func (w *Wallet) GetAddress() tongo.AccountID {
-	return w.address
-}
-
-type DataV1V2 struct {
-	Seqno     uint32
-	PublicKey tlb.Bits256
-}
-
-type DataV3 struct {
-	Seqno       uint32
-	SubWalletId uint32
-	PublicKey   tlb.Bits256
-}
-
-type DataV4 struct {
-	Seqno       uint32
-	SubWalletId uint32
-	PublicKey   tlb.Bits256
-	PluginDict  tlb.HashmapE[tlb.Bits264, tlb.Any] // TODO: find type and check size
-}
-
-type MessageV3 struct {
-	SubWalletId uint32
-	ValidUntil  uint32
-	Seqno       uint32
-	Payload     PayloadV1toV4
-}
-
-type MessageV4 struct {
-	// Op: 0 - simple send, 1 - deploy and install plugin, 2 - install plugin, 3 - remove plugin
-	SubWalletId uint32
-	ValidUntil  uint32
-	Seqno       uint32
-	Op          int8
-	Payload     PayloadV1toV4
-}
-
-type PayloadV1toV4 []RawMessage
 
 type Sendable interface {
 	ToInternal() (tlb.Message, uint8, error)
 }
 
 type SimpleTransfer struct {
-	Amount  tlb.Grams
-	Address tongo.AccountID
-	Comment string
+	Amount        tlb.Grams
+	Address       ton.AccountID
+	Comment       string
+	Bounceable    bool
+	ExtraCurrency map[int32]tlb.VarUInteger32
 }
 
 func (m SimpleTransfer) ToInternal() (message tlb.Message, mode uint8, err error) {
@@ -167,17 +211,21 @@ func (m SimpleTransfer) ToInternal() (message tlb.Message, mode uint8, err error
 		Src         tlb.MsgAddress
 		Dest        tlb.MsgAddress
 		Value       tlb.CurrencyCollection
-		IhrFee      tlb.Grams
+		IhrFee      tlb.VarUInteger16
 		FwdFee      tlb.Grams
 		CreatedLt   uint64
 		CreatedAt   uint32
 	}{
 		IhrDisabled: true,
-		Bounce:      false,
-		Src:         (*tongo.AccountID)(nil).ToMsgAddress(),
+		Bounce:      m.Bounceable,
+		Src:         (*ton.AccountID)(nil).ToMsgAddress(),
 		Dest:        m.Address.ToMsgAddress(),
+		IhrFee:      tlb.VarUInteger16(*big.NewInt(0)),
 	}
 	info.IntMsgInfo.Value.Grams = m.Amount
+	for k, v := range m.ExtraCurrency {
+		info.IntMsgInfo.Value.Other.Dict.Put(tlb.Uint32(k), v)
+	}
 
 	intMsg := tlb.Message{
 		Info: info,
@@ -197,7 +245,7 @@ func (m SimpleTransfer) ToInternal() (message tlb.Message, mode uint8, err error
 
 type Message struct {
 	Amount  tlb.Grams
-	Address tongo.AccountID
+	Address ton.AccountID
 	Body    *boc.Cell
 	Code    *boc.Cell
 	Data    *boc.Cell
@@ -217,15 +265,16 @@ func (m Message) ToInternal() (message tlb.Message, mode uint8, err error) {
 		Src         tlb.MsgAddress
 		Dest        tlb.MsgAddress
 		Value       tlb.CurrencyCollection
-		IhrFee      tlb.Grams
+		IhrFee      tlb.VarUInteger16
 		FwdFee      tlb.Grams
 		CreatedLt   uint64
 		CreatedAt   uint32
 	}{
 		IhrDisabled: true,
 		Bounce:      m.Bounce,
-		Src:         (*tongo.AccountID)(nil).ToMsgAddress(),
+		Src:         (*ton.AccountID)(nil).ToMsgAddress(),
 		Dest:        m.Address.ToMsgAddress(),
+		IhrFee:      tlb.VarUInteger16(*big.NewInt(0)),
 	}
 	info.IntMsgInfo.Value.Grams = m.Amount
 
@@ -247,11 +296,6 @@ func (m Message) ToInternal() (message tlb.Message, mode uint8, err error) {
 	}
 
 	return intMsg, m.Mode, nil
-}
-
-type RawMessage struct {
-	Message *boc.Cell
-	Mode    byte
 }
 
 type TextComment string
@@ -281,38 +325,52 @@ func (t *TextComment) UnmarshalTLB(c *boc.Cell, decoder *tlb.Decoder) error { //
 	return nil
 }
 
-func (p PayloadV1toV4) MarshalTLB(c *boc.Cell, encoder *tlb.Encoder) error {
-	if len(p) > 4 {
-		return fmt.Errorf("PayloadV1toV4 supports only up to 4 messages")
-	}
-	for _, msg := range p {
-		err := c.WriteUint(uint64(msg.Mode), 8)
-		if err != nil {
-			return err
-		}
-		err = c.AddRef(msg.Message)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+type ContractDeploy struct {
+	Workchain int32
+	Code      any
+	Data      any
+	Body      any
+	Amount    tlb.Grams
 }
 
-func (p *PayloadV1toV4) UnmarshalTLB(c *boc.Cell, decoder *tlb.Decoder) error {
-	for {
-		ref, err := c.NextRef()
-		if err != nil {
-			break
-		}
-		mode, err := c.ReadUint(8)
-		if err != nil {
-			return err
-		}
-		msg := RawMessage{
-			Message: ref,
-			Mode:    byte(mode),
-		}
-		*p = append(*p, msg)
+func (cd ContractDeploy) ToInternal() (tlb.Message, uint8, error) {
+	code, err := utils.AnyToCell(cd.Code)
+	if err != nil {
+		return tlb.Message{}, 0, err
 	}
-	return nil
+	data, err := utils.AnyToCell(cd.Data)
+	if err != nil {
+		return tlb.Message{}, 0, err
+	}
+	body, err := utils.AnyToCell(cd.Body)
+	if err != nil {
+		return tlb.Message{}, 0, err
+	}
+	if data == nil || code == nil {
+		return tlb.Message{}, 0, fmt.Errorf("code and data must be set")
+	}
+	var init tlb.StateInit
+	init.Code.Exists = true
+	init.Data.Exists = true
+	init.Code.Value.Value = *code
+	init.Data.Value.Value = *data
+	c := boc.NewCell()
+	err = tlb.Marshal(c, init)
+	if err != nil {
+		return tlb.Message{}, 0, err
+	}
+	hash, err := c.Hash256()
+	if err != nil {
+		return tlb.Message{}, 0, err
+	}
+	m := Message{
+		Amount:  cd.Amount,
+		Address: ton.AccountID{cd.Workchain, hash},
+		Body:    body,
+		Code:    code,
+		Data:    data,
+		Bounce:  true,
+		Mode:    3,
+	}
+	return m.ToInternal()
 }

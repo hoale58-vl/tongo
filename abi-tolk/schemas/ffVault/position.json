@@ -1,0 +1,234 @@
+{
+  "abi_schema_version": "1.0",
+  "contract_name": "ff_vault_position",
+  "unique_types": [
+    {
+      "kind": "void"
+    },
+    {
+      "kind": "int"
+    },
+    {
+      "kind": "slice"
+    },
+    {
+      "kind": "cell"
+    },
+    {
+      "kind": "builder"
+    },
+    {
+      "kind": "bool"
+    },
+    {
+      "kind": "coins"
+    },
+    {
+      "kind": "address"
+    },
+    {
+      "kind": "intN",
+      "n": 32
+    },
+    {
+      "kind": "uintN",
+      "n": 32
+    },
+    {
+      "kind": "intN",
+      "n": 64
+    },
+    {
+      "kind": "uintN",
+      "n": 64
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "UnstakeRequest"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "UnstakeExecuteInternal"
+    },
+    {
+      "kind": "uintN",
+      "n": 256
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "UnstakeExecuteCancel"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "NftData"
+    },
+    {
+      "kind": "addressOpt"
+    },
+    {
+      "kind": "nullable",
+      "inner_ty_idx": 3
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "StakePositionInfo"
+    }
+  ],
+  "struct_instantiations": [],
+  "alias_instantiations": [],
+  "declarations": [
+    {
+      "kind": "struct",
+      "name": "UnstakeRequest",
+      "ty_idx": 12,
+      "prefix": {
+        "prefix_num": 2323107641,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        },
+        {
+          "name": "amountWantedToUnstake",
+          "ty_idx": 6
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "UnstakeExecuteInternal",
+      "ty_idx": 13,
+      "prefix": {
+        "prefix_num": 3506609305,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        },
+        {
+          "name": "amountToUnstake",
+          "ty_idx": 6
+        },
+        {
+          "name": "xautPriceActual",
+          "ty_idx": 14
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "UnstakeExecuteCancel",
+      "ty_idx": 15,
+      "prefix": {
+        "prefix_num": 187709756,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        },
+        {
+          "name": "excessGetter",
+          "ty_idx": 7
+        },
+        {
+          "name": "amountToAdd",
+          "ty_idx": 6
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "NftData",
+      "ty_idx": 16,
+      "fields": [
+        {
+          "name": "init",
+          "ty_idx": 5
+        },
+        {
+          "name": "index",
+          "ty_idx": 1
+        },
+        {
+          "name": "collection_address",
+          "ty_idx": 7
+        },
+        {
+          "name": "owner_address",
+          "ty_idx": 17
+        },
+        {
+          "name": "content",
+          "ty_idx": 18
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "StakePositionInfo",
+      "ty_idx": 19,
+      "fields": [
+        {
+          "name": "lockedAssetAmount",
+          "ty_idx": 1
+        },
+        {
+          "name": "amountWantedToUnstake",
+          "ty_idx": 1
+        },
+        {
+          "name": "previousStablePerAssetCollected",
+          "ty_idx": 1
+        },
+        {
+          "name": "priceStake",
+          "ty_idx": 1
+        }
+      ]
+    }
+  ],
+  "incoming_messages": [
+    {
+      "body_ty_idx": 12
+    },
+    {
+      "body_ty_idx": 13
+    },
+    {
+      "body_ty_idx": 15
+    }
+  ],
+  "incoming_external": [],
+  "outgoing_messages": [],
+  "emitted_events": [],
+  "storage": {},
+  "get_methods": [
+    {
+      "tvm_method_id": 102351,
+      "name": "get_nft_data",
+      "parameters": [],
+      "return_ty_idx": 16
+    },
+    {
+      "tvm_method_id": 102640,
+      "name": "get_stake_position_info",
+      "parameters": [],
+      "return_ty_idx": 19
+    }
+  ],
+  "thrown_errors": [
+    {
+      "kind": "plain_int",
+      "err_code": 0
+    }
+  ],
+  "compiler_name": "tolk",
+  "compiler_version": "1.4.1",
+  "code_boc64": "te6ccgEBBgEAKgABFP8A9KQT9LzyyAsBAgFiAgMABtDyAAICdAQFAAmz8/yAIAAJsDw8gCA="
+}

@@ -33,11 +33,22 @@ type Transaction struct {
 	Description TransactionDescr `tlb:"^"`
 
 	hash Bits256
+
+	lazySourceBoc func() ([]byte, error)
 }
 
 // Hash returns a hash of this transaction.
 func (tx *Transaction) Hash() Bits256 {
 	return tx.hash
+}
+
+// SourceBoc returns a BOC of this transaction.
+// It works only if the transaction was unmarshalled from a cell.
+func (tx *Transaction) SourceBoc() ([]byte, error) {
+	if tx.lazySourceBoc != nil {
+		return tx.lazySourceBoc()
+	}
+	return nil, fmt.Errorf("transaction was not unmarshalled from cell")
 }
 
 func (tx *Transaction) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
@@ -46,15 +57,23 @@ func (tx *Transaction) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
 		err  error
 	)
 	if decoder.hasher != nil {
+		tx.lazySourceBoc = func() ([]byte, error) {
+			c.ResetCounters()
+			return c.ToBocCustomWithHasher(decoder.Hasher(), false, false, false, 0)
+		}
 		hash, err = decoder.hasher.Hash(c)
 	} else {
+		tx.lazySourceBoc = func() ([]byte, error) {
+			c.ResetCounters()
+			return boc.SerializeBoc(c, false, false, false, 0)
+		}
 		hash, err = c.Hash()
 	}
 	if err != nil {
 		return err
 	}
 	copy(tx.hash[:], hash[:])
-	c.ResetCounters()
+	c.ShallowResetCounters()
 
 	sumType, err := c.ReadUint(4)
 	if err != nil {
@@ -327,12 +346,14 @@ type TrComputePhase struct {
 // cskip_no_state$00 = ComputeSkipReason;
 // cskip_bad_state$01 = ComputeSkipReason;
 // cskip_no_gas$10 = ComputeSkipReason;
+// cskip_suspended$110 = ComputeSkipReason;
 type ComputeSkipReason string
 
 const (
 	ComputeSkipReasonNoState  ComputeSkipReason = "cskip_no_state"
 	ComputeSkipReasonBadState ComputeSkipReason = "cskip_bad_state"
 	ComputeSkipReasonNoGas    ComputeSkipReason = "cskip_no_gas"
+	ComputeSkipSuspended      ComputeSkipReason = "cskip_suspended"
 )
 
 func (a ComputeSkipReason) MarshalTLB(c *boc.Cell, encoder *Encoder) error {
@@ -343,6 +364,11 @@ func (a ComputeSkipReason) MarshalTLB(c *boc.Cell, encoder *Encoder) error {
 		return c.WriteUint(1, 2)
 	case ComputeSkipReasonNoGas:
 		return c.WriteUint(2, 2)
+	case ComputeSkipSuspended:
+		if err := c.WriteUint(3, 2); err != nil {
+			return err
+		}
+		return c.WriteUint(0, 1)
 	}
 	return nil
 }
@@ -359,6 +385,16 @@ func (a *ComputeSkipReason) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
 		*a = ComputeSkipReasonBadState
 	case 2:
 		*a = ComputeSkipReasonNoGas
+	case 3:
+		nextBit, err := c.ReadUint(1)
+		if err != nil {
+			return err
+		}
+		if nextBit == 0 {
+			*a = ComputeSkipSuspended
+			return nil
+		}
+		return fmt.Errorf("unknown ComputeSkipReason")
 	}
 	return nil
 }
@@ -385,13 +421,13 @@ type TrActionPhase struct {
 	SkippedActions  uint16
 	MsgsCreated     uint16
 	ActionListHash  Bits256
-	TotMsgSize      StorageUsedShort
+	TotMsgSize      StorageUsed
 }
 
-// StorageUsedShort
-// storage_used_short$_ cells:(VarUInteger 7)
-// bits:(VarUInteger 7) = StorageUsedShort;
-type StorageUsedShort struct {
+// StorageUsed
+// storage_used$_ cells:(VarUInteger 7)
+// bits:(VarUInteger 7) = StorageUsed;
+type StorageUsed struct {
 	Cells VarUInteger7
 	Bits  VarUInteger7
 }
@@ -407,11 +443,11 @@ type TrBouncePhase struct {
 	TrPhaseBounceNegfunds struct {
 	} `tlbSumType:"tr_phase_bounce_negfunds$00"`
 	TrPhaseBounceNofunds struct {
-		MsgSize    StorageUsedShort
+		MsgSize    StorageUsed
 		ReqFwdFees Grams
 	} `tlbSumType:"tr_phase_bounce_nofunds$01"`
 	TrPhaseBounceOk struct {
-		MsgSize StorageUsedShort
+		MsgSize StorageUsed
 		MsgFees Grams
 		FwdFees Grams
 	} `tlbSumType:"tr_phase_bounce_ok$1"`

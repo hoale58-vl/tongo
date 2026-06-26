@@ -2,61 +2,65 @@ package jetton
 
 import (
 	"context"
-
-	"github.com/tonkeeper/tongo"
-	"github.com/tonkeeper/tongo/abi"
-	"github.com/tonkeeper/tongo/boc"
-	"github.com/tonkeeper/tongo/tlb"
-	"github.com/tonkeeper/tongo/wallet"
+	"errors"
 	"math/big"
 	"strconv"
 	"time"
+
+	"github.com/tonkeeper/tongo/abi"
+	"github.com/tonkeeper/tongo/boc"
+	"github.com/tonkeeper/tongo/tep64"
+	"github.com/tonkeeper/tongo/tlb"
+	"github.com/tonkeeper/tongo/ton"
+	"github.com/tonkeeper/tongo/wallet"
 )
 
 type blockchain interface {
-	GetJettonWallet(ctx context.Context, master, owner tongo.AccountID) (tongo.AccountID, error)
-	GetJettonData(ctx context.Context, master tongo.AccountID) (tongo.JettonMetadata, error)
-	GetJettonBalance(ctx context.Context, jettonWallet tongo.AccountID) (*big.Int, error)
+	GetJettonWallet(ctx context.Context, master, owner ton.AccountID) (ton.AccountID, error)
+	GetJettonData(ctx context.Context, master ton.AccountID) (tep64.Metadata, error)
+	GetJettonBalance(ctx context.Context, jettonWallet ton.AccountID) (*big.Int, error)
 }
 
 type Jetton struct {
-	Master     tongo.AccountID
+	Master     ton.AccountID
 	blockchain blockchain
 }
 
 type TransferMessage struct {
 	Jetton              *Jetton
-	Sender              tongo.AccountID
+	Sender              ton.AccountID
 	JettonAmount        *big.Int
-	Destination         tongo.AccountID
-	ResponseDestination *tongo.AccountID
-	AttachedTon         tlb.Grams
-	ForwardTonAmount    tlb.Grams
+	Destination         ton.AccountID
+	ResponseDestination *ton.AccountID
+	AttachedGram        tlb.Grams
+	ForwardGramAmount   tlb.Grams
 	ForwardPayload      *boc.Cell
 	CustomPayload       *boc.Cell
+	StateInit           *tlb.StateInit
 }
 
 func (tm TransferMessage) ToInternal() (tlb.Message, uint8, error) {
 	c := boc.NewCell()
-	forwardTon := big.NewInt(int64(tm.ForwardTonAmount))
+	forwardGrams := big.NewInt(int64(tm.ForwardGramAmount))
 	msgBody := abi.JettonTransferMsgBody{
 		QueryId:             uint64(time.Now().UnixNano()),
 		Amount:              tlb.VarUInteger16(*tm.JettonAmount),
 		Destination:         tm.Destination.ToMsgAddress(),
 		ResponseDestination: tm.ResponseDestination.ToMsgAddress(),
-		ForwardTonAmount:    tlb.VarUInteger16(*forwardTon),
+		ForwardTonAmount:    tlb.VarUInteger16(*forwardGrams),
 	}
 	if tm.CustomPayload != nil {
-		msgBody.CustomPayload.Exists = true
-		msgBody.CustomPayload.Value.Value = tlb.Any(*tm.CustomPayload)
+		payload := tlb.Any(*tm.CustomPayload)
+		msgBody.CustomPayload = &payload
 	}
 	if tm.ForwardPayload != nil {
 		msgBody.ForwardPayload.IsRight = true
-		msgBody.ForwardPayload.Value = tlb.Any(*tm.ForwardPayload)
+		msgBody.ForwardPayload.Value = abi.JettonPayload{SumType: abi.UnknownJettonOp, Value: tm.ForwardPayload}
 	}
-	c.WriteUint(0xf8a7ea5, 32)
-	err := tlb.Marshal(c, msgBody)
-	if err != nil {
+	if err := c.WriteUint(0xf8a7ea5, 32); err != nil {
+		return tlb.Message{}, 0, err
+	}
+	if err := tlb.Marshal(c, msgBody); err != nil {
 		return tlb.Message{}, 0, err
 	}
 	jettonWallet, err := tm.Jetton.GetJettonWallet(context.TODO(), tm.Sender)
@@ -64,25 +68,33 @@ func (tm TransferMessage) ToInternal() (tlb.Message, uint8, error) {
 		return tlb.Message{}, 0, err
 	}
 	m := wallet.Message{
-		Amount:  tm.AttachedTon,
+		Amount:  tm.AttachedGram,
 		Address: jettonWallet,
 		Bounce:  true,
 		Mode:    wallet.DefaultMessageMode,
 		Body:    c,
 	}
+	if tm.StateInit != nil {
+		if tm.StateInit.Code.Exists {
+			m.Code = &tm.StateInit.Code.Value.Value
+		}
+		if tm.StateInit.Data.Exists {
+			m.Data = &tm.StateInit.Data.Value.Value
+		}
+	}
 	return m.ToInternal()
 }
 
-func New(master tongo.AccountID, blockchain blockchain) *Jetton {
+func New(master ton.AccountID, blockchain blockchain) *Jetton {
 	return &Jetton{
 		Master:     master,
 		blockchain: blockchain,
 	}
 }
 
-func (j *Jetton) GetBalance(ctx context.Context, owner tongo.AccountID) (*big.Int, error) {
+func (j *Jetton) GetBalance(ctx context.Context, owner ton.AccountID) (*big.Int, error) {
 	if j.blockchain == nil {
-		return nil, tongo.BlockchainInterfaceIsNil
+		return nil, errors.New("blockchain interface is nil")
 	}
 	jettonWallet, err := j.blockchain.GetJettonWallet(ctx, j.Master, owner)
 	if err != nil {
@@ -91,16 +103,16 @@ func (j *Jetton) GetBalance(ctx context.Context, owner tongo.AccountID) (*big.In
 	return j.blockchain.GetJettonBalance(ctx, jettonWallet)
 }
 
-func (j *Jetton) GetJettonWallet(ctx context.Context, owner tongo.AccountID) (tongo.AccountID, error) {
+func (j *Jetton) GetJettonWallet(ctx context.Context, owner ton.AccountID) (ton.AccountID, error) {
 	if j.blockchain == nil {
-		return tongo.AccountID{}, tongo.BlockchainInterfaceIsNil
+		return ton.AccountID{}, errors.New("blockchain interface is nil")
 	}
 	return j.blockchain.GetJettonWallet(ctx, j.Master, owner)
 }
 
 func (j *Jetton) GetDecimals(ctx context.Context) (int, error) {
 	if j.blockchain == nil {
-		return 0, tongo.BlockchainInterfaceIsNil
+		return 0, errors.New("blockchain interface is nil")
 	}
 	data, err := j.blockchain.GetJettonData(ctx, j.Master)
 	if err != nil {

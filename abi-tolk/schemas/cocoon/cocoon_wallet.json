@@ -1,0 +1,301 @@
+{
+  "abi_schema_version": "1.0",
+  "contract_name": "cocoon_wallet",
+  "unique_types": [
+    {
+      "kind": "void"
+    },
+    {
+      "kind": "int"
+    },
+    {
+      "kind": "slice"
+    },
+    {
+      "kind": "cell"
+    },
+    {
+      "kind": "builder"
+    },
+    {
+      "kind": "bool"
+    },
+    {
+      "kind": "coins"
+    },
+    {
+      "kind": "address"
+    },
+    {
+      "kind": "intN",
+      "n": 32
+    },
+    {
+      "kind": "uintN",
+      "n": 32
+    },
+    {
+      "kind": "intN",
+      "n": 64
+    },
+    {
+      "kind": "uintN",
+      "n": 64
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "OwnerWalletSendMessage"
+    },
+    {
+      "kind": "uintN",
+      "n": 8
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "TextCommand"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "WalletExternalMessage"
+    },
+    {
+      "kind": "bitsN",
+      "n": 512
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "ExternalSignedMessage"
+    },
+    {
+      "kind": "AliasRef",
+      "alias_name": "ForwardMsgs"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "ForwardMsg"
+    },
+    {
+      "kind": "arrayOf",
+      "inner_ty_idx": 19
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "WalletStorage"
+    },
+    {
+      "kind": "uintN",
+      "n": 256
+    }
+  ],
+  "struct_instantiations": [],
+  "alias_instantiations": [],
+  "declarations": [
+    {
+      "kind": "struct",
+      "name": "WalletExternalMessage",
+      "ty_idx": 15,
+      "fields": [
+        {
+          "name": "signature",
+          "ty_idx": 16
+        },
+        {
+          "name": "message",
+          "ty_idx": 17
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "ExternalSignedMessage",
+      "ty_idx": 17,
+      "fields": [
+        {
+          "name": "subwalletId",
+          "ty_idx": 9
+        },
+        {
+          "name": "validUntil",
+          "ty_idx": 9
+        },
+        {
+          "name": "msgSeqno",
+          "ty_idx": 9
+        },
+        {
+          "name": "forward",
+          "ty_idx": 18
+        }
+      ]
+    },
+    {
+      "kind": "alias",
+      "name": "ForwardMsgs",
+      "ty_idx": 18,
+      "target_ty_idx": 20,
+      "custom_pack_unpack": {
+        "pack_to_builder": true,
+        "unpack_from_slice": true
+      }
+    },
+    {
+      "kind": "struct",
+      "name": "ForwardMsg",
+      "ty_idx": 19,
+      "fields": [
+        {
+          "name": "mode",
+          "ty_idx": 13
+        },
+        {
+          "name": "msg",
+          "ty_idx": 3
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "OwnerWalletSendMessage",
+      "ty_idx": 12,
+      "prefix": {
+        "prefix_num": 2624189302,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        },
+        {
+          "name": "mode",
+          "ty_idx": 13
+        },
+        {
+          "name": "body",
+          "ty_idx": 3
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "TextCommand",
+      "ty_idx": 14,
+      "prefix": {
+        "prefix_num": 0,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "action",
+          "ty_idx": 13
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "WalletStorage",
+      "ty_idx": 21,
+      "fields": [
+        {
+          "name": "seqno",
+          "ty_idx": 9
+        },
+        {
+          "name": "subwalletId",
+          "ty_idx": 9
+        },
+        {
+          "name": "publicKey",
+          "ty_idx": 22
+        },
+        {
+          "name": "status",
+          "ty_idx": 9
+        },
+        {
+          "name": "ownerAddress",
+          "ty_idx": 7
+        }
+      ]
+    }
+  ],
+  "incoming_messages": [
+    {
+      "body_ty_idx": 12
+    },
+    {
+      "body_ty_idx": 14
+    }
+  ],
+  "incoming_external": [
+    {
+      "body_ty_idx": 15
+    }
+  ],
+  "outgoing_messages": [
+    {
+      "body_ty_idx": 14
+    }
+  ],
+  "emitted_events": [],
+  "storage": {
+    "storage_ty_idx": 21
+  },
+  "get_methods": [
+    {
+      "tvm_method_id": 85143,
+      "name": "seqno",
+      "parameters": [],
+      "return_ty_idx": 1
+    },
+    {
+      "tvm_method_id": 78748,
+      "name": "get_public_key",
+      "parameters": [],
+      "return_ty_idx": 1
+    },
+    {
+      "tvm_method_id": 114619,
+      "name": "get_owner_address",
+      "parameters": [],
+      "return_ty_idx": 7
+    }
+  ],
+  "thrown_errors": [
+    {
+      "kind": "plain_int",
+      "err_code": 1030
+    },
+    {
+      "kind": "plain_int",
+      "err_code": 1031
+    },
+    {
+      "kind": "plain_int",
+      "err_code": 1032
+    },
+    {
+      "kind": "plain_int",
+      "err_code": 1033
+    },
+    {
+      "kind": "plain_int",
+      "err_code": 1034
+    },
+    {
+      "kind": "plain_int",
+      "err_code": 1035
+    },
+    {
+      "kind": "plain_int",
+      "err_code": 1040
+    },
+    {
+      "kind": "plain_int",
+      "err_code": 1041
+    }
+  ],
+  "compiler_name": "tolk",
+  "compiler_version": "1.4.1",
+  "code_boc64": "te6ccgECCwEAAXAAART/APSkE/S88sgLAQIBIAIDAgFIBAUAxPKDCNcYINMf0x/TH9EB+CO88uQG7UTQ0x/TH9P/0x/6SNEhcbDy1AdRVLry5AhRUrry5AkFyM75FlQQZfkQ8uQK+CdvEIIQdzWUAL7y5Av4AKTIyx8Uyx8Sy//LH/pSye1UAdjQ+JHyQCDHAJEw4CDXCx8gghAlZZNMupF/miCCEMWafNO6wwDikjB/mYIQmhJHwLrDAOKRMODtRNCBAUDXGNMfIPpIMPiSxwXy5BAD1ywk40+btJxsMdM/MdMH10wB+wDg1ywgAAAABOMC8j8GAgEgBwgAotcLByDAd44cXwSCCJiWgHL7AviSyM+FiPpSgHfPC5bJgwb7AI4qIMBinDBxsQHIzssfzsntVI4XwHWT8sQR4YIQ/////rAByM7LH87J7VTi4gIBIAkKABu9/d9qJoQICwa5D9JBhAAXuznO1E0NM/MdcL/4ABG4yX7UTQ1wsfg="
+}

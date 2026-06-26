@@ -3,21 +3,30 @@ package tlb
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math/big"
 	"strconv"
+	"strings"
+	"unicode/utf8"
 
 	"github.com/tonkeeper/tongo/boc"
 )
+
+var ErrGramsOverflow = errors.New("grams overflow")
 
 // Grams
 // nanograms$_ amount:(VarUInteger 16) = Grams;
 type Grams uint64 // total value fit to uint64
 
+type Coins = Grams
+
+type SignedCoins int64
+
 func (g Grams) MarshalTLB(c *boc.Cell, encoder *Encoder) error {
 	var amount VarUInteger16
 	amount = VarUInteger16(*big.NewInt(int64(g)))
-	err := Marshal(c, amount)
+	err := encode(c, "", amount, encoder)
 	return err
 }
 
@@ -27,7 +36,7 @@ func (g *Grams) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
 		return err
 	}
 	if ln > 8 {
-		return fmt.Errorf("grams overflow")
+		return ErrGramsOverflow
 	}
 	var amount uint64
 	for i := 0; i < int(ln); i++ {
@@ -41,6 +50,70 @@ func (g *Grams) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
 	return nil
 }
 
+func (u *Grams) ReadFromStack(stack *VmStack) error {
+	elem, ok := stack.Pop()
+	if !ok {
+		return ErrStackEmpty
+	}
+	switch elem.SumType {
+	case "VmStkTinyInt":
+		*u = Grams(elem.VmStkTinyInt)
+	case "VmStkInt":
+		bi := big.Int(elem.VmStkInt)
+		if bi.IsUint64() {
+			*u = Grams(bi.Uint64())
+		} else if bi.IsInt64() {
+			*u = Grams(bi.Int64())
+		}
+		return fmt.Errorf("int overflow: %v", elem.SumType)
+	default:
+		return fmt.Errorf("invalid stack element for Int{{.NameIndex}}: %v", elem.SumType)
+	}
+	return nil
+}
+
+func (g SignedCoins) MarshalTLB(c *boc.Cell, encoder *Encoder) error {
+	err := c.WriteBit(g < 0)
+	if err != nil {
+		return err
+	}
+	if g < 0 {
+		g = -g
+	}
+	amount := VarUInteger16(*big.NewInt(int64(g)))
+	return encode(c, "", amount, encoder)
+}
+
+func (g *SignedCoins) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
+	negative, err := c.ReadBit()
+	if err != nil {
+		return err
+	}
+	ln, err := c.ReadLimUint(15)
+	if err != nil {
+		return err
+	}
+	if ln > 8 {
+		return ErrGramsOverflow
+	}
+	var amount uint64
+	for i := 0; i < int(ln); i++ {
+		b, err := c.ReadUint(8)
+		if err != nil {
+			return err
+		}
+		amount = uint64(b) | (amount << 8)
+	}
+	if amount > 1<<63 {
+		return ErrGramsOverflow
+	}
+	if negative {
+		amount = -amount
+	}
+	*g = SignedCoins(amount)
+	return nil
+}
+
 func (g Grams) MarshalJSON() ([]byte, error) {
 	return []byte(fmt.Sprintf("\"%d\"", g)), nil
 }
@@ -51,6 +124,18 @@ func (g *Grams) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*g = Grams(val)
+	return nil
+}
+func (g SignedCoins) MarshalJSON() ([]byte, error) {
+	return []byte(fmt.Sprintf("\"%d\"", g)), nil
+}
+
+func (g *SignedCoins) UnmarshalJSON(data []byte) error {
+	val, err := strconv.ParseUint(string(bytes.Trim(data, "\" \n")), 10, 64)
+	if err != nil {
+		return err
+	}
+	*g = SignedCoins(val)
 	return nil
 }
 
@@ -70,11 +155,37 @@ type ExtraCurrencyCollection struct {
 }
 
 func (h HashmapE[keyT, T]) MarshalJSON() ([]byte, error) {
-	m := make(map[keyT]T, len(h.Keys()))
+	m := make(map[string]T, len(h.Keys()))
 	for _, item := range h.Items() {
-		m[item.Key] = item.Value
+		key, err := json.Marshal(item.Key)
+		if err != nil {
+			return nil, err
+		}
+		m[strings.Trim(string(key), "\"")] = item.Value
 	}
 	return json.Marshal(m)
+}
+
+func (h *HashmapE[keyT, T]) UnmarshalJSON(data []byte) error {
+	var (
+		m    map[string]T
+		hInt Hashmap[keyT, T]
+	)
+	if err := json.Unmarshal(data, &m); err != nil {
+		return err
+	}
+	hInt.keys = make([]keyT, 0, len(m))
+	hInt.values = make([]T, 0, len(m))
+	for k, v := range m {
+		var key keyT
+		if err := json.Unmarshal([]byte(strconv.Quote(k)), &key); err != nil {
+			return err
+		}
+		hInt.keys = append(hInt.keys, key)
+		hInt.values = append(hInt.values, v)
+	}
+	h.m = hInt
+	return nil
 }
 
 func (f ExtraCurrencyCollection) MarshalJSON() ([]byte, error) {
@@ -135,19 +246,18 @@ func (s *SnakeData) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
 	return nil
 }
 
-// text#_ {n:#} data:(SnakeData ~n) = Text;
-type Text string
+type Bytes []byte
 
-func (t Text) MarshalTLB(c *boc.Cell, encoder *Encoder) error {
-	bs := boc.NewBitString(len(t) * 8)
-	err := bs.WriteBytes([]byte(t))
+func (b Bytes) MarshalTLB(c *boc.Cell, encoder *Encoder) error {
+	bs := boc.NewBitString(len(b) * 8)
+	err := bs.WriteBytes(b)
 	if err != nil {
 		return err
 	}
 	return Marshal(c, SnakeData(bs))
 }
 
-func (t *Text) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
+func (b *Bytes) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
 	var sn SnakeData
 	err := decoder.Unmarshal(c, &sn)
 	if err != nil {
@@ -157,9 +267,29 @@ func (t *Text) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
 	if bs.BitsAvailableForRead()%8 != 0 {
 		return fmt.Errorf("text data must be a multiple of 8 bits")
 	}
-	b, err := bs.GetTopUppedArray()
+	buf, err := bs.GetTopUppedArray()
 	if err != nil {
 		return err
+	}
+	*b = buf
+	return nil
+}
+
+// text#_ {n:#} data:(SnakeData ~n) = Text;
+type Text string
+
+func (t Text) MarshalTLB(c *boc.Cell, encoder *Encoder) error {
+	return Bytes(t).MarshalTLB(c, encoder)
+}
+
+func (t *Text) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
+	var b Bytes
+	err := b.UnmarshalTLB(c, decoder)
+	if err != nil {
+		return err
+	}
+	if !utf8.Valid(b) {
+		return fmt.Errorf("invalid unicode characters in text")
 	}
 	*t = Text(b)
 	return nil
@@ -277,6 +407,9 @@ type ShardDesc struct {
 		NextValidatorShard int64
 		MinRefMcSeqNo      uint32
 		GenUTime           uint32
+		//todo: add   split_merge_at:FutureSplitMerge
+		//  ^[ fees_collected:CurrencyCollection
+		//     funds_created:CurrencyCollection ]
 	} `tlbSumType:"old#b"`
 	New struct {
 		SeqNo              uint32
@@ -295,6 +428,9 @@ type ShardDesc struct {
 		NextValidatorShard int64
 		MinRefMcSeqNo      uint32
 		GenUTime           uint32
+		//todo: add   split_merge_at:FutureSplitMerge
+		//  fees_collected:CurrencyCollection
+		//  funds_created:CurrencyCollection
 	} `tlbSumType:"new#a"`
 }
 

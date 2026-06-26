@@ -3,6 +3,7 @@ package tlb
 import (
 	"fmt"
 	"reflect"
+	"slices"
 )
 
 func (t *VmStkTuple) Unmarshal(v any) error {
@@ -12,9 +13,16 @@ func (t *VmStkTuple) Unmarshal(v any) error {
 	}
 	switch val.Elem().Kind() {
 	case reflect.Slice:
-		items, err := t.recursiveToSlice()
+		items, err := t.RecursiveToSlice()
 		if err != nil {
-			return err
+			if t.Data != nil {
+				items, err = t.Data.RecursiveToSlice(int(t.Len))
+				if err != nil {
+					return err
+				}
+			} else {
+				items = []VmStackValue{}
+			}
 		}
 		sl := reflect.MakeSlice(val.Elem().Type(), 0, len(items))
 		for _, i := range items {
@@ -31,7 +39,7 @@ func (t *VmStkTuple) Unmarshal(v any) error {
 			return fmt.Errorf("mismatched fields count in tuple and struct")
 		}
 
-		values, err := t.Data.recursiveToSlice(int(t.Len))
+		values, err := t.Data.RecursiveToSlice(int(t.Len))
 		if err != nil {
 			return err
 		}
@@ -49,7 +57,7 @@ func (t *VmStkTuple) Unmarshal(v any) error {
 	return nil
 }
 
-func (t *VmStkTuple) recursiveToSlice() ([]VmStackValue, error) {
+func (t *VmStkTuple) RecursiveToSlice() ([]VmStackValue, error) {
 	if t.Len != 2 {
 		return nil, fmt.Errorf("recursive tuple element must have length value == 2 not %v", t.Len)
 	}
@@ -64,23 +72,76 @@ func (t *VmStkTuple) recursiveToSlice() ([]VmStackValue, error) {
 		return nil, fmt.Errorf("invalid type %v in recursive slice decoding", t.Data.Tail.SumType)
 	}
 
-	values, err := t.Data.Tail.VmStkTuple.recursiveToSlice()
+	values, err := t.Data.Tail.VmStkTuple.RecursiveToSlice()
 	if err != nil {
 		return nil, err
 	}
 	return append(sl, values...), nil
 }
 
-func (t VmTuple) recursiveToSlice(depth int) ([]VmStackValue, error) {
+func (t VmTuple) RecursiveToSlice(depth int) ([]VmStackValue, error) {
+	if t.Head.Entry == nil && t.Head.Ref == nil {
+		return nil, fmt.Errorf("can't decode tuple by unknown reason")
+	}
+
 	var sl []VmStackValue
 	var err error
-	if depth == 2 {
-		if t.Head.Entry == nil {
-			return nil, fmt.Errorf("stack tuple invalid depth")
-		}
+	if t.Head.Ref == nil {
 		sl = append(sl, *t.Head.Entry)
 	} else {
-		sl, err = t.Head.Ref.recursiveToSlice(depth - 1)
+		sl, err = t.Head.Ref.RecursiveToSlice(depth - 1)
+		if err != nil {
+			return nil, err
+		}
 	}
-	return append(sl, t.Tail), err
+	if t.Tail.SumType != "" { // tail can be null only if len(tuple) <= 1
+		sl = append(sl, t.Tail)
+	}
+	return sl, nil
+}
+
+// AsStack flattens tuple items into a stack. Head is the top of the stack. Tail is the bottom.
+// VmStkTuple has this shape: ((((a, b), c), d), e)
+// Result VmStack is: [e, d, c, b, a]
+func (t *VmStkTuple) AsStack() (*VmStack, error) {
+	if t == nil {
+		return &VmStack{}, nil
+	}
+
+	switch t.Len {
+	case 0:
+		return &VmStack{}, nil
+	case 1:
+		if t.Data == nil {
+			return nil, fmt.Errorf("tuple len=1 has nil Data")
+		}
+		return &VmStack{values: []VmStackValue{t.Data.Tail}}, nil
+	}
+
+	cur := t.Data
+	if cur == nil {
+		return nil, fmt.Errorf("tuple len=%d has nil Data", t.Len)
+	}
+
+	items := make([]VmStackValue, 0, int(t.Len))
+	items = append(items, cur.Tail)
+
+	for remaining := int(t.Len) - 1; remaining > 1; remaining-- {
+		ref := cur.Head
+		if ref.Ref == nil {
+			return nil, fmt.Errorf("tuple head for remaining=%d has nil Ref", remaining)
+		}
+		cur = ref.Ref
+		items = append(items, cur.Tail)
+	}
+
+	// Now remaining == 1, so cur.Head must be vm_tupref_single.
+	if cur.Head.Entry == nil {
+		return nil, fmt.Errorf("tuple final head has nil Entry")
+	}
+
+	items = append(items, *cur.Head.Entry)
+	slices.Reverse(items)
+
+	return &VmStack{values: items}, nil
 }

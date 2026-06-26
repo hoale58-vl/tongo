@@ -15,6 +15,16 @@ type MerkleProof[T any] struct {
 	VirtualRoot T `tlb:"^"`
 }
 
+type MerkleUpdate[T any] struct {
+	Magic     Magic `tlb:"!merkle_update#04"`
+	FromHash  Bits256
+	ToHash    Bits256
+	FromDepth uint16
+	ToDepth   uint16
+	FromRoot  T `tlb:"^"`
+	ToRoot    T `tlb:"^"`
+}
+
 // ShardStateUnsplit
 // shard_state#9023afe2 global_id:int32
 // shard_id:ShardIdent
@@ -76,18 +86,26 @@ func (s *ShardState) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
 		if err != nil {
 			return err
 		}
-		err = decoder.Unmarshal(c1, &s.SplitState.Left)
-		if err != nil {
-			return err
+		if c1.CellType() != boc.PrunedBranchCell {
+			err = decoder.Unmarshal(c1, &s.SplitState.Left)
+			if err != nil {
+				return err
+			}
+		} else {
+			s.SplitState.Left = ShardStateUnsplit{}
 		}
 		c1, err = c.NextRef()
 		if err != nil {
 			return err
 		}
-		err = decoder.Unmarshal(c1, &s.SplitState.Right)
-		if err != nil {
-			return err
+		if c1.CellType() != boc.PrunedBranchCell {
+			if err := decoder.Unmarshal(c1, &s.SplitState.Right); err != nil {
+				return err
+			}
+		} else {
+			s.SplitState.Right = ShardStateUnsplit{}
 		}
+		s.SumType = "SplitState"
 		break
 	case 0x9023afe2:
 		var shardUnsplitData ShardStateUnsplitData
@@ -96,11 +114,47 @@ func (s *ShardState) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
 			return err
 		}
 		s.UnsplitState.Value.ShardStateUnsplit = shardUnsplitData
+		s.SumType = "UnsplitState"
 		break
 	default:
 		return fmt.Errorf("invalid tag")
 	}
 	return nil
+}
+
+func (s *ShardState) AccountBalances() map[Bits256]CurrencyCollection {
+	switch s.SumType {
+	case "UnsplitState":
+		accounts := s.UnsplitState.Value.ShardStateUnsplit.Accounts.Keys()
+		balances := make(map[Bits256]CurrencyCollection, len(accounts))
+		for i, shardAccount := range s.UnsplitState.Value.ShardStateUnsplit.Accounts.Values() {
+			c, ok := shardAccount.Account.CurrencyCollection()
+			if !ok {
+				continue
+			}
+			balances[accounts[i]] = c
+		}
+		return balances
+	default:
+		leftAccounts := s.SplitState.Left.ShardStateUnsplit.Accounts.Keys()
+		rightAccounts := s.SplitState.Right.ShardStateUnsplit.Accounts.Keys()
+		balances := make(map[Bits256]CurrencyCollection, len(leftAccounts)+len(rightAccounts))
+		for i, shardAccount := range s.SplitState.Left.ShardStateUnsplit.Accounts.Values() {
+			c, ok := shardAccount.Account.CurrencyCollection()
+			if !ok {
+				continue
+			}
+			balances[leftAccounts[i]] = c
+		}
+		for i, shardAccount := range s.SplitState.Right.ShardStateUnsplit.Accounts.Values() {
+			c, ok := shardAccount.Account.CurrencyCollection()
+			if !ok {
+				continue
+			}
+			balances[rightAccounts[i]] = c
+		}
+		return balances
+	}
 }
 
 // ShardIdent
@@ -250,7 +304,7 @@ type ShardStateUnsplitOther struct {
 type LibDescr struct {
 	Magic      Magic    `tlb:"shared_lib_descr$00"`
 	Lib        boc.Cell `tlb:"^"`
-	Publishers Hashmap[Bits256, bool]
+	Publishers Hashmap[Bits256, struct{}]
 }
 
 // McStateExtra
@@ -279,6 +333,29 @@ type McStateExtra struct {
 type ConfigParams struct {
 	ConfigAddr Bits256
 	Config     Hashmap[Uint32, Ref[boc.Cell]] `tlb:"^"`
+}
+
+// CloneKeepingSubsetOfKeys returns a new ConfigParams with only the keys specified in the keys parameter.
+func (params *ConfigParams) CloneKeepingSubsetOfKeys(keys []uint32) ConfigParams {
+	keysMap := make(map[uint32]struct{})
+	for _, key := range keys {
+		keysMap[key] = struct{}{}
+	}
+	var newKeys []Uint32
+	var newValues []Ref[boc.Cell]
+	for _, item := range params.Config.Items() {
+		if _, ok := keysMap[uint32(item.Key)]; ok {
+			newKeys = append(newKeys, item.Key)
+			newValues = append(newValues, item.Value)
+		}
+	}
+	return ConfigParams{
+		ConfigAddr: params.ConfigAddr,
+		Config: Hashmap[Uint32, Ref[boc.Cell]]{
+			keys:   newKeys,
+			values: newValues,
+		},
+	}
 }
 
 // ^[ flags:(## 16) { flags <= 1 }

@@ -1,0 +1,930 @@
+{
+  "abi_schema_version": "1.0",
+  "contract_name": "pyth_oracle",
+  "unique_types": [
+    {
+      "kind": "void"
+    },
+    {
+      "kind": "int"
+    },
+    {
+      "kind": "slice"
+    },
+    {
+      "kind": "cell"
+    },
+    {
+      "kind": "builder"
+    },
+    {
+      "kind": "bool"
+    },
+    {
+      "kind": "coins"
+    },
+    {
+      "kind": "address"
+    },
+    {
+      "kind": "intN",
+      "n": 32
+    },
+    {
+      "kind": "uintN",
+      "n": 32
+    },
+    {
+      "kind": "intN",
+      "n": 64
+    },
+    {
+      "kind": "uintN",
+      "n": 64
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "ParsePriceFeedUpdatesMessage"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "PriceFeedUpdateData"
+    },
+    {
+      "kind": "uintN",
+      "n": 8
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "AccumulatorUpdatePayload"
+    },
+    {
+      "kind": "AliasRef",
+      "alias_name": "TrailingHeaderBytes"
+    },
+    {
+      "kind": "arrayOf",
+      "inner_ty_idx": 14
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "WormholeUpdateSection"
+    },
+    {
+      "kind": "AliasRef",
+      "alias_name": "WormholeProofBytes"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "PriceFeedUpdate"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "PriceFeedMessage"
+    },
+    {
+      "kind": "uintN",
+      "n": 256
+    },
+    {
+      "kind": "AliasRef",
+      "alias_name": "PriceFeedProof"
+    },
+    {
+      "kind": "bitsN",
+      "n": 160
+    },
+    {
+      "kind": "arrayOf",
+      "inner_ty_idx": 24
+    },
+    {
+      "kind": "arrayOf",
+      "inner_ty_idx": 20
+    },
+    {
+      "kind": "cellOf",
+      "inner_ty_idx": 13
+    },
+    {
+      "kind": "AliasRef",
+      "alias_name": "PriceFeedIdList"
+    },
+    {
+      "kind": "arrayOf",
+      "inner_ty_idx": 22
+    },
+    {
+      "kind": "cellOf",
+      "inner_ty_idx": 28
+    },
+    {
+      "kind": "addressAny"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "ParseUniquePriceFeedUpdatesMessage"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "MainStorage"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "PriceFeedsSection"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "StoredPriceFeed"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "PricePoint"
+    },
+    {
+      "kind": "cellOf",
+      "inner_ty_idx": 36
+    },
+    {
+      "kind": "cellOf",
+      "inner_ty_idx": 35
+    },
+    {
+      "kind": "mapKV",
+      "key_ty_idx": 22,
+      "value_ty_idx": 38
+    },
+    {
+      "kind": "cellOf",
+      "inner_ty_idx": 34
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "DataSourcesSection"
+    },
+    {
+      "kind": "mapKV",
+      "key_ty_idx": 22,
+      "value_ty_idx": 5
+    },
+    {
+      "kind": "cellOf",
+      "inner_ty_idx": 41
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "GuardianSetsSection"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "GuardianSetRecord"
+    },
+    {
+      "kind": "mapKV",
+      "key_ty_idx": 14,
+      "value_ty_idx": 24
+    },
+    {
+      "kind": "cellOf",
+      "inner_ty_idx": 45
+    },
+    {
+      "kind": "mapKV",
+      "key_ty_idx": 9,
+      "value_ty_idx": 47
+    },
+    {
+      "kind": "cellOf",
+      "inner_ty_idx": 44
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "GovernanceSection"
+    },
+    {
+      "kind": "uintN",
+      "n": 16
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "DataSource"
+    },
+    {
+      "kind": "cellOf",
+      "inner_ty_idx": 52
+    },
+    {
+      "kind": "cellOf",
+      "inner_ty_idx": 50
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "OracleResponseSuccess"
+    },
+    {
+      "kind": "AliasRef",
+      "alias_name": "PriceFeedResponseList"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "PriceFeedResponseEntry"
+    },
+    {
+      "kind": "arrayOf",
+      "inner_ty_idx": 57
+    },
+    {
+      "kind": "cellOf",
+      "inner_ty_idx": 56
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "ErrorResponse"
+    },
+    {
+      "kind": "cellOf",
+      "inner_ty_idx": 2
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "GuardianSetInfo"
+    }
+  ],
+  "struct_instantiations": [],
+  "alias_instantiations": [],
+  "declarations": [
+    {
+      "kind": "alias",
+      "name": "WormholeProofBytes",
+      "ty_idx": 19,
+      "target_ty_idx": 17,
+      "custom_pack_unpack": {
+        "pack_to_builder": true,
+        "unpack_from_slice": true
+      }
+    },
+    {
+      "kind": "alias",
+      "name": "TrailingHeaderBytes",
+      "ty_idx": 16,
+      "target_ty_idx": 17,
+      "custom_pack_unpack": {
+        "pack_to_builder": true,
+        "unpack_from_slice": true
+      }
+    },
+    {
+      "kind": "struct",
+      "name": "MainStorage",
+      "ty_idx": 33,
+      "fields": [
+        {
+          "name": "priceFeeds",
+          "ty_idx": 40
+        },
+        {
+          "name": "dataSources",
+          "ty_idx": 43
+        },
+        {
+          "name": "guardianSets",
+          "ty_idx": 49
+        },
+        {
+          "name": "governance",
+          "ty_idx": 54
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "PriceFeedsSection",
+      "ty_idx": 34,
+      "fields": [
+        {
+          "name": "latestPriceFeeds",
+          "ty_idx": 39
+        },
+        {
+          "name": "singleUpdateFee",
+          "ty_idx": 22
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "StoredPriceFeed",
+      "ty_idx": 35,
+      "fields": [
+        {
+          "name": "price",
+          "ty_idx": 37
+        },
+        {
+          "name": "emaPrice",
+          "ty_idx": 37
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "PricePoint",
+      "ty_idx": 36,
+      "fields": [
+        {
+          "name": "price",
+          "ty_idx": 10
+        },
+        {
+          "name": "conf",
+          "ty_idx": 11
+        },
+        {
+          "name": "expo",
+          "ty_idx": 8
+        },
+        {
+          "name": "publishTime",
+          "ty_idx": 11
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "PriceFeedMessage",
+      "ty_idx": 21,
+      "fields": [
+        {
+          "name": "messageType",
+          "ty_idx": 14
+        },
+        {
+          "name": "priceId",
+          "ty_idx": 22
+        },
+        {
+          "name": "price",
+          "ty_idx": 10
+        },
+        {
+          "name": "conf",
+          "ty_idx": 11
+        },
+        {
+          "name": "expo",
+          "ty_idx": 8
+        },
+        {
+          "name": "publishTime",
+          "ty_idx": 11
+        },
+        {
+          "name": "prevPublishTime",
+          "ty_idx": 11
+        },
+        {
+          "name": "emaPrice",
+          "ty_idx": 10
+        },
+        {
+          "name": "emaConf",
+          "ty_idx": 11
+        }
+      ]
+    },
+    {
+      "kind": "alias",
+      "name": "PriceFeedProof",
+      "ty_idx": 23,
+      "target_ty_idx": 25,
+      "custom_pack_unpack": {
+        "pack_to_builder": true,
+        "unpack_from_slice": true
+      }
+    },
+    {
+      "kind": "struct",
+      "name": "PriceFeedUpdate",
+      "ty_idx": 20,
+      "fields": [
+        {
+          "name": "message",
+          "ty_idx": 21
+        },
+        {
+          "name": "proof",
+          "ty_idx": 23
+        }
+      ],
+      "custom_pack_unpack": {
+        "pack_to_builder": true,
+        "unpack_from_slice": true
+      }
+    },
+    {
+      "kind": "struct",
+      "name": "WormholeUpdateSection",
+      "ty_idx": 18,
+      "fields": [
+        {
+          "name": "proof",
+          "ty_idx": 19
+        },
+        {
+          "name": "updates",
+          "ty_idx": 26
+        }
+      ],
+      "custom_pack_unpack": {
+        "pack_to_builder": true,
+        "unpack_from_slice": true
+      }
+    },
+    {
+      "kind": "struct",
+      "name": "AccumulatorUpdatePayload",
+      "ty_idx": 15,
+      "fields": [
+        {
+          "name": "trailingHeader",
+          "ty_idx": 16
+        },
+        {
+          "name": "updateType",
+          "ty_idx": 14
+        },
+        {
+          "name": "wormholeSection",
+          "ty_idx": 18
+        }
+      ],
+      "custom_pack_unpack": {
+        "pack_to_builder": true,
+        "unpack_from_slice": true
+      }
+    },
+    {
+      "kind": "struct",
+      "name": "PriceFeedUpdateData",
+      "ty_idx": 13,
+      "fields": [
+        {
+          "name": "magic",
+          "ty_idx": 9
+        },
+        {
+          "name": "majorVersion",
+          "ty_idx": 14
+        },
+        {
+          "name": "minorVersion",
+          "ty_idx": 14
+        },
+        {
+          "name": "accumulator",
+          "ty_idx": 15
+        }
+      ]
+    },
+    {
+      "kind": "alias",
+      "name": "PriceFeedIdList",
+      "ty_idx": 28,
+      "target_ty_idx": 29,
+      "custom_pack_unpack": {
+        "pack_to_builder": true,
+        "unpack_from_slice": true
+      }
+    },
+    {
+      "kind": "struct",
+      "name": "DataSourcesSection",
+      "ty_idx": 41,
+      "fields": [
+        {
+          "name": "isValidDataSource",
+          "ty_idx": 42
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "DataSource",
+      "ty_idx": 52,
+      "fields": [
+        {
+          "name": "emitterChainId",
+          "ty_idx": 51
+        },
+        {
+          "name": "emitterAddress",
+          "ty_idx": 22
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "GuardianSetsSection",
+      "ty_idx": 44,
+      "fields": [
+        {
+          "name": "currentGuardianSetIndex",
+          "ty_idx": 9
+        },
+        {
+          "name": "guardianSets",
+          "ty_idx": 48
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "GuardianSetRecord",
+      "ty_idx": 45,
+      "fields": [
+        {
+          "name": "expirationTime",
+          "ty_idx": 11
+        },
+        {
+          "name": "guardianKeys",
+          "ty_idx": 46
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "GuardianSetInfo",
+      "ty_idx": 62,
+      "fields": [
+        {
+          "name": "expirationTime",
+          "ty_idx": 1
+        },
+        {
+          "name": "keysDict",
+          "ty_idx": 3
+        },
+        {
+          "name": "keyCount",
+          "ty_idx": 1
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "GovernanceSection",
+      "ty_idx": 50,
+      "fields": [
+        {
+          "name": "chainId",
+          "ty_idx": 51
+        },
+        {
+          "name": "governanceChainId",
+          "ty_idx": 51
+        },
+        {
+          "name": "governanceContract",
+          "ty_idx": 22
+        },
+        {
+          "name": "consumedGovernanceActions",
+          "ty_idx": 42
+        },
+        {
+          "name": "governanceDataSource",
+          "ty_idx": 53
+        },
+        {
+          "name": "lastExecutedGovernanceSequence",
+          "ty_idx": 11
+        },
+        {
+          "name": "governanceDataSourceIndex",
+          "ty_idx": 9
+        },
+        {
+          "name": "upgradeCodeHash",
+          "ty_idx": 22
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "PriceFeedResponseEntry",
+      "ty_idx": 57,
+      "fields": [
+        {
+          "name": "priceId",
+          "ty_idx": 22
+        },
+        {
+          "name": "priceFeed",
+          "ty_idx": 38
+        }
+      ]
+    },
+    {
+      "kind": "alias",
+      "name": "PriceFeedResponseList",
+      "ty_idx": 56,
+      "target_ty_idx": 58,
+      "custom_pack_unpack": {
+        "pack_to_builder": true,
+        "unpack_from_slice": true
+      }
+    },
+    {
+      "kind": "struct",
+      "name": "ErrorResponse",
+      "ty_idx": 60,
+      "prefix": {
+        "prefix_num": 65538,
+        "prefix_len": 20
+      },
+      "fields": [
+        {
+          "name": "errorCode",
+          "ty_idx": 9
+        },
+        {
+          "name": "operation",
+          "ty_idx": 9
+        },
+        {
+          "name": "customPayload",
+          "ty_idx": 61
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "ParsePriceFeedUpdatesMessage",
+      "ty_idx": 12,
+      "prefix": {
+        "prefix_num": 5,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "updateData",
+          "ty_idx": 27
+        },
+        {
+          "name": "priceIds",
+          "ty_idx": 30
+        },
+        {
+          "name": "minPublishTime",
+          "ty_idx": 11
+        },
+        {
+          "name": "maxPublishTime",
+          "ty_idx": 11
+        },
+        {
+          "name": "targetAddress",
+          "ty_idx": 31
+        },
+        {
+          "name": "customPayload",
+          "ty_idx": 3
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "ParseUniquePriceFeedUpdatesMessage",
+      "ty_idx": 32,
+      "prefix": {
+        "prefix_num": 6,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "updateData",
+          "ty_idx": 27
+        },
+        {
+          "name": "priceIds",
+          "ty_idx": 30
+        },
+        {
+          "name": "publishTime",
+          "ty_idx": 11
+        },
+        {
+          "name": "maxStaleness",
+          "ty_idx": 11
+        },
+        {
+          "name": "targetAddress",
+          "ty_idx": 31
+        },
+        {
+          "name": "customPayload",
+          "ty_idx": 3
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "OracleResponseSuccess",
+      "ty_idx": 55,
+      "prefix": {
+        "prefix_num": 5,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "feedsCount",
+          "ty_idx": 14
+        },
+        {
+          "name": "priceFeeds",
+          "ty_idx": 59
+        },
+        {
+          "name": "initialSender",
+          "ty_idx": 7
+        },
+        {
+          "name": "afterOperation",
+          "ty_idx": 3
+        }
+      ]
+    }
+  ],
+  "incoming_messages": [
+    {
+      "body_ty_idx": 12
+    },
+    {
+      "body_ty_idx": 32
+    }
+  ],
+  "incoming_external": [],
+  "outgoing_messages": [
+    {
+      "body_ty_idx": 55
+    },
+    {
+      "body_ty_idx": 60
+    }
+  ],
+  "emitted_events": [],
+  "storage": {
+    "storage_ty_idx": 33
+  },
+  "get_methods": [
+    {
+      "tvm_method_id": 123983,
+      "name": "get_update_fee",
+      "parameters": [
+        {
+          "name": "data",
+          "ty_idx": 2
+        }
+      ],
+      "return_ty_idx": 1
+    },
+    {
+      "tvm_method_id": 99955,
+      "name": "get_single_update_fee",
+      "parameters": [],
+      "return_ty_idx": 1
+    },
+    {
+      "tvm_method_id": 98238,
+      "name": "get_governance_data_source_index",
+      "parameters": [],
+      "return_ty_idx": 1
+    },
+    {
+      "tvm_method_id": 110935,
+      "name": "get_governance_data_source",
+      "parameters": [],
+      "return_ty_idx": 3
+    },
+    {
+      "tvm_method_id": 70196,
+      "name": "get_last_executed_governance_sequence",
+      "parameters": [],
+      "return_ty_idx": 1
+    },
+    {
+      "tvm_method_id": 101632,
+      "name": "get_is_valid_data_source",
+      "parameters": [
+        {
+          "name": "data_source",
+          "ty_idx": 3
+        }
+      ],
+      "return_ty_idx": 1
+    },
+    {
+      "tvm_method_id": 104929,
+      "name": "get_price_unsafe",
+      "parameters": [
+        {
+          "name": "price_feed_id",
+          "ty_idx": 22
+        }
+      ],
+      "return_ty_idx": 36
+    },
+    {
+      "tvm_method_id": 72563,
+      "name": "get_price_no_older_than",
+      "parameters": [
+        {
+          "name": "time_period",
+          "ty_idx": 1
+        },
+        {
+          "name": "price_feed_id",
+          "ty_idx": 22
+        }
+      ],
+      "return_ty_idx": 36
+    },
+    {
+      "tvm_method_id": 128321,
+      "name": "get_ema_price_unsafe",
+      "parameters": [
+        {
+          "name": "price_feed_id",
+          "ty_idx": 22
+        }
+      ],
+      "return_ty_idx": 36
+    },
+    {
+      "tvm_method_id": 72490,
+      "name": "get_ema_price_no_older_than",
+      "parameters": [
+        {
+          "name": "time_period",
+          "ty_idx": 1
+        },
+        {
+          "name": "price_feed_id",
+          "ty_idx": 22
+        }
+      ],
+      "return_ty_idx": 36
+    },
+    {
+      "tvm_method_id": 122952,
+      "name": "get_chain_id",
+      "parameters": [],
+      "return_ty_idx": 1
+    },
+    {
+      "tvm_method_id": 114628,
+      "name": "get_current_guardian_set_index",
+      "parameters": [],
+      "return_ty_idx": 1
+    },
+    {
+      "tvm_method_id": 122035,
+      "name": "get_guardian_set",
+      "parameters": [
+        {
+          "name": "index",
+          "ty_idx": 1
+        }
+      ],
+      "return_ty_idx": 62
+    },
+    {
+      "tvm_method_id": 102302,
+      "name": "get_governance_chain_id",
+      "parameters": [],
+      "return_ty_idx": 1
+    },
+    {
+      "tvm_method_id": 65842,
+      "name": "get_governance_contract",
+      "parameters": [],
+      "return_ty_idx": 1
+    },
+    {
+      "tvm_method_id": 79649,
+      "name": "governance_action_is_consumed",
+      "parameters": [
+        {
+          "name": "hash",
+          "ty_idx": 1
+        }
+      ],
+      "return_ty_idx": 1
+    }
+  ],
+  "thrown_errors": [],
+  "compiler_name": "tolk",
+  "compiler_version": "1.4.1",
+  "code_boc64": "te6ccgECIwEAAS4AART/APSkE/S88sgLAQIBYgIDA67QMPiR3PiSiPiSiMjPlAAAABQCE8z6UszJyM+FCBL6UnHPC27MyYBC+wD4kojIz4UIEvpSjQYAAAAAAAAAAAAAAAAAAAgAEAAAAAAAAAAEzxbMyYBC+wAeHh4CASAEBQIBIAYHAgEgEBECASAICQAHu/vnCAIBIAoLAAm25CYOEAAHsEycIAIBIAwNAAetGjhAAgN5oA4PAA21S24KjgAQAA22a24KjgAQAgEgEhMCASAcHQIBIBQVAgFYGhsCASAWFwAPsnhMHBUcACAAB685uEACAVgYGQAHpgBg4QAFpzzhAQesq8RAHgAHr+I4QAENt5ZmDhEEMB4CASAfIAAAAgFIISIAD7FQTBwVHAAgAAaoSHAACKhPMHA="
+}

@@ -1,9 +1,10 @@
 package tlb
 
 import (
-	"github.com/tonkeeper/tongo/boc"
 	"reflect"
 	"testing"
+
+	"github.com/tonkeeper/tongo/boc"
 )
 
 type testCase struct {
@@ -80,6 +81,25 @@ func TestEnum(t *testing.T) {
 		}
 		if b1.ToString() != b2.ToString() {
 			t.Fatal("not equal")
+		}
+	}
+}
+
+func TestEnumFail(t *testing.T) {
+	var cases = []testSumType{
+		{
+			B: testCase{4, 6},
+		},
+		{
+			SumType: "C",
+			B:       testCase{4, 6},
+		},
+	}
+	for i, enum := range cases {
+		b1 := boc.NewCell()
+		err := Marshal(b1, enum)
+		if err == nil {
+			t.Fatalf("case %d should fail but didn't", i)
 		}
 	}
 }
@@ -181,6 +201,36 @@ func TestRefTag(t *testing.T) {
 		t.Fatal(err)
 	}
 	if a != a2 {
+		t.Fatal("not equal")
+	}
+}
+
+func TestMaybeTags(t *testing.T) {
+
+	a := Int15(101)
+	b := Int11(8)
+
+	type A struct {
+		A *Int15 `tlb:"maybe^"`
+		B *Int11 `tlb:"maybe"`
+		C int32
+	}
+
+	value := A{A: &a, B: &b, C: 3}
+	var value2 A
+	c := boc.NewCell()
+	err := Marshal(c, value)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(c.Refs()) != 1 {
+		t.Fatal("invalid refs number")
+	}
+	err = Unmarshal(c, &value2)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(value, value2) {
 		t.Fatal("not equal")
 	}
 }

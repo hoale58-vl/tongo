@@ -1,7 +1,8 @@
 package tvm
 
-// #cgo darwin LDFLAGS: -L ../lib/darwin/ -Wl,-rpath,../lib/darwin/ -l emulator
-// #cgo linux LDFLAGS: -L ../lib/linux/ -Wl,-rpath,../lib/linux/ -l emulator
+// #cgo darwin LDFLAGS: -L ${SRCDIR}/../lib/darwin/ -Wl,-rpath,${SRCDIR}/../lib/darwin/ -l emulator
+// #cgo linux LDFLAGS: -L ${SRCDIR}/../lib/linux/ -Wl,-rpath,${SRCDIR}/../lib/linux/ -l emulator
+// #cgo windows LDFLAGS: -L ${SRCDIR}/../lib/windows -l emulator
 // #include "../lib/emulator-extern.h"
 // #include <stdlib.h>
 // #include <stdbool.h>
@@ -17,28 +18,46 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/tonkeeper/tongo"
 	"github.com/tonkeeper/tongo/boc"
 	"github.com/tonkeeper/tongo/tlb"
+	"github.com/tonkeeper/tongo/ton"
 	"github.com/tonkeeper/tongo/txemulator"
 	"github.com/tonkeeper/tongo/utils"
 )
 
+type libResolver interface {
+	GetLibraries(ctx context.Context, libraryList []ton.Bits256) (map[ton.Bits256]*boc.Cell, error)
+}
+
 type Emulator struct {
-	emulator unsafe.Pointer
-	config   string
-	balance  uint64
-	lazyC7   bool
+	emulator           unsafe.Pointer
+	config             string
+	balance            uint64
+	lazyC7             bool
+	c7Set              bool
+	libResolver        libResolver
+	ignoreLibraryCells bool
+}
+
+type Config struct {
+	data unsafe.Pointer
 }
 
 type Options struct {
 	verbosityLevel txemulator.VerbosityLevel
 	balance        int64
-	lazyC7         bool
+	// libraries is a list of available libraries encoded as a base64 string.
+	libraries          string
+	lazyC7             bool
+	libResolver        libResolver
+	ignoreLibraryCells bool
+	config             *Config
 }
 
 type Option func(o *Options)
 
+// WithVerbosityLevel sets verbosity level of a TVM emulator instance.
+// TODO: find a way to expose logs to the caller.
 func WithVerbosityLevel(level txemulator.VerbosityLevel) Option {
 	return func(o *Options) {
 		o.verbosityLevel = level
@@ -47,6 +66,20 @@ func WithVerbosityLevel(level txemulator.VerbosityLevel) Option {
 func WithBalance(balance int64) Option {
 	return func(o *Options) {
 		o.balance = balance
+	}
+}
+
+func WithConfig(config *Config) Option {
+	return func(o *Options) {
+		o.config = config
+	}
+}
+
+// WithLibrariesBase64 provides a list of available libraries as a base64 string.
+// Take a look at LibrariesToBase64() to convert a map with libraries to such a string.
+func WithLibrariesBase64(libraries string) Option {
+	return func(o *Options) {
+		o.libraries = libraries
 	}
 }
 
@@ -61,11 +94,24 @@ func WithLazyC7Optimization() Option {
 	}
 }
 
+func WithLibraryResolver(resolver libResolver) Option {
+	return func(o *Options) {
+		o.libResolver = resolver
+	}
+}
+
+func WithIgnoreLibraryCells(ignore bool) Option {
+	return func(o *Options) {
+		o.ignoreLibraryCells = ignore
+	}
+}
+
 func defaultOptions() Options {
 	return Options{
-		lazyC7:         false,
-		balance:        1_000_000_000,
-		verbosityLevel: txemulator.LogTruncated,
+		lazyC7:             false,
+		balance:            1_000_000_000,
+		verbosityLevel:     txemulator.LogTruncated,
+		ignoreLibraryCells: true,
 	}
 }
 
@@ -81,9 +127,12 @@ func NewEmulator(code, data, config *boc.Cell, opts ...Option) (*Emulator, error
 	if err != nil {
 		return nil, err
 	}
-	configBoc, err := config.ToBocBase64()
-	if err != nil {
-		return nil, err
+	configBoc := ""
+	if config != nil {
+		configBoc, err = config.ToBocBase64()
+		if err != nil {
+			return nil, err
+		}
 	}
 	return NewEmulatorFromBOCsBase64(codeBoc, dataBoc, configBoc, opts...)
 }
@@ -101,11 +150,28 @@ func NewEmulatorFromBOCsBase64(code, data, config string, opts ...Option) (*Emul
 	cDataStr := C.CString(data)
 	defer C.free(unsafe.Pointer(cDataStr))
 	level := C.int(options.verbosityLevel)
+
+	emulator := C.tvm_emulator_create(cCodeStr, cDataStr, level)
+	if emulator == nil {
+		return nil, fmt.Errorf("failed to create emulator")
+	}
 	e := Emulator{
-		emulator: C.tvm_emulator_create(cCodeStr, cDataStr, level),
-		config:   config,
-		lazyC7:   options.lazyC7,
-		balance:  uint64(options.balance),
+		emulator:           emulator,
+		config:             config,
+		lazyC7:             options.lazyC7,
+		balance:            uint64(options.balance),
+		libResolver:        options.libResolver,
+		ignoreLibraryCells: options.ignoreLibraryCells,
+	}
+	if len(options.libraries) > 0 {
+		if err := e.setLibs(options.libraries); err != nil {
+			return nil, err
+		}
+	}
+	if options.config != nil {
+		if err := e.setConfig(options.config); err != nil {
+			return nil, err
+		}
 	}
 	runtime.SetFinalizer(&e, destroy)
 	return &e, nil
@@ -115,14 +181,39 @@ func destroy(e *Emulator) {
 	C.tvm_emulator_destroy(e.emulator)
 }
 
-// SetVerbosityLevel
+func init() {
+	if err := SetVerbosityLevel(0); err != nil {
+		// TODO: replace Printf with logger interface
+		fmt.Printf("SetVerbosityLevel() failed: %v\n", err)
+	}
+}
+
+// SetVerbosityLevel sets verbosity level of TVM emulator.
+// This is a global setting that affects all emulators.
 // verbosity level (0 - never, 1 - error, 2 - warning, 3 - info, 4 - debug)
-func (e *Emulator) SetVerbosityLevel(level int) error {
+func SetVerbosityLevel(level int) error {
 	ok := C.emulator_set_verbosity_level(C.int(level))
 	if !ok {
 		return fmt.Errorf("set VerbosityLevel error")
 	}
 	return nil
+}
+
+func CreateConfig(configRaw string) (*Config, error) {
+	configStr := C.CString(configRaw)
+	defer C.free(unsafe.Pointer(configStr))
+
+	config := C.emulator_config_create(configStr)
+	if config == nil {
+		return nil, fmt.Errorf("failed to create config")
+	}
+	c := Config{data: config}
+	runtime.SetFinalizer(&c, destroyConfig)
+	return &c, nil
+}
+
+func destroyConfig(c *Config) {
+	C.emulator_config_destroy(c.data)
 }
 
 func (e *Emulator) SetBalance(balance int64) {
@@ -134,6 +225,10 @@ func (e *Emulator) SetLibs(libs *boc.Cell) error {
 	if err != nil {
 		return err
 	}
+	return e.setLibs(libsBoc)
+}
+
+func (e *Emulator) setLibs(libsBoc string) error {
 	cLibsStr := C.CString(libsBoc)
 	defer C.free(unsafe.Pointer(cLibsStr))
 	ok := C.tvm_emulator_set_libraries(e.emulator, cLibsStr)
@@ -151,6 +246,14 @@ func (e *Emulator) SetGasLimit(gasLimit int64) error {
 	return nil
 }
 
+func (e *Emulator) setConfig(config *Config) error {
+	ok := C.tvm_emulator_set_config_object(e.emulator, config.data)
+	if !ok {
+		return fmt.Errorf("set config error")
+	}
+	return nil
+}
+
 func (e *Emulator) setC7(address string, unixTime uint32) error {
 	var seed [32]byte
 	_, err := rand.Read(seed[:])
@@ -159,6 +262,9 @@ func (e *Emulator) setC7(address string, unixTime uint32) error {
 	}
 	cConfigStr := C.CString(e.config)
 	defer C.free(unsafe.Pointer(cConfigStr))
+	if e.config == "" {
+		cConfigStr = nil
+	}
 	cAddressStr := C.CString(address)
 	defer C.free(unsafe.Pointer(cAddressStr))
 	cSeedStr := C.CString(hex.EncodeToString(seed[:]))
@@ -167,6 +273,7 @@ func (e *Emulator) setC7(address string, unixTime uint32) error {
 	if !ok {
 		return fmt.Errorf("set C7 error")
 	}
+	e.c7Set = true
 	return nil
 }
 
@@ -200,13 +307,13 @@ type result struct {
 	GasUsed        string `json:"gas_used"`
 }
 
-func (e *Emulator) RunSmcMethod(ctx context.Context, accountId tongo.AccountID, method string, params tlb.VmStack) (uint32, tlb.VmStack, error) {
+func (e *Emulator) RunSmcMethod(ctx context.Context, accountId ton.AccountID, method string, params tlb.VmStack) (uint32, tlb.VmStack, error) {
 	methodID := utils.MethodIdFromName(method)
 	return e.RunSmcMethodByID(ctx, accountId, methodID, params)
 }
 
-func (e *Emulator) RunSmcMethodByID(ctx context.Context, accountId tongo.AccountID, methodID int, params tlb.VmStack) (uint32, tlb.VmStack, error) {
-	if !e.lazyC7 {
+func (e *Emulator) RunSmcMethodByID(ctx context.Context, accountId ton.AccountID, methodID int, params tlb.VmStack) (uint32, tlb.VmStack, error) {
+	if !e.lazyC7 && !e.c7Set {
 		err := e.setC7(accountId.ToRaw(), uint32(time.Now().Unix()))
 		if err != nil {
 			return 0, tlb.VmStack{}, err
@@ -216,7 +323,7 @@ func (e *Emulator) RunSmcMethodByID(ctx context.Context, accountId tongo.Account
 	if err != nil {
 		return 0, tlb.VmStack{}, err
 	}
-	if res.Success && res.VmExitCode != 0 && res.VmExitCode != 1 && e.lazyC7 {
+	if res.Success && res.VmExitCode != 0 && res.VmExitCode != 1 && e.lazyC7 && !e.c7Set {
 		err = e.setC7(accountId.ToRaw(), uint32(time.Now().Unix()))
 		if err != nil {
 			return 0, tlb.VmStack{}, err
@@ -238,7 +345,23 @@ func (e *Emulator) RunSmcMethodByID(ctx context.Context, accountId tongo.Account
 		return 0, tlb.VmStack{}, err
 	}
 	var stack tlb.VmStack
-	err = tlb.Unmarshal(c[0], &stack)
+	decoder := tlb.NewDecoder()
+	if e.libResolver != nil {
+		decoder = decoder.WithLibraryResolver(func(hash tlb.Bits256) (*boc.Cell, error) {
+			if e.libResolver == nil {
+				return nil, fmt.Errorf("failed to fetch library: no resolver provided")
+			}
+			libs, err := e.libResolver.GetLibraries(ctx, []ton.Bits256{ton.Bits256(hash)})
+			if err != nil {
+				return nil, err
+			}
+			if len(libs) == 0 {
+				return nil, fmt.Errorf("library not found")
+			}
+			return libs[ton.Bits256(hash)], nil
+		})
+	}
+	err = decoder.Unmarshal(c[0], &stack)
 	if err != nil {
 		return 0, tlb.VmStack{}, err
 	}

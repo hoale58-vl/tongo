@@ -1,0 +1,38 @@
+<abi>
+    <interface name="subscription_v1">
+        <get_method name="get_subscription_data"/>
+        <msg_in>
+            <internal name="wallet_plugin_destruct"/>
+            <internal name="payment_confirmed"/>
+        </msg_in>
+        <msg_out>
+            <internal name="subscription_fallback"/>
+        </msg_out>
+    </interface>
+    <get_method name="get_subscription_data">
+        <output>
+            <tuple name="wallet">
+                <int name="workchain">uint32</int>
+                <int name="address">bits256</int>
+            </tuple>
+            <tuple name="beneficiary">
+                <int name="workchain">uint32</int>
+                <int name="address">bits256</int>
+            </tuple>
+            <int name="amount">uint64</int>
+            <int name="period">uint64</int>
+            <int name="start_time">uint64</int>
+            <int name="timeout">uint64</int>
+            <int name="last_payment_time">uint64</int>
+            <int name="last_request_time">uint64</int>
+            <int name="failed_attempts">uint32</int>
+            <int name="subscription_id">uint64</int>
+        </output>
+    </get_method>
+    <internal name="subscription_payment" >
+        subscription_payment#73756273 = InternalMsgBody;
+    </internal>
+    <internal name="subscription_fallback" >
+        fallback#756e6b77 = InternalMsgBody;
+    </internal>
+</abi>

@@ -9,8 +9,6 @@ import (
 	"github.com/tonkeeper/tongo/boc"
 )
 
-//go:generate go run generator.go
-
 type SumType string
 
 type Magic uint32
@@ -18,6 +16,22 @@ type Magic uint32
 type Maybe[T any] struct {
 	Exists bool
 	Value  T
+}
+
+func Just[T any](v T) Maybe[T] {
+	return Maybe[T]{Exists: true, Value: v}
+}
+
+func JustRef[T any](v T) Maybe[Ref[T]] {
+	return Maybe[Ref[T]]{Exists: true, Value: Ref[T]{Value: v}}
+}
+
+func Nothing[T any]() Maybe[T] {
+	var def T
+	return Maybe[T]{
+		Value:  def,
+		Exists: false,
+	}
 }
 
 type Either[M, N any] struct {
@@ -32,6 +46,12 @@ type EitherRef[T any] struct {
 }
 
 type Ref[T any] struct {
+	Value T
+}
+
+// RefT unlike Ref requires inner type to have marshaling implemented
+// so it does not rely on reflection-based tlb.Encoder
+type RefT[T CodecTLB] struct {
 	Value T
 }
 
@@ -57,6 +77,7 @@ func (m *Magic) ValidateTag(c *boc.Cell, tag string) error {
 		if x != y {
 			return fmt.Errorf("magic prefix: %v not found ", tag)
 		}
+		*m = Magic(x)
 		return nil
 	}
 	a = strings.Split(tag, "#")
@@ -69,13 +90,31 @@ func (m *Magic) ValidateTag(c *boc.Cell, tag string) error {
 		if x != y {
 			return fmt.Errorf("magic prefix: %v not found ", tag)
 		}
+		*m = Magic(x)
 		return nil
 	}
 	return fmt.Errorf("unsupported tag: %v", tag)
 }
 
-func (m Magic) MarshalTLB(c *boc.Cell, encoder *Encoder) error {
-	return encodeSumTag(c, encoder.tag)
+func (m Magic) MarshalJSON() ([]byte, error) {
+	return json.Marshal(fmt.Sprintf("0x%x", uint32(m)))
+}
+
+func (m *Magic) UnmarshalJSON(b []byte) error {
+	str := strings.Trim(string(b), "\"")
+	if strings.HasPrefix(str, "0x") {
+		str = str[2:]
+	}
+	magic, err := strconv.ParseUint(str, 16, 64)
+	if err != nil {
+		return err
+	}
+	*m = Magic(magic)
+	return nil
+}
+
+func (m Magic) EncodeTag(c *boc.Cell, tag string) error {
+	return encodeSumTag(c, tag)
 }
 
 func (m Maybe[_]) MarshalTLB(c *boc.Cell, encoder *Encoder) error {
@@ -84,12 +123,68 @@ func (m Maybe[_]) MarshalTLB(c *boc.Cell, encoder *Encoder) error {
 		return err
 	}
 	if m.Exists {
-		err = Marshal(c, m.Value)
+		err = encoder.Marshal(c, m.Value)
 		if err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+func UnmarshalMaybeCallback[T any](c *boc.Cell, decode func(c *boc.Cell) (T, error)) (Maybe[T], error) {
+	m := Maybe[T]{}
+	exist, err := c.ReadBit()
+	if err != nil {
+		return m, err
+	}
+	m.Exists = exist
+	if exist {
+		m.Value, err = decode(c)
+	}
+	return m, nil
+}
+
+func StackReadMaybeCallback[T any](stack *VmStack, inner func(c *VmStack) (T, error)) (value Maybe[T], err error) {
+	if stack.Peek(0).SumType == "VmStkNull" {
+		stack.Pop()
+		return Nothing[T](), nil
+	}
+	if value, err := inner(stack); err == nil {
+		return Just(value), nil
+	} else {
+		return Nothing[T](), err
+	}
+}
+
+func StackReadWideMaybeCallback[T any](stack *VmStack, stackW int, inner func(c *VmStack) (T, error)) (value Maybe[T], err error) {
+	if stackW <= 0 {
+		return Nothing[T](), fmt.Errorf("invalid nullable stack width: %d", stackW)
+	}
+	if stack.Len() < stackW {
+		return Nothing[T](), ErrStackEmpty
+	}
+	typeID := stack.Peek(stackW - 1)
+	isEmpty := false
+	if typeID.SumType == "VmStkInt" {
+		diff, _ := typeID.VmStkInt.Compare(Int257FromInt64(0))
+		isEmpty = diff == 0
+	} else if typeID.SumType == "VmStkTinyInt" {
+		isEmpty = typeID.VmStkTinyInt == 0
+	} else {
+		return Nothing[T](), fmt.Errorf("unexpected stack value type for nullable type id: %s", typeID.SumType)
+	}
+	if isEmpty {
+		for range stackW {
+			stack.Pop()
+		}
+		return Nothing[T](), nil
+	}
+	if value.Value, err = inner(stack); err != nil {
+		return Nothing[T](), err
+	}
+	stack.Pop()
+	value.Exists = true
+	return value, nil
 }
 
 func (m *Maybe[_]) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
@@ -220,6 +315,20 @@ func (m *Ref[T]) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
 	return nil
 }
 
+func (r *RefT[T]) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
+	ru := Ref[T]{}
+	if err := ru.UnmarshalTLB(c, decoder); err != nil {
+		return err
+	}
+	r.Value = ru.Value
+	return nil
+}
+
+func (r RefT[T]) MarshalTLB(c *boc.Cell, encoder *Encoder) error {
+	ru := Ref[T]{Value: r.Value}
+	return ru.MarshalTLB(c, encoder)
+}
+
 func (n Unary) MarshalTLB(c *boc.Cell, encoder *Encoder) error {
 	return c.WriteUnary(uint(n))
 }
@@ -251,21 +360,7 @@ func (a Any) MarshalTLB(c *boc.Cell, encoder *Encoder) error {
 }
 
 func (a *Any) UnmarshalTLB(c *boc.Cell, decoder *Decoder) error {
-	x := boc.NewCell()
-	err := x.WriteBitString(c.ReadRemainingBits())
-	if err != nil {
-		return err
-	}
-	for c.RefsAvailableForRead() > 0 {
-		ref, err := c.NextRef()
-		if err != nil {
-			return err
-		}
-		err = x.AddRef(ref)
-		if err != nil {
-			return err
-		}
-	}
+	x := c.CopyRemaining()
 	*a = Any(*x)
 	return nil
 }

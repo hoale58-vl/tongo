@@ -1,9 +1,11 @@
 package liteclient
 
 import (
+	"bytes"
 	"context"
 	"encoding/binary"
 	"fmt"
+	"log/slog"
 	"math/rand"
 	"sync"
 	"time"
@@ -12,9 +14,10 @@ import (
 )
 
 const (
-	magicADNLQuery       = 0xb48bf97a // crc32("adnl.message.query query_id:int256 query:bytes = adnl.Message")
-	magicADNLAnswer      = 0x0fac8416 // crc32("adnl.message.answer query_id:int256 answer:bytes = adnl.Message")
-	magicLiteServerQuery = 0x798c06df // crc32("liteServer.query#df068c79 data:bytes = Object")
+	magicADNLQuery                      = 0xb48bf97a // crc32("adnl.message.query query_id:int256 query:bytes = adnl.Message")
+	magicADNLAnswer                     = 0x0fac8416 // crc32("adnl.message.answer query_id:int256 answer:bytes = adnl.Message")
+	magicLiteServerQuery                = 0x798c06df // crc32("liteServer.query#df068c79 data:bytes = Object")
+	magicLiteServerWaitMasterchainSeqno = 0xbaeab892
 )
 
 type queryID [32]byte
@@ -28,12 +31,28 @@ type Client struct {
 	// if such a method makes several calls to a lite server,
 	// the total time is bounded by the timeout.
 	timeout      time.Duration
-	connection   *Connection
+	connections  []*Connection
+	nextConn     int
+	connMutex    sync.Mutex
 	queries      map[queryID]chan []byte
 	queriesMutex sync.Mutex
+	metrics      RequestObserver
+}
+
+// RequestObserver is notified once for every lite server method call.
+// `method` name is from TL schema, e.g. liteServer.getOutMsgQueueSizes
+// `err` includes both network error and domain specific error
+type RequestObserver interface {
+	ObserveRequest(host string, method RequestName, duration time.Duration, err error)
 }
 
 type Options func(connection *Client)
+
+func OptionObserver(o RequestObserver) Options {
+	return func(c *Client) {
+		c.metrics = o
+	}
+}
 
 func OptionTimeout(t time.Duration) Options {
 	return func(c *Client) {
@@ -41,23 +60,61 @@ func OptionTimeout(t time.Duration) Options {
 	}
 }
 
+func OptionWorkersPerConnection(n int) Options {
+	return func(c *Client) {
+		if n < 1 {
+			n = 1
+		}
+		connFirst := c.connections[0]
+		for i := 0; i < n-1; i++ {
+			conn, err := NewConnection(context.Background(), connFirst.peerPublicKey, connFirst.host, connFirst.authKey)
+			if err != nil {
+				slog.Warn("liteclient clone connection", "error", err.Error())
+				continue
+			}
+			c.connections = append(c.connections, conn)
+		}
+	}
+}
+
 func NewClient(c *Connection, opts ...Options) *Client {
 	c2 := &Client{
-		timeout:    defaultTimeout,
-		connection: c,
-		queries:    make(map[queryID]chan []byte),
+		timeout:     defaultTimeout,
+		connections: []*Connection{c},
+		queries:     make(map[queryID]chan []byte),
 	}
 	for _, f := range opts {
 		f(c2)
 	}
-	go c2.reader()
+
+	for _, conn := range c2.connections {
+		go c2.reader(conn)
+	}
 	return c2
+}
+
+// IsOK returns true if there is no problems with this client and its underlying connection to a lite server.
+func (c *Client) IsOK() bool {
+	for _, conn := range c.connections {
+		if conn.Status() == Connected {
+			return true
+		}
+	}
+	return false
 }
 
 // Request sends q as query in adnl.message.query and receives answer from adnl.message.answer
 // adnl.message.query query_id:int256 query:bytes = adnl.Message
 // adnl.message.answer query_id:int256 answer:bytes = adnl.Message
-func (c *Client) Request(ctx context.Context, q []byte) ([]byte, error) {
+func (c *Client) Request(ctx context.Context, q []byte) (resp []byte, err error) {
+	start := time.Now()
+	var host string
+	defer func() { c.observeRequest(host, UnknownRequest, start, err) }()
+	resp, host, err = c.request(ctx, q)
+	return resp, err
+}
+
+func (c *Client) request(ctx context.Context, q []byte) (_ []byte, host string, _ error) {
 	ctx, cancel := context.WithTimeout(ctx, c.timeout)
 	defer cancel()
 	var id queryID
@@ -70,21 +127,34 @@ func (c *Client) Request(ctx context.Context, q []byte) ([]byte, error) {
 	data = alignBytes(data)
 	p, err := NewPacket(data)
 	if err != nil {
-		return nil, newClientError("NewPacket() failed: %v", err)
+		return nil, host, newClientError("NewPacket() failed: %v", err)
 	}
 	resp := c.registerCallback(id)
 	defer c.unregisterCallback(id)
 
-	err = c.connection.Send(p)
+	c.connMutex.Lock()
+	conn := c.connections[c.nextConn]
+	c.nextConn = (c.nextConn + 1) % len(c.connections)
+	c.connMutex.Unlock()
+	host = conn.host
+
+	err = conn.Send(p)
 	if err != nil {
-		return nil, err
+		return nil, host, err
 	}
 	select {
 	case <-ctx.Done():
-		return nil, newClientError("request timeout: %v", err)
+		return nil, host, newClientError("request timeout: %v", ctx.Err())
 	case b := <-resp:
-		return b, nil
+		return b, host, nil
 	}
+}
+
+func (c *Client) observeRequest(host string, method RequestName, start time.Time, err error) {
+	if c.metrics == nil {
+		return
+	}
+	c.metrics.ObserveRequest(host, method, time.Since(start), err)
 }
 
 func (c *Client) registerCallback(id queryID) chan []byte {
@@ -126,7 +196,7 @@ func decodeLength(b []byte) (int, []byte, error) {
 		panic("how it cat be possible? you are fucking wizard!")
 	}
 	if len(b) < 4 {
-		return 0, nil, fmt.Errorf("not enought bytes for decoding size")
+		return 0, nil, fmt.Errorf("not enough bytes for decoding size")
 	}
 	b[0] = 0
 	i := binary.LittleEndian.Uint32(b[:4])
@@ -134,15 +204,14 @@ func decodeLength(b []byte) (int, []byte, error) {
 	return int(i) >> 8, b[4:], nil
 }
 
-func (c *Client) reader() {
-	for p := range c.connection.Responses() {
+func (c *Client) reader(conn *Connection) {
+	for p := range conn.Responses() {
 		if p.MagicType() != magicADNLAnswer {
-			fmt.Println("unknown type", p.MagicType()) //todo: remove
 			continue
 		}
 		err := c.processQueryAnswer(p)
 		if err != nil {
-			fmt.Println(err) //todo: switch to debug logger
+			slog.Info("liteclient.reader() error", "err", err)
 		}
 	}
 }
@@ -172,13 +241,13 @@ func (c *Client) processQueryAnswer(p Packet) error {
 }
 
 // liteServerRequest sends q as liteServer.query data:bytes = Object;
-func (c *Client) liteServerRequest(ctx context.Context, q []byte) ([]byte, error) {
+func (c *Client) liteServerRequest(ctx context.Context, q []byte) (_ []byte, host string, _ error) {
 	data := make([]byte, 4)
 	binary.LittleEndian.PutUint32(data, magicLiteServerQuery)
 	data = append(data, tl.EncodeLength(len(q))...)
 	data = append(data, q...)
 	data = alignBytes(data)
-	return c.Request(ctx, data)
+	return c.request(ctx, data)
 }
 
 func alignBytes(data []byte) []byte {
@@ -187,4 +256,93 @@ func alignBytes(data []byte) []byte {
 		data = append(data, make([]byte, 4-left)...)
 	}
 	return data
+}
+
+// WaitMasterchainSeqno waits for the given block to become committed.
+// If timeout happens, it returns an error.
+func (c *Client) WaitMasterchainSeqno(ctx context.Context, seqno uint32, timeout uint32) (err error) {
+	start := time.Now()
+	var host string
+	defer func() { c.observeRequest(host, "liteServer.waitMasterchainSeqno", start, err) }()
+	data := make([]byte, 0, 12)
+	data = binary.LittleEndian.AppendUint32(data, magicLiteServerWaitMasterchainSeqno)
+	data = binary.LittleEndian.AppendUint32(data, seqno)
+	data = binary.LittleEndian.AppendUint32(data, timeout)
+	resp, host, err := c.liteServerRequest(ctx, data)
+	if err != nil {
+		return err
+	}
+	if len(resp) < 4 {
+		return fmt.Errorf("not enough bytes for tag")
+	}
+	tag := binary.LittleEndian.Uint32(resp[:4])
+	if tag == 0xbba9e148 {
+		var errRes LiteServerErrorC
+		if err = tl.Unmarshal(bytes.NewReader(resp[4:]), &errRes); err != nil {
+			return err
+		}
+		if errRes.Code == 0 {
+			return nil
+		}
+		return errRes
+	}
+	return fmt.Errorf("invalid tag")
+}
+
+func (c *Client) AverageRoundTrip() time.Duration {
+	var total time.Duration
+	for _, conn := range c.connections {
+		total += conn.AverageRoundTrip()
+	}
+	return total / time.Duration(len(c.connections))
+}
+
+func (c *Client) WaitMasterchainBlock(ctx context.Context, seqno uint32, timeout uint32) (res LiteServerBlockHeaderC, err error) {
+	start := time.Now()
+	var host string
+	defer func() { c.observeRequest(host, "liteServer.waitMasterchainBlock", start, err) }()
+	var (
+		mc     int    = -1
+		uintMc uint32 = uint32(mc)
+	)
+	request := LiteServerLookupBlockRequest{
+		Mode: 1,
+		Id: TonNodeBlockIdC{
+			Workchain: uintMc,
+			Shard:     0x8000000000000000,
+			Seqno:     seqno,
+		},
+	}
+	data := make([]byte, 0, 38)
+	data = binary.LittleEndian.AppendUint32(data, magicLiteServerWaitMasterchainSeqno)
+	data = binary.LittleEndian.AppendUint32(data, seqno)
+	data = binary.LittleEndian.AppendUint32(data, timeout)
+	payload, err := tl.Marshal(struct {
+		tl.SumType
+		Req LiteServerLookupBlockRequest `tlSumType:"fac8f71e"`
+	}{SumType: "Req", Req: request})
+	if err != nil {
+		return res, err
+	}
+	data = append(data, payload...)
+	resp, host, err := c.liteServerRequest(ctx, data)
+	if err != nil {
+		return res, err
+	}
+	if len(resp) < 4 {
+		return res, fmt.Errorf("not enough bytes for tag")
+	}
+	tag := binary.LittleEndian.Uint32(resp[:4])
+	if tag == 0xbba9e148 {
+		var errRes LiteServerErrorC
+		if err = tl.Unmarshal(bytes.NewReader(resp[4:]), &errRes); err != nil {
+			return res, err
+		}
+		return res, errRes
+	}
+	if tag == 0x752d8219 {
+		err = tl.Unmarshal(bytes.NewReader(resp[4:]), &res)
+		return res, err
+	}
+	return res, fmt.Errorf("invalid tag")
 }

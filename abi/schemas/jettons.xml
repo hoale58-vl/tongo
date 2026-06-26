@@ -1,0 +1,189 @@
+<abi>
+    <types>
+        set_status#eed236d3
+        query_id:uint64
+        status:uint4
+        = JettonForceAction;
+        burn#595f07bc query_id:uint64 amount:(VarUInteger 16)
+        response_destination:MsgAddress custom_payload:(Maybe ^JettonPayload)
+        = JettonForceAction;
+        transfer#0f8a7ea5 query_id:uint64 amount:(VarUInteger 16) destination:MsgAddress
+        response_destination:MsgAddress custom_payload:(Maybe ^Cell)
+        forward_ton_amount:(VarUInteger 16) forward_payload:(Either JettonPayload ^JettonPayload)
+        = JettonForceAction;
+    </types>
+    <interface name="jetton_master">
+        <get_method name="get_jetton_data"/>
+        <get_method name="get_wallet_address"/>
+        <msg_in>
+            <internal name="jetton_burn_notification"/>
+        </msg_in>
+    </interface>
+    <interface name="scaled_ui">
+        <get_method name="get_display_multiplier"/>
+        <msg_out>
+            <ext_out name="display_multiplier_changed"/>
+        </msg_out>
+    </interface>
+    <interface name="jetton_wallet">
+        <get_method name="get_wallet_data"/>
+        <msg_in>
+            <internal name="jetton_transfer"/>
+            <internal name="jetton_internal_transfer"/>
+            <internal name="jetton_burn"/>
+        </msg_in>
+        <msg_out>
+            <internal name="jetton_burn_notification"/>
+            <internal name="jetton_internal_transfer"/>
+            <internal name="jetton_notify"/>
+        </msg_out>
+    </interface>
+    <interface name="jetton_wallet_v1" inherits="jetton_wallet">
+        <code_hash>beb0683ebeb8927fe9fc8ec0a18bc7dd17899689825a121eab46c5a3a860d0ce</code_hash>
+    </interface>
+    <interface name="jetton_wallet_v2" inherits="jetton_wallet">
+        <code_hash>8d28ea421b77e805fea52acf335296499f03aec8e9fd21ddb5f2564aa65c48de</code_hash>
+    </interface>
+    <interface name="jetton_wallet_governed" inherits="jetton_wallet">
+        <code_hash>89468f02c78e570802e39979c8516fc38df07ea76a48357e0536f2ba7b3ee37b</code_hash>
+    </interface>
+    <interface name="jetton_wallet_regulated" inherits="jetton_wallet">
+        <code_hash>e9aa0c02aafd5b38a295cc489019882439cf35c9738cc6dbeece4403dd066a5a</code_hash>
+    </interface>
+
+    <!--        Jettons    -->
+    <get_method name="get_jetton_data">
+        <output>
+            <int name="total_supply">int257</int>
+            <int name="mintable">bool</int>
+            <slice name="admin_address">msgaddress</slice>
+            <cell name="jetton_content">any</cell>
+            <cell name="jetton_wallet_code">any</cell>
+        </output>
+    </get_method>
+    <get_method name="get_wallet_address" >
+        <input>
+            <slice name="owner_address">msgaddress</slice>
+        </input>
+        <output>
+            <slice name="jetton_wallet_address">msgaddress</slice>
+        </output>
+    </get_method>
+    <get_method name="get_wallet_data">
+        <output>
+            <int name="balance">int257</int>
+            <slice name="owner">msgaddress</slice>
+            <slice name="jetton">msgaddress</slice>
+            <cell name="jetton_wallet_code">any</cell>
+        </output>
+    </get_method>
+
+    <!-- governance jettons -->
+    <get_method name="get_status">
+        <output name="jetton"  fixed_length="true">
+            <int name="status">uint8</int>
+        </output>
+    </get_method>
+    <get_method name="get_next_admin_address">
+        <output name="jetton"  fixed_length="true">
+            <slice name="next_admin_address">msgaddress</slice>
+        </output>
+    </get_method>
+
+    <get_method name="is_claimed">
+        <output name="simple"  fixed_length="true">
+            <int name="claimed">bool</int>
+        </output>
+    </get_method>
+    <!--        Jettons    -->
+    <internal name="jetton_transfer" >
+        transfer#0f8a7ea5 query_id:uint64 amount:(VarUInteger 16) destination:MsgAddress
+        response_destination:MsgAddress custom_payload:(Maybe ^Cell)
+        forward_ton_amount:(VarUInteger 16) forward_payload:(Either JettonPayload ^JettonPayload) <!-- todo: maybe replace custom non-standard types with xml like <JettonPayload>Cell</JettonPayload>-->
+        = InternalMsgBody;
+    </internal>
+    <internal name="jetton_internal_transfer">
+        internal_transfer#178d4519 query_id:uint64 amount:(VarUInteger 16) from:MsgAddress
+        response_address:MsgAddress
+        forward_ton_amount:(VarUInteger 16)
+        forward_payload:(Either JettonPayload ^JettonPayload)
+        = InternalMsgBody;
+    </internal>
+    <internal name="jetton_burn" >
+        burn#595f07bc query_id:uint64 amount:(VarUInteger 16)
+        response_destination:MsgAddress custom_payload:(Maybe ^JettonPayload)
+        = InternalMsgBody;
+    </internal>
+    <internal name="jetton_burn_notification" >
+        burn_notification#7bdd97de query_id:uint64 amount:(VarUInteger 16)
+        sender:MsgAddress response_destination:MsgAddress = InternalMsgBody;
+    </internal>
+    <internal name="jetton_notify" >
+        transfer_notification#7362d09c query_id:uint64 amount:(VarUInteger 16)
+        sender:MsgAddress forward_payload:(Either JettonPayload ^JettonPayload)
+        = InternalMsgBody;
+    </internal>
+
+
+    <!-- Governance jettons -->
+    <internal name="jetton_set_status">
+        set_status#eed236d3
+        query_id:uint64
+        status:uint4
+        = InternalMsgBody;
+    </internal>
+
+    <internal name="jetton_mint">
+        mint#642b7d07
+        query_id:uint64
+        to_address:MsgAddressInt
+        ton_amount:Coins
+<!--        master_msg:^JettonInternalTransfer-->
+        = InternalMsgBody;
+    </internal>
+    <internal name="jetton_change_admin">
+        change_admin#6501f354
+        query_id:uint64
+        new_admin_address:MsgAddress
+        = InternalMsgBody;
+    </internal>
+    <internal name="jetton_claim_admin">
+        claim_admin#fb88e119
+        query_id:uint64
+        = JettonMinterMsg;
+    </internal>
+    <internal name="jetton_call_to">
+        call_to#235caf52
+        query_id:uint64
+        to_address:MsgAddressInt
+        ton_amount:Coins
+        master_msg:^JettonForceAction
+        = JettonMinterMsg;
+    </internal>
+
+    <internal name="jetton_upgrade">
+        upgrade#2508d66a
+        query_id:uint64
+        new_data:^Cell
+        new_code:^Cell
+        = JettonMinterMsg;
+    </internal>
+    <internal name="jetton_change_metadata">
+        change_metadata_uri#cb862902
+        query_id:uint64
+        metadata:Cell
+        = JettonMinterMsg;
+    </internal>
+
+    <!-- scaled_ui_jetton -->
+    <get_method name="get_display_multiplier">
+        <output>
+            <int name="numerator">int257</int>
+            <int name="denominator">int257</int>
+        </output>
+    </get_method>
+    <ext_out name="display_multiplier_changed">
+        display_multiplier_changed#ac392598 numerator:(VarUInteger 32) denominator:(VarUInteger 32) comment:(Maybe Text) = ExtOutMsgBody;
+    </ext_out>
+
+</abi>

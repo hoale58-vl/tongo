@@ -1,0 +1,361 @@
+package precompiled
+
+import (
+	"context"
+	_ "embed"
+	"fmt"
+	"reflect"
+	"testing"
+
+	"github.com/tonkeeper/tongo/abi"
+
+	"github.com/tonkeeper/tongo/boc"
+	"github.com/tonkeeper/tongo/tlb"
+	"github.com/tonkeeper/tongo/ton"
+	"github.com/tonkeeper/tongo/tvm"
+)
+
+//go:embed config.bin
+var blockChainConfig []byte
+
+func TestPrecompiles(t *testing.T) {
+	cases := []struct {
+		name        string
+		code        string
+		libs        string
+		data        string
+		account     string
+		method      int
+		compareFunc func(stack1, stack2 tlb.VmStack) error
+	}{
+		{
+			name:    "get_pow_params",
+			code:    "te6cckECEQEAAr0AART/APSkE/S88sgLAQIBIAIDAgFIBAUC5PIg1wsfghBSU2Nsuo6C2zzggwjXGCDTH9Mf0x8C+CO78mPtRNDTH9Mf0/9RQ7ryoVNRugbAABax8qIF+QFUEGT5EPKj+AABkyDXSo6T1NMHIYQHuZNZ+wCOhTFZ2zwB4ugwA6TIyx8Syx/L/wHPFsntVA8QAarQMTKCCvrwgL7yrCDXCx8gwAeOMzDtRNDUAdAg+gAxgDDXIdMBMMAAjhkCgCDXIcgDctcjE88WWM8WychYzxbMye1Ukl8D4uCCEE1pbmW6joLbPOAwBgIBIAkKAvYg+QHtRNDTP9P/03/T/1FRufKYBdMfMdIH0x/T/9P/03/T/9EE+COherYBMFAFulJDuhKw8pn4APgl+BUC+BUE0x/U0SDQ+gDTH9MH0wf6QNH4I1AHoSDCAJJfBOMN+CP4EKt/B8jLPxbL/xbLfxfL/xPLHxXMye1U+A8HCAA8UAOp1X93qny2CXmqfLYIGqm1fwmuGbYJCK4YtggHAIpwI6sBdAWrAVNSghAPin6lyMsfyz9QBvoCFcsCFMoHUlDL/xTLAhLKBxPL/8sFyXGAEMjLBVADzxZw+gISy2rMyYBC+wACASALDAAtvGeHaiaECAoGuQ6b/p/+umaH0Aa4WPwAF7s5ztRNDTPzHXC/+AIBIA0OABG1kv2omhrhY/AAObX43aiaECAoGuQ6b/p/+oYaH0AaY/pg+mD/SAYQAMbTHzHTH9H4I1MBvPKc7UTQgQHA1xjT/9Mf1NFRUbzynSTQ+gAx0x9SU6EhqgNSEL7ynvgAAtMHMdMH0VEhqdV/Aq5TA6nUfyO5kmwilTBZqbV/4lAzochYzxYSy//LH8zJ7VQAVtDTBwLTf9P/MCKYMPgVrvgQq3+RMuLIUAPPFsn4IwPIy38Sy/8Syx/MydAq3srY",
+			data:    "te6cckEBAgEAjwABuAAAAAAAAAAAHrtKspDMQxEdQ2AytCqHi5928TlFXWNd0cDeuOfP6ejSmtwtd4omt8VilgwSBeUrIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABlxnptAQBbZa8xB6QAAAAABk//2AGqEda/j0LgPae4oZj2MNJwGQZys43/oQNE3MSaPVzvNxVFcMA=",
+			method:  101616,
+			account: "EQDoMW51I0vaQisLJpi2Kbj8zaN79TgyYM2PnyXr-x80Er5_",
+		},
+		{
+			name:    "v3r1_seqno",
+			code:    "te6ccgEBAQEAYgAAwP8AIN0gggFMl7qXMO1E0NcLH+Ck8mCDCNcYINMf0x/TH/gjE7vyY+1E0NMf0x/T/9FRMrryoVFEuvKiBPkBVBBV+RDyo/gAkyDXSpbTB9QC+wDo0QGkyMsfyx/L/8ntVA==",
+			data:    "te6ccgEBAQEAKgAAUAAAAAMAAAAA4CUsZ2TIxulSd8P1Q6/wbZA++VUQB2LKhup8XbejVrM=",
+			method:  85143,
+			account: "UQDD1gfN06Uae6iMsUmVoo7ctxMOm6B9pwJQfl5dmZBxrsG-",
+		},
+		{
+			name:    "v3r2_seqno",
+			code:    "te6ccgEBAQEAcQAA3v8AIN0gggFMl7ohggEznLqxn3Gw7UTQ0x/THzHXC//jBOCk8mCDCNcYINMf0x/TH/gjE7vyY+1E0NMf0x/T/9FRMrryoVFEuvKiBPkBVBBV+RDyo/gAkyDXSpbTB9QC+wDo0QGkyMsfyx/L/8ntVA==",
+			data:    "te6ccgEBAQEAKgAAUAADT0cpqaMXo8Z27iWqhR8JDtTvgvRKS5GHHxJLOEEoYs7914tnN7A=",
+			method:  85143,
+			account: "UQBfAN7LfaUYgXZNw5Wc7GBgkEX2yhuJ5ka95J1JJwXXf9t5",
+		},
+		{
+			name:    "v3r2_get_public_key",
+			code:    "te6ccgEBAQEAcQAA3v8AIN0gggFMl7ohggEznLqxn3Gw7UTQ0x/THzHXC//jBOCk8mCDCNcYINMf0x/TH/gjE7vyY+1E0NMf0x/T/9FRMrryoVFEuvKiBPkBVBBV+RDyo/gAkyDXSpbTB9QC+wDo0QGkyMsfyx/L/8ntVA==",
+			data:    "te6ccgEBAQEAKgAAUAADT0cpqaMXo8Z27iWqhR8JDtTvgvRKS5GHHxJLOEEoYs7914tnN7A=",
+			method:  78748,
+			account: "UQBfAN7LfaUYgXZNw5Wc7GBgkEX2yhuJ5ka95J1JJwXXf9t5",
+		},
+		{
+			name:    "v4r2_seqno",
+			code:    "te6ccgECFAEAAtQAART/APSkE/S88sgLAQIBIAIDAgFIBAUE+PKDCNcYINMf0x/THwL4I7vyZO1E0NMf0x/T//QE0VFDuvKhUVG68qIF+QFUEGT5EPKj+AAkpMjLH1JAyx9SMMv/UhD0AMntVPgPAdMHIcAAn2xRkyDXSpbTB9QC+wDoMOAhwAHjACHAAuMAAcADkTDjDQOkyMsfEssfy/8QERITAubQAdDTAyFxsJJfBOAi10nBIJJfBOAC0x8hghBwbHVnvSKCEGRzdHK9sJJfBeAD+kAwIPpEAcjKB8v/ydDtRNCBAUDXIfQEMFyBAQj0Cm+hMbOSXwfgBdM/yCWCEHBsdWe6kjgw4w0DghBkc3RyupJfBuMNBgcCASAICQB4AfoA9AQw+CdvIjBQCqEhvvLgUIIQcGx1Z4MesXCAGFAEywUmzxZY+gIZ9ADLaRfLH1Jgyz8gyYBA+wAGAIpQBIEBCPRZMO1E0IEBQNcgyAHPFvQAye1UAXKwjiOCEGRzdHKDHrFwgBhQBcsFUAPPFiP6AhPLassfyz/JgED7AJJfA+ICASAKCwBZvSQrb2omhAgKBrkPoCGEcNQICEekk30pkQzmkD6f+YN4EoAbeBAUiYcVnzGEAgFYDA0AEbjJftRNDXCx+AA9sp37UTQgQFA1yH0BDACyMoHy//J0AGBAQj0Cm+hMYAIBIA4PABmtznaiaEAga5Drhf/AABmvHfaiaEAQa5DrhY/AAG7SB/oA1NQi+QAFyMoHFcv/ydB3dIAYyMsFywIizxZQBfoCFMtrEszMyXP7AMhAFIEBCPRR8qcCAHCBAQjXGPoA0z/IVCBHgQEI9FHyp4IQbm90ZXB0gBjIywXLAlAGzxZQBPoCFMtqEssfyz/Jc/sAAgBsgQEI1xj6ANM/MFIkgQEI9Fnyp4IQZHN0cnB0gBjIywXLAlAFzxZQA/oCE8tqyx8Syz/Jc/sAAAr0AMntVA==",
+			data:    "te6ccgEBAQEAKwAAUQAAAkMpqaMX/cAlL/O2hSoROglI/IWEn80x+j6Pw8JX2bE/Azg1Bn1A",
+			method:  85143,
+			account: "UQAs87W4yJHlF8mt29ocA4agnMrLsOP69jC1HPyBUjJay7Mg",
+		},
+		{
+			name:    "v4r2_get_subwallet_id",
+			code:    "te6ccgECFAEAAtQAART/APSkE/S88sgLAQIBIAIDAgFIBAUE+PKDCNcYINMf0x/THwL4I7vyZO1E0NMf0x/T//QE0VFDuvKhUVG68qIF+QFUEGT5EPKj+AAkpMjLH1JAyx9SMMv/UhD0AMntVPgPAdMHIcAAn2xRkyDXSpbTB9QC+wDoMOAhwAHjACHAAuMAAcADkTDjDQOkyMsfEssfy/8QERITAubQAdDTAyFxsJJfBOAi10nBIJJfBOAC0x8hghBwbHVnvSKCEGRzdHK9sJJfBeAD+kAwIPpEAcjKB8v/ydDtRNCBAUDXIfQEMFyBAQj0Cm+hMbOSXwfgBdM/yCWCEHBsdWe6kjgw4w0DghBkc3RyupJfBuMNBgcCASAICQB4AfoA9AQw+CdvIjBQCqEhvvLgUIIQcGx1Z4MesXCAGFAEywUmzxZY+gIZ9ADLaRfLH1Jgyz8gyYBA+wAGAIpQBIEBCPRZMO1E0IEBQNcgyAHPFvQAye1UAXKwjiOCEGRzdHKDHrFwgBhQBcsFUAPPFiP6AhPLassfyz/JgED7AJJfA+ICASAKCwBZvSQrb2omhAgKBrkPoCGEcNQICEekk30pkQzmkD6f+YN4EoAbeBAUiYcVnzGEAgFYDA0AEbjJftRNDXCx+AA9sp37UTQgQFA1yH0BDACyMoHy//J0AGBAQj0Cm+hMYAIBIA4PABmtznaiaEAga5Drhf/AABmvHfaiaEAQa5DrhY/AAG7SB/oA1NQi+QAFyMoHFcv/ydB3dIAYyMsFywIizxZQBfoCFMtrEszMyXP7AMhAFIEBCPRR8qcCAHCBAQjXGPoA0z/IVCBHgQEI9FHyp4IQbm90ZXB0gBjIywXLAlAGzxZQBPoCFMtqEssfyz/Jc/sAAgBsgQEI1xj6ANM/MFIkgQEI9Fnyp4IQZHN0cnB0gBjIywXLAlAFzxZQA/oCE8tqyx8Syz/Jc/sAAAr0AMntVA==",
+			data:    "te6ccgEBAQEAKwAAUQAAAkMpqaMX/cAlL/O2hSoROglI/IWEn80x+j6Pw8JX2bE/Azg1Bn1A",
+			method:  81467,
+			account: "UQAs87W4yJHlF8mt29ocA4agnMrLsOP69jC1HPyBUjJay7Mg",
+		},
+		{
+			name:    "v4r2_get_public_key",
+			code:    "te6ccgECFAEAAtQAART/APSkE/S88sgLAQIBIAIDAgFIBAUE+PKDCNcYINMf0x/THwL4I7vyZO1E0NMf0x/T//QE0VFDuvKhUVG68qIF+QFUEGT5EPKj+AAkpMjLH1JAyx9SMMv/UhD0AMntVPgPAdMHIcAAn2xRkyDXSpbTB9QC+wDoMOAhwAHjACHAAuMAAcADkTDjDQOkyMsfEssfy/8QERITAubQAdDTAyFxsJJfBOAi10nBIJJfBOAC0x8hghBwbHVnvSKCEGRzdHK9sJJfBeAD+kAwIPpEAcjKB8v/ydDtRNCBAUDXIfQEMFyBAQj0Cm+hMbOSXwfgBdM/yCWCEHBsdWe6kjgw4w0DghBkc3RyupJfBuMNBgcCASAICQB4AfoA9AQw+CdvIjBQCqEhvvLgUIIQcGx1Z4MesXCAGFAEywUmzxZY+gIZ9ADLaRfLH1Jgyz8gyYBA+wAGAIpQBIEBCPRZMO1E0IEBQNcgyAHPFvQAye1UAXKwjiOCEGRzdHKDHrFwgBhQBcsFUAPPFiP6AhPLassfyz/JgED7AJJfA+ICASAKCwBZvSQrb2omhAgKBrkPoCGEcNQICEekk30pkQzmkD6f+YN4EoAbeBAUiYcVnzGEAgFYDA0AEbjJftRNDXCx+AA9sp37UTQgQFA1yH0BDACyMoHy//J0AGBAQj0Cm+hMYAIBIA4PABmtznaiaEAga5Drhf/AABmvHfaiaEAQa5DrhY/AAG7SB/oA1NQi+QAFyMoHFcv/ydB3dIAYyMsFywIizxZQBfoCFMtrEszMyXP7AMhAFIEBCPRR8qcCAHCBAQjXGPoA0z/IVCBHgQEI9FHyp4IQbm90ZXB0gBjIywXLAlAGzxZQBPoCFMtqEssfyz/Jc/sAAgBsgQEI1xj6ANM/MFIkgQEI9Fnyp4IQZHN0cnB0gBjIywXLAlAFzxZQA/oCE8tqyx8Syz/Jc/sAAAr0AMntVA==",
+			data:    "te6ccgEBAQEAKwAAUQAAAkMpqaMX/cAlL/O2hSoROglI/IWEn80x+j6Pw8JX2bE/Azg1Bn1A",
+			method:  78748,
+			account: "UQAs87W4yJHlF8mt29ocA4agnMrLsOP69jC1HPyBUjJay7Mg",
+		},
+		{
+			name:    "v4r2_get_plugin_list_empty",
+			code:    "te6ccgECFAEAAtQAART/APSkE/S88sgLAQIBIAIDAgFIBAUE+PKDCNcYINMf0x/THwL4I7vyZO1E0NMf0x/T//QE0VFDuvKhUVG68qIF+QFUEGT5EPKj+AAkpMjLH1JAyx9SMMv/UhD0AMntVPgPAdMHIcAAn2xRkyDXSpbTB9QC+wDoMOAhwAHjACHAAuMAAcADkTDjDQOkyMsfEssfy/8QERITAubQAdDTAyFxsJJfBOAi10nBIJJfBOAC0x8hghBwbHVnvSKCEGRzdHK9sJJfBeAD+kAwIPpEAcjKB8v/ydDtRNCBAUDXIfQEMFyBAQj0Cm+hMbOSXwfgBdM/yCWCEHBsdWe6kjgw4w0DghBkc3RyupJfBuMNBgcCASAICQB4AfoA9AQw+CdvIjBQCqEhvvLgUIIQcGx1Z4MesXCAGFAEywUmzxZY+gIZ9ADLaRfLH1Jgyz8gyYBA+wAGAIpQBIEBCPRZMO1E0IEBQNcgyAHPFvQAye1UAXKwjiOCEGRzdHKDHrFwgBhQBcsFUAPPFiP6AhPLassfyz/JgED7AJJfA+ICASAKCwBZvSQrb2omhAgKBrkPoCGEcNQICEekk30pkQzmkD6f+YN4EoAbeBAUiYcVnzGEAgFYDA0AEbjJftRNDXCx+AA9sp37UTQgQFA1yH0BDACyMoHy//J0AGBAQj0Cm+hMYAIBIA4PABmtznaiaEAga5Drhf/AABmvHfaiaEAQa5DrhY/AAG7SB/oA1NQi+QAFyMoHFcv/ydB3dIAYyMsFywIizxZQBfoCFMtrEszMyXP7AMhAFIEBCPRR8qcCAHCBAQjXGPoA0z/IVCBHgQEI9FHyp4IQbm90ZXB0gBjIywXLAlAGzxZQBPoCFMtqEssfyz/Jc/sAAgBsgQEI1xj6ANM/MFIkgQEI9Fnyp4IQZHN0cnB0gBjIywXLAlAFzxZQA/oCE8tqyx8Syz/Jc/sAAAr0AMntVA==",
+			data:    "te6ccgEBAQEAKwAAUQAAAkMpqaMX/cAlL/O2hSoROglI/IWEn80x+j6Pw8JX2bE/Azg1Bn1A",
+			method:  107653,
+			account: "UQAs87W4yJHlF8mt29ocA4agnMrLsOP69jC1HPyBUjJay7Mg",
+		},
+		{
+			name:    "v5r1_seqno",
+			code:    "te6ccgECFAEAAoEAART/APSkE/S88sgLAQIBIAIDAgFIBAUBAvIOAtzQINdJwSCRW49jINcLHyCCEGV4dG69IYIQc2ludL2wkl8D4IIQZXh0brqOtIAg1yEB0HTXIfpAMPpE+Cj6RDBYvZFb4O1E0IEBQdch9AWDB/QOb6ExkTDhgEDXIXB/2zzgMSDXSYECgLmRMOBw4hAPAgEgBgcCASAICQAZvl8PaiaECAoOuQ+gLAIBbgoLAgFIDA0AGa3OdqJoQCDrkOuF/8AAGa8d9qJoQBDrkOuFj8AAF7Ml+1E0HHXIdcLH4AARsmL7UTQ1woAgAR4g1wsfghBzaWduuvLgin8PAeaO8O2i7fshgwjXIgKDCNcjIIAg1yHTH9Mf0x/tRNDSANMfINMf0//XCgAK+QFAzPkQmiiUXwrbMeHywIffArNQB7Dy0IRRJbry4IVQNrry4Ib4I7vy0IgikvgA3gGkf8jKAMsfAc8Wye1UIJL4D95w2zzYEAP27aLt+wL0BCFukmwhjkwCIdc5MHCUIccAs44tAdcoIHYeQ2wg10nACPLgkyDXSsAC8uCTINcdBscSwgBSMLDy0InXTNc5MAGk6GwShAe78uCT10rAAPLgk+1V4tIAAcAAkVvg69csCBQgkXCWAdcsCBwS4lIQseMPINdKERITAJYB+kAB+kT4KPpEMFi68uCR7UTQgQFB1xj0BQSdf8jKAEAEgwf0U/Lgi44UA4MH9Fvy4Iwi1woAIW4Bs7Dy0JDiyFADzxYS9ADJ7VQAcjDXLAgkji0h8uCS0gDtRNDSAFETuvLQj1RQMJExnAGBAUDXIdcKAPLgjuLIygBYzxbJ7VST8sCN4gAQk1vbMeHXTNA=",
+			data:    "te6ccgEBAQEAKwAAUYAAAAE///+IhwL/NGAdqz9BwOQpHNXySSYmbxioYEv8cVer4tmjFhMg",
+			method:  85143,
+			account: "UQAQoxHkAhIfBrx0C3X7qTExchRCMwABlymYNFYhw4bwDC8m",
+		},
+		{
+			name:    "v5r1_get_public_key",
+			code:    "te6ccgECFAEAAoEAART/APSkE/S88sgLAQIBIAIDAgFIBAUBAvIOAtzQINdJwSCRW49jINcLHyCCEGV4dG69IYIQc2ludL2wkl8D4IIQZXh0brqOtIAg1yEB0HTXIfpAMPpE+Cj6RDBYvZFb4O1E0IEBQdch9AWDB/QOb6ExkTDhgEDXIXB/2zzgMSDXSYECgLmRMOBw4hAPAgEgBgcCASAICQAZvl8PaiaECAoOuQ+gLAIBbgoLAgFIDA0AGa3OdqJoQCDrkOuF/8AAGa8d9qJoQBDrkOuFj8AAF7Ml+1E0HHXIdcLH4AARsmL7UTQ1woAgAR4g1wsfghBzaWduuvLgin8PAeaO8O2i7fshgwjXIgKDCNcjIIAg1yHTH9Mf0x/tRNDSANMfINMf0//XCgAK+QFAzPkQmiiUXwrbMeHywIffArNQB7Dy0IRRJbry4IVQNrry4Ib4I7vy0IgikvgA3gGkf8jKAMsfAc8Wye1UIJL4D95w2zzYEAP27aLt+wL0BCFukmwhjkwCIdc5MHCUIccAs44tAdcoIHYeQ2wg10nACPLgkyDXSsAC8uCTINcdBscSwgBSMLDy0InXTNc5MAGk6GwShAe78uCT10rAAPLgk+1V4tIAAcAAkVvg69csCBQgkXCWAdcsCBwS4lIQseMPINdKERITAJYB+kAB+kT4KPpEMFi68uCR7UTQgQFB1xj0BQSdf8jKAEAEgwf0U/Lgi44UA4MH9Fvy4Iwi1woAIW4Bs7Dy0JDiyFADzxYS9ADJ7VQAcjDXLAgkji0h8uCS0gDtRNDSAFETuvLQj1RQMJExnAGBAUDXIdcKAPLgjuLIygBYzxbJ7VST8sCN4gAQk1vbMeHXTNA=",
+			data:    "te6ccgEBAQEAKwAAUYAAAAE///+IhwL/NGAdqz9BwOQpHNXySSYmbxioYEv8cVer4tmjFhMg",
+			method:  78748,
+			account: "UQAQoxHkAhIfBrx0C3X7qTExchRCMwABlymYNFYhw4bwDC8m",
+		},
+		{
+			name:    "v5r1_get_subwallet_id",
+			code:    "te6ccgECFAEAAoEAART/APSkE/S88sgLAQIBIAIDAgFIBAUBAvIOAtzQINdJwSCRW49jINcLHyCCEGV4dG69IYIQc2ludL2wkl8D4IIQZXh0brqOtIAg1yEB0HTXIfpAMPpE+Cj6RDBYvZFb4O1E0IEBQdch9AWDB/QOb6ExkTDhgEDXIXB/2zzgMSDXSYECgLmRMOBw4hAPAgEgBgcCASAICQAZvl8PaiaECAoOuQ+gLAIBbgoLAgFIDA0AGa3OdqJoQCDrkOuF/8AAGa8d9qJoQBDrkOuFj8AAF7Ml+1E0HHXIdcLH4AARsmL7UTQ1woAgAR4g1wsfghBzaWduuvLgin8PAeaO8O2i7fshgwjXIgKDCNcjIIAg1yHTH9Mf0x/tRNDSANMfINMf0//XCgAK+QFAzPkQmiiUXwrbMeHywIffArNQB7Dy0IRRJbry4IVQNrry4Ib4I7vy0IgikvgA3gGkf8jKAMsfAc8Wye1UIJL4D95w2zzYEAP27aLt+wL0BCFukmwhjkwCIdc5MHCUIccAs44tAdcoIHYeQ2wg10nACPLgkyDXSsAC8uCTINcdBscSwgBSMLDy0InXTNc5MAGk6GwShAe78uCT10rAAPLgk+1V4tIAAcAAkVvg69csCBQgkXCWAdcsCBwS4lIQseMPINdKERITAJYB+kAB+kT4KPpEMFi68uCR7UTQgQFB1xj0BQSdf8jKAEAEgwf0U/Lgi44UA4MH9Fvy4Iwi1woAIW4Bs7Dy0JDiyFADzxYS9ADJ7VQAcjDXLAgkji0h8uCS0gDtRNDSAFETuvLQj1RQMJExnAGBAUDXIdcKAPLgjuLIygBYzxbJ7VST8sCN4gAQk1vbMeHXTNA=",
+			data:    "te6ccgEBAQEAKwAAUYAAAAE///+IhwL/NGAdqz9BwOQpHNXySSYmbxioYEv8cVer4tmjFhMg",
+			method:  81467,
+			account: "UQAQoxHkAhIfBrx0C3X7qTExchRCMwABlymYNFYhw4bwDC8m",
+		},
+		//{
+		//	name:    "get_plugin_list_non_empty",
+		//	code:    "te6ccgECFAEAAtQAART/APSkE/S88sgLAQIBIAIDAgFIBAUE+PKDCNcYINMf0x/THwL4I7vyZO1E0NMf0x/T//QE0VFDuvKhUVG68qIF+QFUEGT5EPKj+AAkpMjLH1JAyx9SMMv/UhD0AMntVPgPAdMHIcAAn2xRkyDXSpbTB9QC+wDoMOAhwAHjACHAAuMAAcADkTDjDQOkyMsfEssfy/8QERITAubQAdDTAyFxsJJfBOAi10nBIJJfBOAC0x8hghBwbHVnvSKCEGRzdHK9sJJfBeAD+kAwIPpEAcjKB8v/ydDtRNCBAUDXIfQEMFyBAQj0Cm+hMbOSXwfgBdM/yCWCEHBsdWe6kjgw4w0DghBkc3RyupJfBuMNBgcCASAICQB4AfoA9AQw+CdvIjBQCqEhvvLgUIIQcGx1Z4MesXCAGFAEywUmzxZY+gIZ9ADLaRfLH1Jgyz8gyYBA+wAGAIpQBIEBCPRZMO1E0IEBQNcgyAHPFvQAye1UAXKwjiOCEGRzdHKDHrFwgBhQBcsFUAPPFiP6AhPLassfyz/JgED7AJJfA+ICASAKCwBZvSQrb2omhAgKBrkPoCGEcNQICEekk30pkQzmkD6f+YN4EoAbeBAUiYcVnzGEAgFYDA0AEbjJftRNDXCx+AA9sp37UTQgQFA1yH0BDACyMoHy//J0AGBAQj0Cm+hMYAIBIA4PABmtznaiaEAga5Drhf/AABmvHfaiaEAQa5DrhY/AAG7SB/oA1NQi+QAFyMoHFcv/ydB3dIAYyMsFywIizxZQBfoCFMtrEszMyXP7AMhAFIEBCPRR8qcCAHCBAQjXGPoA0z/IVCBHgQEI9FHyp4IQbm90ZXB0gBjIywXLAlAGzxZQBPoCFMtqEssfyz/Jc/sAAgBsgQEI1xj6ANM/MFIkgQEI9Fnyp4IQZHN0cnB0gBjIywXLAlAFzxZQA/oCE8tqyx8Syz/Jc/sAAAr0AMntVA==",
+		//	data:    "te6ccgEBCAEAyQABUQAAABkpqaMXW+tq6DtFdNHBi2QMLPpkSvAQtHiljthmIkqLj7DRMt3AAQIFf8AYAgMAQr+xa9pm01nqjgXO3CQi50KPpjUMmn+lZItMzwzLDv+wtQIBSAQFAgEgBgcAQb8Nb4NILpVtSMAcBfUS5k1FTYSb1mzbSulhfE1cs45IMgBBvv63AmxN8DiSIWLYBNeBfGV5IwkhTI0thNnYXsrcfmMEAEG++dC0r/Y2e/vovk0VYvHE1PaYvUcAIYNC892cxh2qGLw=",
+		//	method:  107653,
+		//	account: "EQByROfEssHJthFWvj3BpjZCuJGVha6QNlSuBBycZ4_tUZoZ",
+		//},
+		{
+			name:    "get_wallet_data",
+			code:    "te6ccgECEQEAAyMAART/APSkE/S88sgLAQIBYgIDAgLMBAUAG6D2BdqJofQB9IH0gahhAgHUBgcCASAICQDDCDHAJJfBOAB0NMDAXGwlRNfA/AM4PpA+kAx+gAxcdch+gAx+gAwc6m0AALTH4IQD4p+pVIgupUxNFnwCeCCEBeNRRlSILqWMUREA/AK4DWCEFlfB7y6k1nwC+BfBIQP8vCAAET6RDBwuvLhTYAIBIAoLAIPUAQa5D2omh9AH0gfSBqGAJpj8EIC8aijKkQXUEIPe7L7wndCVj5cWLpn5j9ABgJ0CgR5CgCfQEsZ4sA54tmZPaqQB8VA9M/+gD6QCHwAe1E0PoA+kD6QNQwUTahUirHBfLiwSjC//LiwlQ0QnBUIBNUFAPIUAT6AljPFgHPFszJIsjLARL0APQAywDJIPkAcHTIywLKB8v/ydAE+kD0BDH6ACDXScIA8uLEd4AYyMsFUAjPFnD6AhfLaxPMgMAgEgDQ4AnoIQF41FGcjLHxnLP1AH+gIizxZQBs8WJfoCUAPPFslQBcwjkXKRceJQCKgToIIJycOAoBS88uLFBMmAQPsAECPIUAT6AljPFgHPFszJ7VQC9ztRND6APpA+kDUMAjTP/oAUVGgBfpA+kBTW8cFVHNtcFQgE1QUA8hQBPoCWM8WAc8WzMkiyMsBEvQA9ADLAMn5AHB0yMsCygfL/8nQUA3HBRyx8uLDCvoAUaihggiYloBmtgihggiYloCgGKEnlxBJEDg3XwTjDSXXCwGAPEADXO1E0PoA+kD6QNQwB9M/+gD6QDBRUaFSSccF8uLBJ8L/8uLCBYIJMS0AoBa88uLDghB73ZfeyMsfFcs/UAP6AiLPFgHPFslxgBjIywUkzxZw+gLLaszJgED7AEATyFAE+gJYzxYBzxbMye1UgAHBSeaAYoYIQc2LQnMjLH1Iwyz9Y+gJQB88WUAfPFslxgBDIywUkzxZQBvoCFctqFMzJcfsAECQQIwB8wwAjwgCwjiGCENUydttwgBDIywVQCM8WUAT6AhbLahLLHxLLP8ly+wCTNWwh4gPIUAT6AljPFgHPFszJ7VQ=",
+			data:    "te6ccgECEgEAA24AAY9A7msoCAFfHGWh4x4bYaMJQAEXxCoWbF+mwyrvGSovDPU+N/kn9QAvBaGTJQXGYWej6/bBxsh85Bb/ctgeV/bTetUb7nC0cyABART/APSkE/S88sgLAgIBYgMEAgLMBQYAG6D2BdqJofQB9IH0gahhAgHUBwgCASAJCgDDCDHAJJfBOAB0NMDAXGwlRNfA/AM4PpA+kAx+gAxcdch+gAx+gAwc6m0AALTH4IQD4p+pVIgupUxNFnwCeCCEBeNRRlSILqWMUREA/AK4DWCEFlfB7y6k1nwC+BfBIQP8vCAAET6RDBwuvLhTYAIBIAsMAIPUAQa5D2omh9AH0gfSBqGAJpj8EIC8aijKkQXUEIPe7L7wndCVj5cWLpn5j9ABgJ0CgR5CgCfQEsZ4sA54tmZPaqQB8VA9M/+gD6QCHwAe1E0PoA+kD6QNQwUTahUirHBfLiwSjC//LiwlQ0QnBUIBNUFAPIUAT6AljPFgHPFszJIsjLARL0APQAywDJIPkAcHTIywLKB8v/ydAE+kD0BDH6ACDXScIA8uLEd4AYyMsFUAjPFnD6AhfLaxPMgNAgEgDg8AnoIQF41FGcjLHxnLP1AH+gIizxZQBs8WJfoCUAPPFslQBcwjkXKRceJQCKgToIIJycOAoBS88uLFBMmAQPsAECPIUAT6AljPFgHPFszJ7VQC9ztRND6APpA+kDUMAjTP/oAUVGgBfpA+kBTW8cFVHNtcFQgE1QUA8hQBPoCWM8WAc8WzMkiyMsBEvQA9ADLAMn5AHB0yMsCygfL/8nQUA3HBRyx8uLDCvoAUaihggiYloBmtgihggiYloCgGKEnlxBJEDg3XwTjDSXXCwGAQEQDXO1E0PoA+kD6QNQwB9M/+gD6QDBRUaFSSccF8uLBJ8L/8uLCBYIJMS0AoBa88uLDghB73ZfeyMsfFcs/UAP6AiLPFgHPFslxgBjIywUkzxZw+gLLaszJgED7AEATyFAE+gJYzxYBzxbMye1UgAHBSeaAYoYIQc2LQnMjLH1Iwyz9Y+gJQB88WUAfPFslxgBDIywUkzxZQBvoCFctqFMzJcfsAECQQIwB8wwAjwgCwjiGCENUydttwgBDIywVQCM8WUAT6AhbLahLLHxLLP8ly+wCTNWwh4gPIUAT6AljPFgHPFszJ7VQ=",
+			method:  97026,
+			account: "EQAAseW6AC4wiEWzSxusVP80xM6yYahYRvKEhKmikXBDjYWN",
+			compareFunc: func(stack1, stack2 tlb.VmStack) error {
+				if stack2.Len() != stack1.Len() {
+					return fmt.Errorf("stack length mismatch")
+				}
+				var a, b abi.GetWalletDataResult
+				if err := stack1.Unmarshal(&a); err != nil {
+					return err
+				}
+				if err := stack2.Unmarshal(&b); err != nil {
+					return err
+				}
+				if !reflect.DeepEqual(a, b) {
+					return fmt.Errorf("stack mismatch")
+				}
+				return nil
+			},
+		},
+		{
+			name:    "get_wallet_data_big",
+			code:    "te6ccgECEQEAAyMAART/APSkE/S88sgLAQIBYgIDAgLMBAUAG6D2BdqJofQB9IH0gahhAgHUBgcCASAICQDDCDHAJJfBOAB0NMDAXGwlRNfA/AM4PpA+kAx+gAxcdch+gAx+gAwc6m0AALTH4IQD4p+pVIgupUxNFnwCeCCEBeNRRlSILqWMUREA/AK4DWCEFlfB7y6k1nwC+BfBIQP8vCAAET6RDBwuvLhTYAIBIAoLAIPUAQa5D2omh9AH0gfSBqGAJpj8EIC8aijKkQXUEIPe7L7wndCVj5cWLpn5j9ABgJ0CgR5CgCfQEsZ4sA54tmZPaqQB8VA9M/+gD6QCHwAe1E0PoA+kD6QNQwUTahUirHBfLiwSjC//LiwlQ0QnBUIBNUFAPIUAT6AljPFgHPFszJIsjLARL0APQAywDJIPkAcHTIywLKB8v/ydAE+kD0BDH6ACDXScIA8uLEd4AYyMsFUAjPFnD6AhfLaxPMgMAgEgDQ4AnoIQF41FGcjLHxnLP1AH+gIizxZQBs8WJfoCUAPPFslQBcwjkXKRceJQCKgToIIJycOAoBS88uLFBMmAQPsAECPIUAT6AljPFgHPFszJ7VQC9ztRND6APpA+kDUMAjTP/oAUVGgBfpA+kBTW8cFVHNtcFQgE1QUA8hQBPoCWM8WAc8WzMkiyMsBEvQA9ADLAMn5AHB0yMsCygfL/8nQUA3HBRyx8uLDCvoAUaihggiYloBmtgihggiYloCgGKEnlxBJEDg3XwTjDSXXCwGAPEADXO1E0PoA+kD6QNQwB9M/+gD6QDBRUaFSSccF8uLBJ8L/8uLCBYIJMS0AoBa88uLDghB73ZfeyMsfFcs/UAP6AiLPFgHPFslxgBjIywUkzxZw+gLLaszJgED7AEATyFAE+gJYzxYBzxbMye1UgAHBSeaAYoYIQc2LQnMjLH1Iwyz9Y+gJQB88WUAfPFslxgBDIywUkzxZQBvoCFctqFMzJcfsAECQQIwB8wwAjwgCwjiGCENUydttwgBDIywVQCM8WUAT6AhbLahLLHxLLP8ly+wCTNWwh4gPIUAT6AljPFgHPFszJ7VQ=",
+			data:    "te6ccgECEgEAA3UAAZ2widMwTkmrlYU8tHgAjst9Q1dfJlNFsaJMJtYCRLmDE1JMQI3m5CcEwojAPtsAGHoVNX1h7QXY+JudhzEkNM5eq/Wy4S3Y62fFDil3ZxjgAQEU/wD0pBP0vPLICwICAWIDBAICzAUGABug9gXaiaH0AfSB9IGoYQIB1AcIAgEgCQoAwwgxwCSXwTgAdDTAwFxsJUTXwPwDOD6QPpAMfoAMXHXIfoAMfoAMHOptAAC0x+CEA+KfqVSILqVMTRZ8AngghAXjUUZUiC6ljFERAPwCuA1ghBZXwe8upNZ8AvgXwSED/LwgABE+kQwcLry4U2ACASALDACD1AEGuQ9qJofQB9IH0gahgCaY/BCAvGooypEF1BCD3uy+8J3QlY+XFi6Z+Y/QAYCdAoEeQoAn0BLGeLAOeLZmT2qkAfFQPTP/oA+kAh8AHtRND6APpA+kDUMFE2oVIqxwXy4sEowv/y4sJUNEJwVCATVBQDyFAE+gJYzxYBzxbMySLIywES9AD0AMsAySD5AHB0yMsCygfL/8nQBPpA9AQx+gAg10nCAPLixHeAGMjLBVAIzxZw+gIXy2sTzIDQIBIA4PAJ6CEBeNRRnIyx8Zyz9QB/oCIs8WUAbPFiX6AlADzxbJUAXMI5FykXHiUAioE6CCCcnDgKAUvPLixQTJgED7ABAjyFAE+gJYzxYBzxbMye1UAvc7UTQ+gD6QPpA1DAI0z/6AFFRoAX6QPpAU1vHBVRzbXBUIBNUFAPIUAT6AljPFgHPFszJIsjLARL0APQAywDJ+QBwdMjLAsoHy//J0FANxwUcsfLiwwr6AFGooYIImJaAZrYIoYIImJaAoBihJ5cQSRA4N18E4w0l1wsBgEBEA1ztRND6APpA+kDUMAfTP/oA+kAwUVGhUknHBfLiwSfC//LiwgWCCTEtAKAWvPLiw4IQe92X3sjLHxXLP1AD+gIizxYBzxbJcYAYyMsFJM8WcPoCy2rMyYBA+wBAE8hQBPoCWM8WAc8WzMntVIABwUnmgGKGCEHNi0JzIyx9SMMs/WPoCUAfPFlAHzxbJcYAQyMsFJM8WUAb6AhXLahTMyXH7ABAkECMAfMMAI8IAsI4hghDVMnbbcIAQyMsFUAjPFlAE+gIWy2oSyx8Syz/JcvsAkzVsIeIDyFAE+gJYzxYBzxbMye1U",
+			method:  97026,
+			account: "EQC0ZCVsOCGda8Qufyqn0WLUBFdP0vl5w09MO8JYCYVn6CjE",
+			compareFunc: func(stack1, stack2 tlb.VmStack) error {
+				if stack2.Len() != stack1.Len() {
+					return fmt.Errorf("stack length mismatch")
+				}
+				var a, b abi.GetWalletDataResult
+				if err := stack1.Unmarshal(&a); err != nil {
+					return err
+				}
+				if err := stack2.Unmarshal(&b); err != nil {
+					return err
+				}
+				if !reflect.DeepEqual(a, b) {
+					return fmt.Errorf("stack mismatch")
+				}
+				return nil
+			},
+		},
+		{
+			name:    "get_wallet_data_v2",
+			code:    "te6cckEBAQEAIwAIQgK6KRjIlH6bJa+awbiDNXdUFz5YEvgHo9bmQqFHCVlTlSN648M=",
+			libs:    "te6ccgECEAEAA6UAAUOgF0UjGRKP02S181g3EGau6oLnywJfAPR63MhUKOErKnKkAQEU/wD0pBP0vPLICwICAWIDBAL40AHQ0wMBcbCOSBNfA4Ag1yHtRNDTA/oA+kD6QNEE0x8BhA8hghAXjUUZugKCEHvdl966ErHy9IBA1yH6ADASoEATA8jLA1j6AgHPFgHPFsntVOD6QPpAMfoAMfQB+gAx+gABMXD4OgLTHwEgghAPin6luo6FMDRZ2zzgMwUGAgEgDg8B9gPTPwEB+gD6QCH6RDDAAPLhTe1E0NMD+gD6QPpA0VIaxwXy4ElRFaEgwv/yr/gqVCWQcFRgBBMVA8jLA1j6AgHPFgHPFskhyMsBE/QAEvQAywDJIPkAcHTIywLKB8v/ydAE+kD0AfoAICDXCwCa10vAAQHAAbDysZEw4gcCXCKCEBeNRRm6joQyWts84DQhghBZXwe8uo6EMQHbPOATXwOCENNyFYy63IQP8vAJCgH+yIIQF41FGQHLH1AKAcs/UAj6AiPPFgHPFib6AlAHzxbJyIAYAcsFUATPFnD6AkBjd1ADy2vMzMlFNyGRcpFx4vg5IG6TgSdRkSDiIW6UMYEow5EB4lAjqBOgc4EDo3D4PKACcPg2EqABcPg2oHOBBAmCEAlmAYBw+DegvPKwBAgAKoBQ+wBYA8jLA1j6AgHPFgHPFsntVAPo7UTQ0wP6APpA+kDRB9M/AQH6APpA+kBTuscF+CpUZOBwVGAEExUDyMsDWPoCAc8WAc8WySHIywET9AAS9ADLAMn5AHB0yMsCygfL/8nQUAzHBRux8uBKUVKgCfoAIZJfBOMNItcLAcAAs5UwECRsMeMNUAMLDA0B8u1E0NMD+gD6QPpA0QbTPwEB+gD6QPQB0VFBoVI4xwXy4Ekmwv/yr8iCEHvdl94Byx9YAcs/AfoCIc8WWM8WyciAGAHLBSbPFnD6AgFxWMtqzMkD+DkgbpQwgRcD3nGBAvJw+DgBcPg2oIEaZXD4NqC88rACgFD7AAMNAGDIghBzYtCcAcsfJQHLP1AE+gJYzxZYzxbJyIAQAcsFJM8WWPoCAXFYy2rMyYAR+wAAeFBUofgvoHOBBAmCEAlmAYBw+De2CXL7AsiAEAHLBQHPFnD6AnABy2qCENUydtsByx9YAcs/yYEAgvsAAQAgA8jLA1j6AgHPFgHPFsntVAAnv9gXaiaGmB/QB9IH0gaJn8FSCYQAIbxQj2omhpgf0AfSB9IGivgc",
+			data:    "te6ccgEBAQEASwAAkQVlSAU+AIAaTD9UIf2WiY+qHZktPTabWDVjwBuQa0x80kagNg6aoVAAvlWFDxGF2lXm67y4yzC17wYKD9A0guwPkMs1gOsM//I=",
+			method:  97026,
+			account: "EQCJgWrPFPqHhJHTu0ISbIaZuc3OkQH8p7ePnmAtsIjpl3rP",
+			compareFunc: func(stack1, stack2 tlb.VmStack) error {
+				if stack2.Len() != stack1.Len() {
+					return fmt.Errorf("stack length mismatch")
+				}
+				var a, b abi.GetWalletDataResult
+				if err := stack1.Unmarshal(&a); err != nil {
+					return err
+				}
+				if err := stack2.Unmarshal(&b); err != nil {
+					return err
+				}
+				if !reflect.DeepEqual(a, b) {
+					return fmt.Errorf("stack mismatch")
+				}
+				return nil
+			},
+		},
+		{
+			name:    "get_wallet_data_v3",
+			code:    "te6ccgEBAQEAHAAANHLIyweB/AD4MjDQgQEA1wMBy/9xzyPQ7R7Y",
+			data:    "te6ccgEBAQEASwAAkQEgw/rmBADDiuJ7W0npzdc2+qXknukRpAFPxjf2AcS2gISpTVNoToAEc0Rr0i5ggf7Xx9neEMzED7qe+zPv8hAmcnIv4M8P0bA=",
+			libs:    "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",
+			method:  97026,
+			account: "kQDDNHHLAWzRDIci7_jD1An79w80ER5SzueZHmusWgJs_fG2",
+			compareFunc: func(stack1, stack2 tlb.VmStack) error {
+				if stack2.Len() != stack1.Len() {
+					return fmt.Errorf("stack length mismatch")
+				}
+				var a, b abi.GetWalletDataResult
+				if err := stack1.Unmarshal(&a); err != nil {
+					return err
+				}
+				if err := stack2.Unmarshal(&b); err != nil {
+					return err
+				}
+				if !reflect.DeepEqual(a, b) {
+					return fmt.Errorf("stack mismatch")
+				}
+				return nil
+			},
+		},
+		{
+			name:    "get_wallet_data_governed",
+			code:    "te6ccgEBAQEAIwAIQgKPRS16Tf10BmtoI2UXclntBXNENb52tf1L1divK3w9aA==",
+			libs:    "te6ccgECEAEAA/YAAUOgEeilr0m/roDNbQRsou5LPaCuaIa3zta/qXq7FeVvh60EAQEU/wD0pBP0vPLICwICAWIDBAL40AHQ0wMBcbCOSBNfA4Ag1yHtRNDTA/oA+kD6QNEE0x8BhA8hghAXjUUZugKCEHvdl966ErHy9IBA1yH6ADASoEATA8jLA1j6AgHPFgHPFsntVOD6QPpAMfoAMfQB+gAx+gABMXD4OgLTHwEgghAPin6luo6FMDRZ2zzgMwUGAgEgDg8B8gPTPwEB+gD6QCH6RDDAAPLhTe1E0NMD+gD6QPpA0VMJxwUkcbDAACGx8q1SK8cFUAqx8uBJURWhIML/8q/4KlQlkHBUYAQTFQPIywNY+gIBzxYBzxbJIcjLARP0ABL0AMsAySD5AHB0yMsCygfL/8nQBPpA9AH6ACAHAtAighAXjUUZuo6EMlrbPOA0IYIQWV8HvLqOhDEB2zzgMiCCEO7SNtO6ji8wAYBA1yHTA9HtRNDTA/oA+kD6QNEzUULHBfLgSkAzA8jLA1j6AgHPFgHPFsntVOBsIYIQ03IVjLrchA/y8AkKAZgg1wsAmtdLwAEBwAGw8rGRMOLIghAXjUUZAcsfUAoByz9QCPoCI88WAc8WJvoCUAfPFsnIgBgBywVQBM8WcPoCQGN3UAPLa8zMyUU3CAC0IZFykXHi+DkgbpOBJCeRIOIhbpQxgShzkQHiUCOoE6BzgQOjcPg8oAJw+DYSoAFw+Dagc4EECYIQCWYBgHD4N6C88rAEgFD7AFgDyMsDWPoCAc8WAc8Wye1UA/TtRNDTA/oA+kD6QNEjcrDAAvJtB9M/AQH6AFFBoAT6QPpAU7rHBfgqVGTgcFRgBBMVA8jLA1j6AgHPFgHPFskhyMsBE/QAEvQAywDJ+QBwdMjLAsoHy//J0FAMxwUbsfLgSgn6ACGSXwTjDSbXCwHAALOTMGwz4w1VAgsMDQHy7UTQ0wP6APpA+kDRBtM/AQH6APpA9AHRUUGhUojHBfLgSSbC//KvyIIQe92X3gHLH1gByz8B+gIhzxZYzxbJyIAYAcsFJs8WcPoCAXFYy2rMyQP4OSBulDCBFp/ecYEC8nD4OAFw+DaggRp3cPg2oLzysAKAUPsAAw0AYMiCEHNi0JwByx8lAcs/UAT6AljPFljPFsnIgBABywUkzxZY+gIBcVjLaszJgBH7AAB6UFSh+C+gc4EECYIQCWYBgHD4N7YJcvsCyIAQAcsFUAXPFnD6AnABy2qCENUydtsByx9YAcs/yYEAgvsAWQAgA8jLA1j6AgHPFgHPFsntVAAnv9gXaiaGmB/QB9IH0gaJn8FSCYQAIbxQj2omhpgf0AfSB9IGivgc",
+			data:    "te6ccgEBAQEASgAAjwQI8NGAgAVAe+xSjBdbP/klSRaya5G3+rswFYiGUWXffpeGuQFBEALETqZS1AkoWcZ9pE5Mo63WVlsOKJfWQKLFG/s3DYh3+g==",
+			method:  97026,
+			account: "EQDrV3Vex_zbgvZXV0hCYTYwi3ui9yFtFJl0J4GhONs6XHiH",
+			compareFunc: func(stack1, stack2 tlb.VmStack) error {
+				if stack2.Len() != stack1.Len() {
+					return fmt.Errorf("stack length mismatch")
+				}
+				var a, b abi.GetWalletDataResult
+				if err := stack1.Unmarshal(&a); err != nil {
+					return err
+				}
+				if err := stack2.Unmarshal(&b); err != nil {
+					return err
+				}
+				if !reflect.DeepEqual(a, b) {
+					return fmt.Errorf("stack mismatch")
+				}
+				return nil
+			},
+		},
+		{
+			name:    "get_wallet_data_mintless",
+			code:    "te6ccgEBAQEAIwAIQgIPGtPYpGvSgzId3mORlftyYC6bMbFyf+zCXi7cEJZt9A==",
+			libs:    "te6ccgECGwEABSQAAUOgAeNaexSNelBmQ7vMcjK/bkwF02Y2Lk/9mEvF24ISzb6EAQEU/wD0pBP0vPLICwICAWIDBAICygUGAgEgFxgB9dQHQ0wMBcbCOWxNfA4Ag1yHtRNDTA/oA+kD6QNP/Afhh0wkB+GLRBNMfAYQPIYIQF41FGboCghB73ZfeuhKx8vSAQNch+gAwEqBAE/hB+EIFyMsDUAT6AljPFgHPFsv/ywnJ7VTg+kD6QDH6ADH0AfoAMfoAATFw+DoCgcCAWYTFAOE0x8BIIIQD4p+pbqOhTBENNs84DMighAXjUUZuo6EMlrbPOA0IYIQWV8HvLqOhDEB2zzgE18DghDTchWMutyED/LwCAkKA/YE0z8BAfoA+kAh+kQwwADy4U3tRNDTA/oA+kD6QNP/Afhh0wkB+GLRUhvHBfLgSfgq+EErEDdZ2zxvIjAg+QBwdMjLAsoHy/8E+kD0BIBQIm6SMjvjDgr6ACAg1wsAmtdLwAEBwAGw8rGRMOJRSKEgwv/yr8iCEBeNRRkNCwwE1u1E0NMD+gD6QPpA0/8B+GHTCQH4YtEH0z8BAfoAUUGgBPpA+kBTuscFIJE7jqAw+Cr4QSRUTjDbPG8iMPkAcHTIywLKB8v/ydBQC8cFCuIK8uBKCfoAIZJfBOMNJtcLAcAAs5MwbDPjDVUCDQ4PEAG67UTQ0wP6APpA+kDT/wH4YdMJAfhi0QbTPwEB+gD6QPQB0VFBoVI4xwXy4Ekmwv/yr8iCEHvdl94Byx9YAcs/AfoCIc8WWM8WyciAGAHLBSbPFnD6AgFxWMtqzMkDEgCsMAHQ0x8BghAN9gLWuvK5JfJ21DD4QSjwLPgjUgO+8re78rgUoARxsVGpofgvoHOBBROCEAlmAYBw+DdSELYJIIAQ+wKhgQCQ+Adw+DZYoBqhEDoJEDQB+AHLH1AKAcs/UAj6AibPFgHPFib6AljPFsnIgBgBywVQBM8XcPoCQBN3UAPLa8zMyUU4IZFykXHi+DkgbpOBeC6RIOIhbpQxgX7gkQHiUCOoE6BzgQStcPg8oAJw+DYSoAFw+Dagc4EFE4IQCWYBgHD4N6C88rBQU/sAQwMQAfaED39wJvpEMav7UxFJRhgEyMsDUAP6AgHPFgHPFsv/IIEAysjLDwHPFyT5ACXXZSWCAgE0yMsXEssPyw/L/44pBqRcAcsJcfkEAFJwAcv/cfkEAKv7KLJTBLmTNDQjkTDiIMAgJMAAsRfmECNfAzMzInADywnJIsjLARIRAGDIghBzYtCcAcsfJQHLP1AE+gJYzxZYzxbJyIAQAcsFJM8WWPoCAXFYy2rMyYAR+wAAelBUofgvoHOBBROCEAlmAYBw+De2CXL7AsiAEAHLBVAFzxZw+gJwActqghDVMnbbAcsfWAHLP8mBAIL7AFkAMvhB+EIFyMsDUAT6AljPFgHPFsv/ywnJ7VQAFPQA9ADLAMkBbwIAfvg5IG6UMIEYBN5xgQLycPg4AXD4NqCBcAhw+DagvPKwAoBQ+wAD+EH4QgXIywNQBPoCWM8WAc8Wy//LCcntVAIBWBUWACnSz4FcCAhfoFN9D5cDb9AGmX6ZeYQAIzXOfLgZ9MHAcAD8uBo1NP/MIAARAHwKli68uBpgADu/2BdqJoaYH9AH0gfSBp/4D8MOmEgPwxaJn8FSCYQCASAZGgA1uKEe1E0NMD+gD6QPpA0/8B+GHTCQH4YtFfA4ADW52s7UTQ0wP6APpA+kDT/wH4YdMJAfhi0V8Dg=",
+			data:    "te6ccgEBAQEAbwAA2ggY8bSzikFOoIASMQ4LN0rUBvIWDS2vSAVYDSO/7F+acx0Cfy+nZObfSxAAJ8uWd7EBqsmpSWaRdf/I+8R8+XHwh3gsNKhy+UrdrPUI0rXIU3k/T5YpIO61lji2qYaoATvD6VByERzLig6MRAQ=",
+			method:  97026,
+			account: "EQCR50nICun4QUzzXcOhrWyY1jsRNWwJm0mBHMtqlOcMSEAn",
+			compareFunc: func(stack1, stack2 tlb.VmStack) error {
+				if stack2.Len() != stack1.Len() {
+					return fmt.Errorf("stack length mismatch")
+				}
+				var a, b abi.GetWalletDataResult
+				if err := stack1.Unmarshal(&a); err != nil {
+					return err
+				}
+				if err := stack2.Unmarshal(&b); err != nil {
+					return err
+				}
+				if !reflect.DeepEqual(a, b) {
+					return fmt.Errorf("stack mismatch")
+				}
+				return nil
+			},
+		},
+		{
+			name:    "is_claimed_mintless",
+			code:    "te6ccgEBAQEAIwAIQgIPGtPYpGvSgzId3mORlftyYC6bMbFyf+zCXi7cEJZt9A==",
+			libs:    "te6ccgECGwEABSQAAUOgAeNaexSNelBmQ7vMcjK/bkwF02Y2Lk/9mEvF24ISzb6EAQEU/wD0pBP0vPLICwICAWIDBAICygUGAgEgFxgB9dQHQ0wMBcbCOWxNfA4Ag1yHtRNDTA/oA+kD6QNP/Afhh0wkB+GLRBNMfAYQPIYIQF41FGboCghB73ZfeuhKx8vSAQNch+gAwEqBAE/hB+EIFyMsDUAT6AljPFgHPFsv/ywnJ7VTg+kD6QDH6ADH0AfoAMfoAATFw+DoCgcCAWYTFAOE0x8BIIIQD4p+pbqOhTBENNs84DMighAXjUUZuo6EMlrbPOA0IYIQWV8HvLqOhDEB2zzgE18DghDTchWMutyED/LwCAkKA/YE0z8BAfoA+kAh+kQwwADy4U3tRNDTA/oA+kD6QNP/Afhh0wkB+GLRUhvHBfLgSfgq+EErEDdZ2zxvIjAg+QBwdMjLAsoHy/8E+kD0BIBQIm6SMjvjDgr6ACAg1wsAmtdLwAEBwAGw8rGRMOJRSKEgwv/yr8iCEBeNRRkNCwwE1u1E0NMD+gD6QPpA0/8B+GHTCQH4YtEH0z8BAfoAUUGgBPpA+kBTuscFIJE7jqAw+Cr4QSRUTjDbPG8iMPkAcHTIywLKB8v/ydBQC8cFCuIK8uBKCfoAIZJfBOMNJtcLAcAAs5MwbDPjDVUCDQ4PEAG67UTQ0wP6APpA+kDT/wH4YdMJAfhi0QbTPwEB+gD6QPQB0VFBoVI4xwXy4Ekmwv/yr8iCEHvdl94Byx9YAcs/AfoCIc8WWM8WyciAGAHLBSbPFnD6AgFxWMtqzMkDEgCsMAHQ0x8BghAN9gLWuvK5JfJ21DD4QSjwLPgjUgO+8re78rgUoARxsVGpofgvoHOBBROCEAlmAYBw+DdSELYJIIAQ+wKhgQCQ+Adw+DZYoBqhEDoJEDQB+AHLH1AKAcs/UAj6AibPFgHPFib6AljPFsnIgBgBywVQBM8XcPoCQBN3UAPLa8zMyUU4IZFykXHi+DkgbpOBeC6RIOIhbpQxgX7gkQHiUCOoE6BzgQStcPg8oAJw+DYSoAFw+Dagc4EFE4IQCWYBgHD4N6C88rBQU/sAQwMQAfaED39wJvpEMav7UxFJRhgEyMsDUAP6AgHPFgHPFsv/IIEAysjLDwHPFyT5ACXXZSWCAgE0yMsXEssPyw/L/44pBqRcAcsJcfkEAFJwAcv/cfkEAKv7KLJTBLmTNDQjkTDiIMAgJMAAsRfmECNfAzMzInADywnJIsjLARIRAGDIghBzYtCcAcsfJQHLP1AE+gJYzxZYzxbJyIAQAcsFJM8WWPoCAXFYy2rMyYAR+wAAelBUofgvoHOBBROCEAlmAYBw+De2CXL7AsiAEAHLBVAFzxZw+gJwActqghDVMnbbAcsfWAHLP8mBAIL7AFkAMvhB+EIFyMsDUAT6AljPFgHPFsv/ywnJ7VQAFPQA9ADLAMkBbwIAfvg5IG6UMIEYBN5xgQLycPg4AXD4NqCBcAhw+DagvPKwAoBQ+wAD+EH4QgXIywNQBPoCWM8WAc8Wy//LCcntVAIBWBUWACnSz4FcCAhfoFN9D5cDb9AGmX6ZeYQAIzXOfLgZ9MHAcAD8uBo1NP/MIAARAHwKli68uBpgADu/2BdqJoaYH9AH0gfSBp/4D8MOmEgPwxaJn8FSCYQCASAZGgA1uKEe1E0NMD+gD6QPpA0/8B+GHTCQH4YtFfA4ADW52s7UTQ0wP6APpA+kDT/wH4YdMJAfhi0V8Dg=",
+			data:    "te6ccgEBAQEAbwAA2ggY8bSzikFOoIASMQ4LN0rUBvIWDS2vSAVYDSO/7F+acx0Cfy+nZObfSxAAJ8uWd7EBqsmpSWaRdf/I+8R8+XHwh3gsNKhy+UrdrPUI0rXIU3k/T5YpIO61lji2qYaoATvD6VByERzLig6MRAQ=",
+			method:  122284,
+			account: "EQCR50nICun4QUzzXcOhrWyY1jsRNWwJm0mBHMtqlOcMSEAn",
+			compareFunc: func(stack1, stack2 tlb.VmStack) error {
+				if stack2.Len() != stack1.Len() {
+					return fmt.Errorf("stack length mismatch")
+				}
+				if !reflect.DeepEqual(stack1, stack2) {
+					return fmt.Errorf("stack mismatch")
+				}
+				return nil
+			},
+		},
+		{
+			name:    "get_nft_data_v1_simple",
+			code:    "te6ccgECDQEAAdAAART/APSkE/S88sgLAQIBYgIDAgLOBAUACaEfn+AFAgEgBgcCASALDALXDIhxwCSXwPg0NMDAXGwkl8D4PpA+kAx+gAxcdch+gAx+gAw8AIEs44UMGwiNFIyxwXy4ZUB+kDUMBAj8APgBtMf0z+CEF/MPRRSMLqOhzIQN14yQBPgMDQ0NTWCEC/LJqISuuMCXwSED/LwgCAkAET6RDBwuvLhTYAH2UTXHBfLhkfpAIfAB+kDSADH6AIIK+vCAG6EhlFMVoKHeItcLAcMAIJIGoZE24iDC//LhkiGOPoIQBRONkchQCc8WUAvPFnEkSRRURqBwgBDIywVQB88WUAX6AhXLahLLH8s/Im6zlFjPFwGRMuIByQH7ABBHlBAqN1viCgBycIIQi3cXNQXIy/9QBM8WECSAQHCAEMjLBVAHzxZQBfoCFctqEssfyz8ibrOUWM8XAZEy4gHJAfsAAIICjjUm8AGCENUydtsQN0QAbXFwgBDIywVQB88WUAX6AhXLahLLH8s/Im6zlFjPFwGRMuIByQH7AJMwMjTiVQLwAwA7O1E0NM/+kAg10nCAJp/AfpA1DAQJBAj4DBwWW1tgAB0A8jLP1jPFgHPFszJ7VSA=",
+			data:    "te6ccgEBAgEAVwABlQAAAAAAAABRgBtNY2zMdByaMZkK6ZmztqUtxs+7Jkjg3nd7PWOaWV4X8ACzztbjIkeUXya3b2hwDhqCcysuw4/r2MLUc/IFSMlrLgEADjgxLmpzb24=",
+			method:  102351,
+			account: "EQBp_P5ZgufdVhOgW5Z81ckgXL2P6YEX_m_fJtsmclLH8tB7",
+			compareFunc: func(stack1, stack2 tlb.VmStack) error {
+				if stack2.Len() != stack1.Len() {
+					return fmt.Errorf("stack length mismatch")
+				}
+				var a, b abi.GetNftDataResult
+				if err := stack1.Unmarshal(&a); err != nil {
+					return err
+				}
+				if err := stack2.Unmarshal(&b); err != nil {
+					return err
+				}
+				if !reflect.DeepEqual(a, b) {
+					return fmt.Errorf("stack mismatch")
+				}
+				return nil
+			},
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			code, err := boc.DeserializeSinglRootBase64(c.code)
+			if err != nil {
+				t.Fatal(err)
+			}
+			h, _ := code.Hash256()
+			data, err := boc.DeserializeSinglRootBase64(c.data)
+			if err != nil {
+				t.Fatal(err)
+			}
+			config, err := boc.DeserializeSingleRootBoc(blockChainConfig)
+			if err != nil {
+				t.Fatal(err)
+			}
+			f := KnownMethods[MethodCode{MethodID: c.method, CodeHash: h}]
+			fakeStack, err := f(data, tlb.VmStack{})
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			var options []tvm.Option
+			if c.libs != "" {
+				options = append(options, tvm.WithLibrariesBase64(c.libs), tvm.WithBalance(1_000_000_000), tvm.WithVerbosityLevel(3))
+			}
+			e, err := tvm.NewEmulator(code, data, config, options...)
+			if err != nil {
+				t.Fatal(err)
+			}
+			exitCode, tvmStack, err := e.RunSmcMethodByID(context.Background(), ton.MustParseAccountID(c.account), c.method, tlb.VmStack{})
+			if exitCode != 0 {
+				t.Fatal("exit code is not 0", exitCode)
+			}
+			if c.compareFunc != nil {
+				if err = c.compareFunc(fakeStack, tvmStack); err != nil {
+					t.Fatal("stacks are not equal", err)
+				}
+			} else {
+				if !reflect.DeepEqual(fakeStack, tvmStack) {
+					t.Fatal("stacks are not equal")
+				}
+			}
+		})
+	}
+}
+
+// it's technical functions for requesting libs for new tests
+//func TestGetLib(t *testing.T) {
+//	c, _ := liteapi.NewClientWithDefaultMainnet()
+//	code, _ := boc.DeserializeSinglRootBase64("te6ccgEBAQEAIwAIQgIPGtPYpGvSgzId3mORlftyYC6bMbFyf+zCXi7cEJZt9A==")
+//	libs, err := tcode.FindLibraries(code)
+//	if err != nil {
+//		t.Fatal(err)
+//	}
+//	libmaps, err := c.GetLibraries(context.Background(), libs)
+//	if err != nil {
+//		t.Fatal(err)
+//	}
+//	b, err := tcode.LibrariesToBase64(libmaps)
+//	if err != nil {
+//		t.Fatal(err)
+//	}
+//	fmt.Println(b)
+//}

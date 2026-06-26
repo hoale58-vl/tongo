@@ -8,24 +8,66 @@ import (
 )
 
 type Encoder struct {
-	tag string
 }
 
 type MarshalerTLB interface {
 	MarshalTLB(c *boc.Cell, encoder *Encoder) error
 }
 
-func Marshal(c *boc.Cell, o any) error {
-	encoder := Encoder{}
-	return encode(c, o, &encoder)
+type tagEncoder interface {
+	EncodeTag(c *boc.Cell, tag string) error
 }
 
-func encode(c *boc.Cell, o any, encoder *Encoder) error {
-	t, err := parseTag(encoder.tag)
+func Marshal(c *boc.Cell, o any) error {
+	encoder := Encoder{}
+	return encode(c, "", o, &encoder)
+}
+
+func (enc *Encoder) Marshal(c *boc.Cell, o any) error {
+	return encode(c, "", o, enc)
+}
+
+func isNil(o any) bool {
+	switch reflect.ValueOf(o).Kind() {
+	case reflect.Interface, reflect.Slice, reflect.Chan, reflect.Func, reflect.Map, reflect.Pointer:
+		return reflect.ValueOf(o).IsNil()
+	}
+	return false
+
+}
+
+func encode(c *boc.Cell, tag string, o any, encoder *Encoder) error {
+	if m, ok := o.(tagEncoder); ok {
+		return m.EncodeTag(c, tag)
+	}
+	t, err := parseTag(tag)
 	if err != nil {
 		return err
 	}
-	if t.IsRef {
+	tag = ""
+	switch {
+	case t.IsMaybeRef:
+		if isNil(o) {
+			err := c.WriteBit(false)
+			return err
+		}
+		if err := c.WriteBit(true); err != nil {
+			return err
+		}
+		c, err = c.NewRef()
+		if err != nil {
+			return err
+		}
+
+	case t.IsMaybe:
+		if isNil(o) {
+			err := c.WriteBit(false)
+			return err
+		}
+		if err := c.WriteBit(true); err != nil {
+			return err
+		}
+	case t.IsRef:
 		c, err = c.NewRef()
 		if err != nil {
 			return err
@@ -71,7 +113,7 @@ func encode(c *boc.Cell, o any, encoder *Encoder) error {
 		if val.IsNil() && !t.IsOptional {
 			return fmt.Errorf("can't encode empty pointer %v if tlb scheme is not optional", val.Type())
 		}
-		return encode(c, val.Elem().Interface(), encoder)
+		return encode(c, tag, val.Elem().Interface(), encoder)
 	case reflect.Array:
 		if val.Type().Elem().Kind() != reflect.Uint8 {
 			return fmt.Errorf("encoding array of %v not supported", val.Type().Elem().Kind())
@@ -82,6 +124,11 @@ func encode(c *boc.Cell, o any, encoder *Encoder) error {
 			b = append(b, uint8(val.Index(i).Uint()))
 		}
 		return c.WriteBytes(b)
+	case reflect.Slice:
+		if val.Type().Elem().Kind() != reflect.Uint8 {
+			return fmt.Errorf("encoding slice of %v not supported", val.Type().Elem().Kind())
+		}
+		return c.WriteBytes(val.Bytes())
 	default:
 		return fmt.Errorf("type %v not implemented", val.Kind())
 	}
@@ -99,10 +146,8 @@ func encodeStruct(c *boc.Cell, o any, encoder *Encoder) error {
 func encodeBasicStruct(c *boc.Cell, o any, encoder *Encoder) error {
 	val := reflect.ValueOf(o)
 	for i := 0; i < val.NumField(); i++ {
-		var err error
-		encoder.tag = val.Type().Field(i).Tag.Get("tlb")
-		err = encode(c, val.Field(i).Interface(), encoder)
-		if err != nil {
+		tag := val.Type().Field(i).Tag.Get("tlb")
+		if err := encode(c, tag, val.Field(i).Interface(), encoder); err != nil {
 			return err
 		}
 	}
@@ -112,25 +157,33 @@ func encodeBasicStruct(c *boc.Cell, o any, encoder *Encoder) error {
 func encodeSumType(c *boc.Cell, o any, encoder *Encoder) error {
 	val := reflect.ValueOf(o)
 	name := val.FieldByName("SumType").String()
+
+	if name == "" {
+		return fmt.Errorf("empty SumType value")
+	}
+
+	found := false
 	for i := 0; i < val.NumField(); i++ {
 		if val.Field(i).Type().Name() == "SumType" {
 			continue
 		}
-		tag := val.Type().Field(i).Tag.Get("tlbSumType")
-		if name != val.Type().Field(i).Name {
-			continue
+		if name == val.Type().Field(i).Name {
+			found = true
+			tag := val.Type().Field(i).Tag.Get("tlbSumType")
+			if err := encodeSumTag(c, tag); err != nil {
+				return err
+			}
+			if err := encode(c, "", val.Field(i).Interface(), encoder); err != nil {
+				return err
+			}
+			break
 		}
-		err := encodeSumTag(c, tag)
-		if err != nil {
-			return err
-		}
-		encoder.tag = ""
-		err = encode(c, val.Field(i).Interface(), encoder)
-		if err != nil {
-			return err
-		}
-		break
 	}
+
+	if !found {
+		return fmt.Errorf("invalid SumType value: %s", name)
+	}
+
 	return nil
 }
 

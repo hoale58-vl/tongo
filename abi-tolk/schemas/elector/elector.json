@@ -1,0 +1,768 @@
+{
+  "abi_schema_version": "1.0",
+  "contract_name": "elector",
+  "unique_types": [
+    {
+      "kind": "void"
+    },
+    {
+      "kind": "int"
+    },
+    {
+      "kind": "slice"
+    },
+    {
+      "kind": "cell"
+    },
+    {
+      "kind": "builder"
+    },
+    {
+      "kind": "bool"
+    },
+    {
+      "kind": "coins"
+    },
+    {
+      "kind": "address"
+    },
+    {
+      "kind": "intN",
+      "n": 32
+    },
+    {
+      "kind": "uintN",
+      "n": 32
+    },
+    {
+      "kind": "intN",
+      "n": 64
+    },
+    {
+      "kind": "uintN",
+      "n": 64
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "NewStake"
+    },
+    {
+      "kind": "bitsN",
+      "n": 256
+    },
+    {
+      "kind": "bitsN",
+      "n": 512
+    },
+    {
+      "kind": "cellOf",
+      "inner_ty_idx": 14
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "RecoverStakeRequest"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "UpgradeCode"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "ConfigAccepted"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "ConfigRejected"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "RegisterComplaint"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "ValidatorComplaint"
+    },
+    {
+      "kind": "uintN",
+      "n": 8
+    },
+    {
+      "kind": "uintN",
+      "n": 256
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "VoteComplaint"
+    },
+    {
+      "kind": "uintN",
+      "n": 16
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "VoteComplaintResponse"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "ComplaintResponse"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "UpgradeCodeResponse"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "ErrorResponse"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "ReturnStake"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "RecoverStakeResponse"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "NewStakeConfirmation"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "ElectorStorage"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "Elect"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "ElectorMember"
+    },
+    {
+      "kind": "mapKV",
+      "key_ty_idx": 23,
+      "value_ty_idx": 35
+    },
+    {
+      "kind": "cellOf",
+      "inner_ty_idx": 34
+    },
+    {
+      "kind": "nullable",
+      "inner_ty_idx": 37
+    },
+    {
+      "kind": "mapKV",
+      "key_ty_idx": 23,
+      "value_ty_idx": 6
+    },
+    {
+      "kind": "mapKV",
+      "key_ty_idx": 9,
+      "value_ty_idx": 2
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "ParticipantListExtended"
+    },
+    {
+      "kind": "StructRef",
+      "struct_name": "ParticipantListValidatorData"
+    },
+    {
+      "kind": "shapedTuple",
+      "items_ty_idx": [
+        23,
+        42
+      ]
+    },
+    {
+      "kind": "arrayOf",
+      "inner_ty_idx": 43
+    }
+  ],
+  "struct_instantiations": [],
+  "alias_instantiations": [],
+  "declarations": [
+    {
+      "kind": "struct",
+      "name": "NewStake",
+      "ty_idx": 12,
+      "prefix": {
+        "prefix_num": 1316189259,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        },
+        {
+          "name": "validatorPubkey",
+          "ty_idx": 13
+        },
+        {
+          "name": "stakeAt",
+          "ty_idx": 9
+        },
+        {
+          "name": "maxFactor",
+          "ty_idx": 9
+        },
+        {
+          "name": "adnlAddr",
+          "ty_idx": 13
+        },
+        {
+          "name": "signature",
+          "ty_idx": 15
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "NewStakeConfirmation",
+      "ty_idx": 32,
+      "prefix": {
+        "prefix_num": 4084484172,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        },
+        {
+          "name": "comment",
+          "ty_idx": 9
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "RecoverStakeRequest",
+      "ty_idx": 16,
+      "prefix": {
+        "prefix_num": 1197831204,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "RecoverStakeResponse",
+      "ty_idx": 31,
+      "prefix": {
+        "prefix_num": 4184830756,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "UpgradeCode",
+      "ty_idx": 17,
+      "prefix": {
+        "prefix_num": 1313042276,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        },
+        {
+          "name": "code",
+          "ty_idx": 3
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "UpgradeCodeResponse",
+      "ty_idx": 28,
+      "prefix": {
+        "prefix_num": 3460525924,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        },
+        {
+          "name": "op",
+          "ty_idx": 9
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "ConfigAccepted",
+      "ty_idx": 18,
+      "prefix": {
+        "prefix_num": 4000730955,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "ConfigRejected",
+      "ty_idx": 19,
+      "prefix": {
+        "prefix_num": 4000730991,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "RegisterComplaint",
+      "ty_idx": 20,
+      "prefix": {
+        "prefix_num": 1382499184,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        },
+        {
+          "name": "electionId",
+          "ty_idx": 9
+        },
+        {
+          "name": "complaint",
+          "ty_idx": 21
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "VoteComplaint",
+      "ty_idx": 24,
+      "prefix": {
+        "prefix_num": 1450460016,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        },
+        {
+          "name": "signature",
+          "ty_idx": 14
+        },
+        {
+          "name": "signTag",
+          "ty_idx": 9
+        },
+        {
+          "name": "validatorIdx",
+          "ty_idx": 25
+        },
+        {
+          "name": "electionId",
+          "ty_idx": 9
+        },
+        {
+          "name": "complaintHash",
+          "ty_idx": 23
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "ReturnStake",
+      "ty_idx": 30,
+      "prefix": {
+        "prefix_num": 4000269644,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        },
+        {
+          "name": "reason",
+          "ty_idx": 9
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "ErrorResponse",
+      "ty_idx": 29,
+      "prefix": {
+        "prefix_num": 4294967294,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        },
+        {
+          "name": "op",
+          "ty_idx": 9
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "ComplaintResponse",
+      "ty_idx": 27,
+      "prefix": {
+        "prefix_num": 4066861904,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        },
+        {
+          "name": "op",
+          "ty_idx": 9
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "VoteComplaintResponse",
+      "ty_idx": 26,
+      "prefix": {
+        "prefix_num": 3597947456,
+        "prefix_len": 32
+      },
+      "fields": [
+        {
+          "name": "queryId",
+          "ty_idx": 11
+        },
+        {
+          "name": "op",
+          "ty_idx": 9
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "ValidatorComplaint",
+      "ty_idx": 21,
+      "fields": [
+        {
+          "name": "tag",
+          "ty_idx": 22
+        },
+        {
+          "name": "validatorPubkey",
+          "ty_idx": 23
+        },
+        {
+          "name": "description",
+          "ty_idx": 3
+        },
+        {
+          "name": "createdAt",
+          "ty_idx": 9
+        },
+        {
+          "name": "severity",
+          "ty_idx": 22
+        },
+        {
+          "name": "rewardAddr",
+          "ty_idx": 23
+        },
+        {
+          "name": "paid",
+          "ty_idx": 6
+        },
+        {
+          "name": "suggestedFine",
+          "ty_idx": 6
+        },
+        {
+          "name": "suggestedFinePart",
+          "ty_idx": 9
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "ElectorMember",
+      "ty_idx": 35,
+      "fields": [
+        {
+          "name": "stake",
+          "ty_idx": 6
+        },
+        {
+          "name": "time",
+          "ty_idx": 9
+        },
+        {
+          "name": "maxFactor",
+          "ty_idx": 9
+        },
+        {
+          "name": "srcAddr",
+          "ty_idx": 23
+        },
+        {
+          "name": "adnlAddr",
+          "ty_idx": 23
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "ParticipantListValidatorData",
+      "ty_idx": 42,
+      "fields": [
+        {
+          "name": "stake",
+          "ty_idx": 6
+        },
+        {
+          "name": "maxFactor",
+          "ty_idx": 9
+        },
+        {
+          "name": "address",
+          "ty_idx": 23
+        },
+        {
+          "name": "adnlAddr",
+          "ty_idx": 23
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "ParticipantListExtended",
+      "ty_idx": 41,
+      "fields": [
+        {
+          "name": "electAt",
+          "ty_idx": 9
+        },
+        {
+          "name": "electClose",
+          "ty_idx": 9
+        },
+        {
+          "name": "minStake",
+          "ty_idx": 6
+        },
+        {
+          "name": "totalStake",
+          "ty_idx": 6
+        },
+        {
+          "name": "validators",
+          "ty_idx": 44
+        },
+        {
+          "name": "failed",
+          "ty_idx": 5
+        },
+        {
+          "name": "finished",
+          "ty_idx": 5
+        }
+      ],
+      "custom_pack_unpack": {
+        "pack_to_builder": true,
+        "unpack_from_slice": true
+      }
+    },
+    {
+      "kind": "struct",
+      "name": "Elect",
+      "ty_idx": 34,
+      "fields": [
+        {
+          "name": "electAt",
+          "ty_idx": 9
+        },
+        {
+          "name": "electClose",
+          "ty_idx": 9
+        },
+        {
+          "name": "minStake",
+          "ty_idx": 6
+        },
+        {
+          "name": "totalStake",
+          "ty_idx": 6
+        },
+        {
+          "name": "members",
+          "ty_idx": 36
+        },
+        {
+          "name": "failed",
+          "ty_idx": 5
+        },
+        {
+          "name": "finished",
+          "ty_idx": 5
+        }
+      ]
+    },
+    {
+      "kind": "struct",
+      "name": "ElectorStorage",
+      "ty_idx": 33,
+      "fields": [
+        {
+          "name": "elect",
+          "ty_idx": 38
+        },
+        {
+          "name": "credits",
+          "ty_idx": 39
+        },
+        {
+          "name": "pastElections",
+          "ty_idx": 40
+        },
+        {
+          "name": "grams",
+          "ty_idx": 6
+        },
+        {
+          "name": "activeId",
+          "ty_idx": 9
+        },
+        {
+          "name": "activeHash",
+          "ty_idx": 23
+        }
+      ]
+    }
+  ],
+  "incoming_messages": [
+    {
+      "body_ty_idx": 12
+    },
+    {
+      "body_ty_idx": 16
+    },
+    {
+      "body_ty_idx": 17
+    },
+    {
+      "body_ty_idx": 18
+    },
+    {
+      "body_ty_idx": 19
+    },
+    {
+      "body_ty_idx": 20
+    },
+    {
+      "body_ty_idx": 24
+    }
+  ],
+  "incoming_external": [],
+  "outgoing_messages": [
+    {
+      "body_ty_idx": 26
+    },
+    {
+      "body_ty_idx": 27
+    },
+    {
+      "body_ty_idx": 28
+    },
+    {
+      "body_ty_idx": 29
+    },
+    {
+      "body_ty_idx": 30
+    },
+    {
+      "body_ty_idx": 31
+    },
+    {
+      "body_ty_idx": 32
+    }
+  ],
+  "emitted_events": [],
+  "storage": {
+    "storage_ty_idx": 33
+  },
+  "get_methods": [
+    {
+      "tvm_method_id": 86535,
+      "name": "active_election_id",
+      "parameters": [],
+      "return_ty_idx": 1
+    },
+    {
+      "tvm_method_id": 87852,
+      "name": "participates_in",
+      "parameters": [
+        {
+          "name": "validator_key",
+          "ty_idx": 23
+        }
+      ],
+      "return_ty_idx": 1
+    },
+    {
+      "tvm_method_id": 130944,
+      "name": "compute_returned_stake",
+      "parameters": [
+        {
+          "name": "wallet_addr",
+          "ty_idx": 23
+        }
+      ],
+      "return_ty_idx": 1
+    },
+    {
+      "tvm_method_id": 86698,
+      "name": "participant_list_extended",
+      "parameters": [],
+      "return_ty_idx": 41
+    }
+  ],
+  "thrown_errors": [
+    {
+      "kind": "plain_int",
+      "err_code": 0
+    }
+  ],
+  "compiler_name": "tolk",
+  "compiler_version": "1.4.1",
+  "code_boc64": "te6ccgEBCgEAQgABFP8A9KQT9LzyyAsBAgFiAgMADNAw+JHyQAIBIAQFAgN6oAYHAAm//AGDhAIBaggJAAirLDBwAAW4dwgAB7qvIAg="
+}

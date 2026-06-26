@@ -1,0 +1,81 @@
+// Code generated - DO NOT EDIT.
+
+package abi
+
+import (
+	"github.com/tonkeeper/tongo/boc"
+	"github.com/tonkeeper/tongo/tlb"
+)
+
+func decodeTextCommentNFTOpNFT(j *NFTPayload, c *boc.Cell) error {
+	var res TextCommentNFTPayload
+	err := tlb.Unmarshal(c, &res)
+	if err == nil {
+		j.SumType = TextCommentNFTOp
+		j.Value = res
+		return nil
+	}
+	return err
+}
+
+func decodeEncryptedTextCommentNFTOpNFT(j *NFTPayload, c *boc.Cell) error {
+	var res EncryptedTextCommentNFTPayload
+	err := tlb.Unmarshal(c, &res)
+	if err == nil {
+		j.SumType = EncryptedTextCommentNFTOp
+		j.Value = res
+		return nil
+	}
+	return err
+}
+
+func decodeTeleitemBidInfoNFTOpNFT(j *NFTPayload, c *boc.Cell) error {
+	var res TeleitemBidInfoNFTPayload
+	err := tlb.Unmarshal(c, &res)
+	if err == nil {
+		j.SumType = TeleitemBidInfoNFTOp
+		j.Value = res
+		return nil
+	}
+	return err
+}
+
+const (
+	TextCommentNFTOp          NFTOpName = "TextComment"
+	EncryptedTextCommentNFTOp NFTOpName = "EncryptedTextComment"
+	TeleitemBidInfoNFTOp      NFTOpName = "TeleitemBidInfo"
+
+	TextCommentNFTOpCode          NFTOpCode = 0x00000000
+	EncryptedTextCommentNFTOpCode NFTOpCode = 0x2167da4b
+	TeleitemBidInfoNFTOpCode      NFTOpCode = 0x38127de1
+)
+
+var KnownNFTTypes = map[string]any{
+	TextCommentNFTOp:          TextCommentNFTPayload{},
+	EncryptedTextCommentNFTOp: EncryptedTextCommentNFTPayload{},
+	TeleitemBidInfoNFTOp:      TeleitemBidInfoNFTPayload{},
+}
+var NFTOpCodes = map[NFTOpName]NFTOpCode{
+	TextCommentNFTOp:          TextCommentNFTOpCode,
+	EncryptedTextCommentNFTOp: EncryptedTextCommentNFTOpCode,
+	TeleitemBidInfoNFTOp:      TeleitemBidInfoNFTOpCode,
+}
+
+var funcNFTDecodersMapping = map[NFTOpCode]func(*NFTPayload, *boc.Cell) error{
+	TextCommentNFTOpCode:          decodeTextCommentNFTOpNFT,
+	EncryptedTextCommentNFTOpCode: decodeEncryptedTextCommentNFTOpNFT,
+	TeleitemBidInfoNFTOpCode:      decodeTeleitemBidInfoNFTOpNFT,
+}
+
+type TextCommentNFTPayload struct {
+	Text tlb.Text
+}
+
+type EncryptedTextCommentNFTPayload struct {
+	CipherText tlb.Bytes
+}
+
+type TeleitemBidInfoNFTPayload struct {
+	Bid   tlb.Grams
+	BidTs uint32
+}

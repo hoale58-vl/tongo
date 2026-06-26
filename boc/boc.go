@@ -2,9 +2,7 @@ package boc
 
 import (
 	"bytes"
-	"encoding/base64"
 	"encoding/binary"
-	"encoding/hex"
 	"errors"
 	"fmt"
 	"hash/crc32"
@@ -29,6 +27,9 @@ const depthSize = 2
 const maxLevel = 3
 const maxDepth = 1024
 const maxCellWhs = 64
+const minCellSize = 4
+const minTotCellsSize = 2
+const maxCellsCount = 131072
 
 var crcTable = crc32.MakeTable(crc32.Castagnoli)
 
@@ -101,6 +102,10 @@ func parseBocHeader(boc []byte) (*bocHeader, error) {
 		return nil, errors.New("not enough bytes for encoding cells counters")
 	}
 
+	if sizeBytes > minCellSize {
+		return nil, errors.New("invalid cell size value")
+	}
+
 	offsetBytes := int(boc[0])
 	boc = boc[1:]
 	cellsCount := readNBytesUIntFromArray(sizeBytes, boc)
@@ -114,6 +119,18 @@ func parseBocHeader(boc []byte) (*bocHeader, error) {
 
 	if len(boc) < int(rootsCount)*sizeBytes {
 		return nil, errors.New("not enough bytes for encoding root cells hashes")
+	}
+
+	if totCellsSize < minTotCellsSize {
+		return nil, errors.New("invalid cell data size value")
+	}
+
+	if 2*cellsCount > totCellsSize {
+		return nil, errors.New("not enough bytes for encoding all cells data")
+	}
+
+	if cellsCount > maxCellsCount {
+		return nil, errors.New("boc is too large")
 	}
 
 	// Roots
@@ -194,6 +211,10 @@ func deserializeCellData(cellData []byte, referenceIndexSize int) (*Cell, []int,
 	withHashes := (d1 & 0b10000) != 0
 	mask := levelMask(d1 >> 5)
 
+	if withHashes {
+		offset := mask.HashesCount() * (hashSize + depthSize)
+		cellData = cellData[offset:]
+	}
 	var cell *Cell
 	if isExotic {
 		// the first byte of an exotic cell stores the cell's type.
@@ -203,10 +224,6 @@ func deserializeCellData(cellData []byte, referenceIndexSize int) (*Cell, []int,
 	} else {
 		cell = NewCell()
 		cell.mask = mask
-	}
-	if withHashes {
-		offset := mask.HashesCount() * (hashSize + depthSize)
-		cellData = cellData[offset:]
 	}
 
 	if len(cellData) < dataBytesSize+referenceIndexSize*refNum {
@@ -267,33 +284,6 @@ func DeserializeBoc(boc []byte) ([]*Cell, error) {
 		rootCells = append(rootCells, cellsArray[item])
 	}
 	return rootCells, nil
-}
-
-func DeserializeBocBase64(boc string) ([]*Cell, error) {
-	bocData, err := base64.StdEncoding.DecodeString(boc)
-	if err != nil {
-		return nil, err
-	}
-	return DeserializeBoc(bocData)
-}
-
-func DeserializeSinglRootBase64(boc string) (*Cell, error) {
-	cells, err := DeserializeBocBase64(boc)
-	if err != nil {
-		return nil, err
-	}
-	if len(cells) != 1 {
-		return nil, fmt.Errorf("invalid boc roots number %v", len(cells))
-	}
-	return cells[0], nil
-}
-
-func DeserializeBocHex(boc string) ([]*Cell, error) {
-	bocData, err := hex.DecodeString(boc)
-	if err != nil {
-		return nil, err
-	}
-	return DeserializeBoc(bocData)
 }
 
 func SerializeBoc(cell *Cell, idx bool, hasCrc32 bool, cacheBits bool, flags uint) ([]byte, error) {
