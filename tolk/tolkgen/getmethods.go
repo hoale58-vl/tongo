@@ -213,6 +213,31 @@ func (tgen TolkGolangGenerator) emitStackReadExpr(fieldPath string, tyIdx int, u
 		return fmt.Sprintf("tlb.ReadFromStack[%s](stack)", goType), true, nil
 	case parser.TyKindCell:
 		return "stack.ReadCell()", false, nil
+	case parser.TyKindCellOf:
+		expr, hasMethod, err := tgen.symbols.emitLoadExpr("x", tyIdx)
+		if err != nil {
+			return "", false, fmt.Errorf("emitLoadExpr: %w", err)
+		}
+		goType, err := tgen.symbols.emitGoType(tyIdx)
+		if err != nil {
+			return "", false, fmt.Errorf("type: %w", err)
+		}
+		if hasMethod {
+			expr = "err = value.UnmarshalTLB(c, tlb.NewDecoder())\nreturn"
+		} else {
+			expr = "return " + expr
+		}
+		return fmt.Sprintf(`(func () (value %s, err error) {
+			var cIn boc.Cell
+			cIn, err = stack.ReadCell()
+			if err != nil {
+				return
+			}
+			c := boc.NewCell()
+			_ = c.AddRef(&cIn)
+			%s
+		})()`, goType, expr), false, nil
+
 	case parser.TyKindBool:
 		return "stack.ReadBool()", false, nil
 	case parser.TyKindString:
